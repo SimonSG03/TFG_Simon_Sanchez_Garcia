@@ -1,0 +1,140 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane prefHeight="609.0" prefWidth="915.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+
+   <!-- ================= TOP BAR ================= -->
+   <top>
+      <Pane prefHeight="52.0" style="-fx-background-color: #707070;">
+         <children>
+            <ImageView fitHeight="133.0" fitWidth="200.0" layoutX="-20.0" layoutY="-39.0">
+               <image>
+                  <Image url="@../../../images/logo_claro.png" />
+               </image>
+            </ImageView>
+
+            <Label layoutX="145.0" layoutY="11.0" text="Fecha y Hora" />
+            <Label layoutX="165.0" layoutY="30.0" text="Hotel" />
+
+            <TextField layoutX="368.0" layoutY="14.0" prefHeight="25.0" prefWidth="273.0" />
+         </children>
+      </Pane>
+   </top>
+
+   <!-- ================= CENTER CONTENT ================= -->
+   <center>
+      <VBox alignment="CENTER" spacing="18">
+         <padding>
+            <Insets top="40" />
+         </padding>
+
+         <!-- Fila 1 -->
+         <HBox alignment="CENTER" spacing="18">
+            <Button fx:id="centralButton" prefHeight="102.0" prefWidth="122.0" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #707070, #ADADAD);">
+               <graphic>
+                  <VBox alignment="CENTER">
+                     <ImageView fitHeight="63.0" fitWidth="62.0">
+                        <image>
+                           <Image url="@../../../images/ico_buttons/edificio.png" />
+                        </image>
+                     </ImageView>
+                     <Label text="Central" textFill="WHITE">
+                        <font>
+                           <Font name="System Bold" size="12.0" />
+                        </font>
+                     </Label>
+                  </VBox>
+               </graphic>
+            </Button>
+
+            <Button fx:id="planningButton" prefHeight="102" prefWidth="122" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #707070, #ADADAD);">
+               <graphic>
+                  <VBox alignment="CENTER" prefHeight="106.0" prefWidth="100.0">
+                     <children>
+                        <ImageView fitHeight="63.0" fitWidth="62.0">
+                           <image>
+                              <Image url="@../../../images/ico_buttons/calendario.png" />
+                           </image>
+                           <VBox.margin>
+                              <Insets />
+                           </VBox.margin>
+                        </ImageView>
+                        <Label text="Planning" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+               </graphic></Button>
+
+            <Button prefHeight="102" prefWidth="122" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #707070, #ADADAD);" text="Recepcion">
+               <graphic>
+                  <VBox alignment="CENTER" prefHeight="103.0" prefWidth="100.0">
+                     <children>
+                        <ImageView fitHeight="63.0" fitWidth="62.0">
+                           <image>
+                              <Image url="@../../../images/ico_buttons/notificar.png" />
+                           </image>
+                        </ImageView>
+                        <Label text="Recepcion" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+               </graphic></Button>
+
+            <Button prefHeight="102" prefWidth="122" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #707070, #ADADAD);" text="Precios">
+               <graphic>
+                  <VBox alignment="CENTER" prefHeight="102.0" prefWidth="100.0">
+                     <children>
+                        <ImageView fitHeight="63.0" fitWidth="62.0">
+                           <image>
+                              <Image url="@../../../images/ico_buttons/billete.png" />
+                           </image>
+                        </ImageView>
+                        <Label text="Precios" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="12.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </VBox>
+               </graphic></Button>
+         </HBox>
+
+         <!-- Fila 2 -->
+         <HBox alignment="CENTER" spacing="18">
+            <Button prefHeight="102" prefWidth="122" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #707070, #ADADAD);" text="Mantenimiento" />
+
+            <Button prefHeight="102" prefWidth="122" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #707070, #ADADAD);" text="Administracion" />
+
+            <Button prefHeight="102" prefWidth="122" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #707070, #ADADAD);" text="Restauracion" />
+
+            <Button prefHeight="102" prefWidth="122" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #707070, #ADADAD);" text="Informes" />
+         </HBox>
+
+         <!-- Fila 3 -->
+         <HBox alignment="CENTER" spacing="18">
+            <Button prefHeight="102" prefWidth="261" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #707070, #ADADAD);" text="Email" />
+
+            <Button prefHeight="102" prefWidth="261" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #707070, #ADADAD);" text="Maestros" />
+         </HBox>
+
+      </VBox>
+   </center>
+
+</BorderPane>
