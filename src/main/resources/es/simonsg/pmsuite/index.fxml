@@ -3,138 +3,305 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
-<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.Region?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane prefHeight="609.0" prefWidth="915.0" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane prefHeight="609.0" prefWidth="915.0" stylesheets="@styles/index.css" xmlns="http://javafx.com/javafx/25" xmlns:fx="http://javafx.com/fxml/1" fx:controller="es.simonsg.pmsuite.controller.IndexController">
 
    <!-- ================= TOP BAR ================= -->
    <top>
-      <Pane prefHeight="52.0" style="-fx-background-color: #707070;">
-         <children>
-            <ImageView fitHeight="133.0" fitWidth="200.0" layoutX="-20.0" layoutY="-39.0">
+      <!-- CONTENEDOR DE FONDO -->
+      <HBox maxWidth="Infinity" prefHeight="52" style="-fx-background-color: #21867A;" BorderPane.alignment="CENTER" HBox.hgrow="ALWAYS">
+
+         <!-- CONTENEDOR INTERNO -->
+         <HBox alignment="CENTER_LEFT" maxWidth="Infinity" spacing="18" HBox.hgrow="ALWAYS">
+
+            <padding>
+               <Insets left="24" right="24" />
+            </padding>
+
+            <!-- LOGO -->
+            <ImageView fitWidth="110" preserveRatio="true">
                <image>
                   <Image url="@../../../images/logo_claro.png" />
                </image>
             </ImageView>
 
-            <Label layoutX="145.0" layoutY="11.0" text="Fecha y Hora" />
-            <Label layoutX="165.0" layoutY="30.0" text="Hotel" />
+            <!-- FECHA / HOTEL -->
+            <VBox alignment="CENTER_LEFT">
+               <Label fx:id="fecha_label" text="Fecha y Hora" textFill="white" />
+               <Label fx:id="hotel_label" text="Hotel" textFill="white" />
+            </VBox>
 
-            <TextField layoutX="368.0" layoutY="14.0" prefHeight="25.0" prefWidth="273.0" />
-         </children>
-      </Pane>
+            <!-- ICONOS IZQUIERDA -->
+            <HBox alignment="CENTER_LEFT" spacing="14">
+               <ImageView fitHeight="18" fitWidth="18">
+                  <image>
+                     <Image url="@../../../images/ico_buttons/menu.png" />
+                  </image>
+               </ImageView>
+
+               <ImageView fitHeight="16" fitWidth="16">
+                  <image>
+                     <Image url="@../../../images/ico_buttons/suma.png" />
+                  </image>
+               </ImageView>
+            </HBox>
+
+            <!-- EMPUJADOR IZQUIERDA -->
+            <Region HBox.hgrow="ALWAYS" />
+
+            <!-- BUSCADOR (CENTRADO REAL) -->
+            <HBox alignment="CENTER" maxWidth="420" spacing="8">
+               <ImageView fitHeight="18" fitWidth="18">
+                  <image>
+                     <Image url="@../../../images/ico_buttons/lupa.png" />
+                  </image>
+               </ImageView>
+
+               <TextField prefWidth="350" promptText="NIF, nombre, núm. hab, núm. reserva, grupo..." styleClass="search-field" />
+            </HBox>
+
+            <!-- EMPUJADOR DERECHA -->
+            <Region HBox.hgrow="ALWAYS" />
+
+            <!-- USUARIO -->
+            <MenuButton style="-fx-background-color: transparent;" styleClass="top-menu-button" text="nacho@ofi.es" />
+
+            <!-- ICONOS DERECHA -->
+            <HBox alignment="CENTER_LEFT" spacing="16">
+               <ImageView fitHeight="17" fitWidth="17">
+                  <image>
+                     <Image url="@../../../images/ico_buttons/informacion.png" />
+                  </image>
+               </ImageView>
+
+               <ImageView fitHeight="20" fitWidth="20">
+                  <image>
+                     <Image url="@../../../images/ico_buttons/onoff.png" />
+                  </image>
+               </ImageView>
+            </HBox>
+
+         </HBox>
+      </HBox>
    </top>
 
-   <!-- ================= CENTER CONTENT ================= -->
+   <!-- ================= CENTER ================= -->
    <center>
-      <VBox alignment="CENTER" spacing="18">
-         <padding>
-            <Insets top="40" />
-         </padding>
+      <HBox>
 
-         <!-- Fila 1 -->
-         <HBox alignment="CENTER" spacing="18">
-            <Button fx:id="centralButton" prefHeight="102.0" prefWidth="122.0" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #707070, #ADADAD);">
-               <graphic>
-                  <VBox alignment="CENTER">
-                     <ImageView fitHeight="63.0" fitWidth="62.0">
-                        <image>
-                           <Image url="@../../../images/ico_buttons/edificio.png" />
-                        </image>
-                     </ImageView>
-                     <Label text="Central" textFill="WHITE">
-                        <font>
-                           <Font name="System Bold" size="12.0" />
-                        </font>
-                     </Label>
-                  </VBox>
-               </graphic>
-            </Button>
+         <!-- ================= CONTENIDO PRINCIPAL (IZQUIERDA) ================= -->
+         <VBox alignment="CENTER" spacing="30" styleClass="root" HBox.hgrow="ALWAYS">
 
-            <Button fx:id="planningButton" prefHeight="102" prefWidth="122" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #707070, #ADADAD);">
-               <graphic>
-                  <VBox alignment="CENTER" prefHeight="106.0" prefWidth="100.0">
-                     <children>
-                        <ImageView fitHeight="63.0" fitWidth="62.0">
+            <Label text="Bienvenido a PMSuite">
+               <font>
+                  <Font size="35" />
+               </font>
+            </Label>
+
+            <!-- ===== FILA 1 ===== -->
+            <HBox alignment="CENTER" spacing="18" styleClass="module-button">
+               <Button prefHeight="102" prefWidth="122" styleClass="main-tile">
+                  <graphic>
+                     <VBox alignment="CENTER">
+                        <ImageView fitHeight="61" fitWidth="58">
+                           <image>
+                              <Image url="@../../../images/ico_buttons/edificio.png" />
+                           </image>
+                        </ImageView>
+                        <Label text="Central" textFill="WHITE" />
+                     </VBox>
+                  </graphic>
+               </Button>
+
+               <Button prefHeight="102" prefWidth="122" styleClass="main-tile">
+                  <graphic>
+                     <VBox alignment="CENTER">
+                        <ImageView fitHeight="63" fitWidth="62">
                            <image>
                               <Image url="@../../../images/ico_buttons/calendario.png" />
                            </image>
-                           <VBox.margin>
-                              <Insets />
-                           </VBox.margin>
                         </ImageView>
-                        <Label text="Planning" textFill="WHITE">
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </VBox>
-               </graphic></Button>
+                        <Label text="Planning" textFill="WHITE" />
+                     </VBox>
+                  </graphic>
+               </Button>
 
-            <Button prefHeight="102" prefWidth="122" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #707070, #ADADAD);" text="Recepcion">
-               <graphic>
-                  <VBox alignment="CENTER" prefHeight="103.0" prefWidth="100.0">
-                     <children>
-                        <ImageView fitHeight="63.0" fitWidth="62.0">
+               <Button prefHeight="102" prefWidth="122" styleClass="main-tile">
+                  <graphic>
+                     <VBox alignment="CENTER">
+                        <ImageView fitHeight="63" fitWidth="62">
                            <image>
                               <Image url="@../../../images/ico_buttons/notificar.png" />
                            </image>
                         </ImageView>
-                        <Label text="Recepcion" textFill="WHITE">
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </VBox>
-               </graphic></Button>
+                        <Label text="Recepcion" textFill="WHITE" />
+                     </VBox>
+                  </graphic>
+               </Button>
 
-            <Button prefHeight="102" prefWidth="122" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #707070, #ADADAD);" text="Precios">
-               <graphic>
-                  <VBox alignment="CENTER" prefHeight="102.0" prefWidth="100.0">
-                     <children>
-                        <ImageView fitHeight="63.0" fitWidth="62.0">
+               <Button prefHeight="102" prefWidth="122" styleClass="main-tile">
+                  <graphic>
+                     <VBox alignment="CENTER">
+                        <ImageView fitHeight="63" fitWidth="62">
                            <image>
                               <Image url="@../../../images/ico_buttons/billete.png" />
                            </image>
                         </ImageView>
-                        <Label text="Precios" textFill="WHITE">
-                           <font>
-                              <Font name="System Bold" size="12.0" />
-                           </font>
-                        </Label>
-                     </children>
-                  </VBox>
-               </graphic></Button>
-         </HBox>
+                        <Label text="Precios" textFill="WHITE" />
+                     </VBox>
+                  </graphic>
+               </Button>
+            </HBox>
 
-         <!-- Fila 2 -->
-         <HBox alignment="CENTER" spacing="18">
-            <Button prefHeight="102" prefWidth="122" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #707070, #ADADAD);" text="Mantenimiento" />
+            <!-- ===== FILA 2 ===== -->
+            <HBox alignment="CENTER" spacing="18" styleClass="module-button">
+               <Button prefHeight="102" prefWidth="122" styleClass="main-tile">
+                  <graphic>
+                     <VBox alignment="CENTER">
+                        <ImageView fitHeight="60" fitWidth="60">
+                           <image>
+                              <Image url="@../../../images/ico_buttons/herramienta.png" />
+                           </image>
+                        </ImageView>
+                        <Label text="Mantenimiento" textFill="WHITE" />
+                     </VBox>
+                  </graphic>
+               </Button>
 
-            <Button prefHeight="102" prefWidth="122" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #707070, #ADADAD);" text="Administracion" />
+               <Button prefHeight="102" prefWidth="122" styleClass="main-tile">
+                  <graphic>
+                     <VBox alignment="CENTER">
+                        <ImageView fitHeight="61" fitWidth="57">
+                           <image>
+                              <Image url="@../../../images/ico_buttons/calculadora.png" />
+                           </image>
+                        </ImageView>
+                        <Label text="Administracion" textFill="WHITE" />
+                     </VBox>
+                  </graphic>
+               </Button>
 
-            <Button prefHeight="102" prefWidth="122" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #707070, #ADADAD);" text="Restauracion" />
+               <Button prefHeight="102" prefWidth="122" styleClass="main-tile">
+                  <graphic>
+                     <VBox alignment="CENTER">
+                        <ImageView fitHeight="61" fitWidth="56">
+                           <image>
+                              <Image url="@../../../images/ico_buttons/cubiertos.png" />
+                           </image>
+                        </ImageView>
+                        <Label text="Restauracion" textFill="WHITE" />
+                     </VBox>
+                  </graphic>
+               </Button>
 
-            <Button prefHeight="102" prefWidth="122" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #707070, #ADADAD);" text="Informes" />
-         </HBox>
+               <Button prefHeight="102" prefWidth="122" styleClass="main-tile">
+                  <graphic>
+                     <VBox alignment="CENTER">
+                        <ImageView fitHeight="59" fitWidth="55">
+                           <image>
+                              <Image url="@../../../images/ico_buttons/papel-bajo-lupa.png" />
+                           </image>
+                        </ImageView>
+                        <Label text="Informes" textFill="WHITE" />
+                     </VBox>
+                  </graphic>
+               </Button>
+            </HBox>
 
-         <!-- Fila 3 -->
-         <HBox alignment="CENTER" spacing="18">
-            <Button prefHeight="102" prefWidth="261" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #707070, #ADADAD);" text="Email" />
+            <!-- ===== FILA 3 ===== -->
+            <HBox alignment="CENTER" spacing="18">
+               <Button prefHeight="102" prefWidth="261" styleClass="main-tile">
+                  <graphic>
+                     <VBox alignment="CENTER">
+                        <ImageView fitHeight="56" fitWidth="64">
+                           <image>
+                              <Image url="@../../../images/ico_buttons/correo-electronico.png" />
+                           </image>
+                        </ImageView>
+                        <Label text="Comunicacion" textFill="WHITE" />
+                     </VBox>
+                  </graphic>
+               </Button>
 
-            <Button prefHeight="102" prefWidth="261" style="-fx-background-color: linear-gradient(from 0% 0% to 100% 100%, #707070, #ADADAD);" text="Maestros" />
-         </HBox>
+               <Button prefHeight="102" prefWidth="261" styleClass="main-tile">
+                  <graphic>
+                     <VBox alignment="CENTER">
+                        <ImageView fitHeight="58" fitWidth="60">
+                           <image>
+                              <Image url="@../../../images/ico_buttons/llave.png" />
+                           </image>
+                        </ImageView>
+                        <Label text="Maestros" textFill="WHITE" />
+                     </VBox>
+                  </graphic>
+               </Button>
+            </HBox>
 
-      </VBox>
+         </VBox>
+
+         <!-- ================= DASHBOARD DERECHA =================
+         <VBox spacing="20" prefWidth="350" minWidth="350" styleClass="dashboard">
+            <padding>
+               <Insets bottom="24" left="20" right="20" top="24" />
+            </padding>
+
+            <HBox alignment="CENTER_LEFT" spacing="10">
+               <Label styleClass="dashboard-title" text="Dashboard" />
+               <Region HBox.hgrow="ALWAYS" />
+               <Label fx:id="updateLabel" styleClass="dashboard-subtitle" text="Actualizado a las 00:00" />
+            </HBox>
+
+            <HBox spacing="10" alignment="CENTER">
+               <VBox alignment="CENTER" spacing="5">
+                  <Label text="Estado de las habs." styleClass="chart-title"/>
+                  <PieChart fx:id="estadoHabitacionesChart" prefHeight="150" prefWidth="150" labelsVisible="false" legendVisible="false" />
+               </VBox>
+               <VBox alignment="CENTER" spacing="5">
+                  <Label text="Situación de las habs." styleClass="chart-title"/>
+                  <PieChart fx:id="situacionHabitacionesChart" prefHeight="150" prefWidth="150" labelsVisible="false" legendVisible="false" />
+               </VBox>
+            </HBox>
+
+            <HBox alignment="CENTER" spacing="20">
+               <VBox alignment="CENTER" spacing="3">
+                  <Label text="Ocupación actual" styleClass="kpi-label" />
+                  <StackPane>
+                     <PieChart fx:id="ocupacionDonut" prefHeight="80" prefWidth="80" labelsVisible="false" legendVisible="false" />
+                     <Circle radius="42" styleClass="donut-hole"/>
+                     <Label text="86%" styleClass="kpi-value"/>
+                  </StackPane>
+               </VBox>
+
+               <VBox alignment="CENTER" spacing="3">
+                  <Label text="Checkins de hoy" styleClass="kpi-label" />
+                  <StackPane>
+                     <PieChart fx:id="checkinDonut" prefHeight="80" prefWidth="80" labelsVisible="false" legendVisible="false" />
+                     <Circle radius="45" styleClass="donut-hole"/>
+                     <Label text="7/13" styleClass="kpi-value"/>
+                  </StackPane>
+               </VBox>
+
+               <VBox alignment="CENTER" spacing="8">
+                  <Label text="Checkouts de hoy" styleClass="kpi-label" />
+                  <StackPane>
+                     <PieChart fx:id="checkoutDonut" prefHeight="80" prefWidth="80" labelsVisible="false" legendVisible="false" />
+                     <Circle radius="42" styleClass="donut-hole"/>
+                     <Label text="4/5" styleClass="kpi-value"/>
+                  </StackPane>
+               </VBox>
+            </HBox>
+         </VBox> -->
+      </HBox>
    </center>
+
 
 </BorderPane>

@@ -1,0 +1,48 @@
+
+.root{
+    -fx-background-color:
+            radial-gradient(center 15% 20%, radius 70%, rgba(42,157,143,0.10), transparent),
+            radial-gradient(center 85% 80%, radius 70%, rgba(42,157,143,0.06), transparent),
+            radial-gradient(center 50% 90%, radius 60%, rgba(0,0,0,0.03), transparent),
+            linear-gradient(to bottom, #F7F9FB, #EAF4F2);
+    -fx-font-family: "Segoe UI";
+}
+/* ================= BOTONES PRINCIPALES ================= */
+
+.main-tile {
+    -fx-background-color: linear-gradient(
+            to bottom,
+            #2FAE9E,
+            #2A9D8F
+    );
+    -fx-background-radius: 12;
+    -fx-border-radius: 12;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 20px;
+
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.2), 8, 0, 0, 2);
+}
+
+.module-button{
+    -fx-pref-width: 150px;
+    -fx-wrap-text: true;
+}
+
+.main-tile:hover {
+    -fx-background-color: #21867A;
+    -fx-scale-x: 1.05;
+    -fx-scale-y: 1.05;
+    -fx-cursor: hand;
+}
+
+.search-field{
+    -fx-background-radius: 20;
+    -fx-border-radius: 20;
+    -fx-padding: 6 10 6 10;
+    -fx-background-color: #1D756B;
+}
+
+.search-field .text{
+    -fx-fill: #9CA3AF;
+}
