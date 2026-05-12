@@ -1,6 +1,7 @@
 module es.simonsg.pmsuite {
     requires javafx.controls;
     requires javafx.fxml;
+    requires java.sql;
 
 
     opens es.simonsg.pmsuite to javafx.fxml;
