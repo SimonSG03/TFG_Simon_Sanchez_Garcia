@@ -2,6 +2,7 @@ module es.simonsg.pmsuite {
     requires javafx.controls;
     requires javafx.fxml;
     requires java.sql;
+    requires com.zaxxer.hikari;
 
 
     opens es.simonsg.pmsuite to javafx.fxml;
