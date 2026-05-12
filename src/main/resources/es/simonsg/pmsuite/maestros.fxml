@@ -1,0 +1,308 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane maxHeight="Infinity" maxWidth="Infinity"
+            stylesheets="@styles/maestros.css"
+            xmlns="http://javafx.com/javafx/25"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="es.simonsg.pmsuite.controller.MaestrosController">
+
+    <!-- ═══ BREADCRUMB ═══ -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="8" styleClass="breadcrumb-bar">
+            <padding><Insets bottom="10" left="24" right="24" top="10"/></padding>
+            <Button onAction="#volverInicio" styleClass="back-button" text="← Inicio"/>
+            <Label styleClass="breadcrumb-sep" text="/"/>
+            <Label styleClass="breadcrumb-active" text="Maestros"/>
+        </HBox>
+    </top>
+
+    <!-- ═══ SIDEBAR ═══ -->
+    <left>
+        <VBox styleClass="maestros-sidebar" spacing="2">
+            <padding><Insets bottom="16" left="0" right="0" top="16"/></padding>
+            <Label styleClass="sidebar-section-label" text="CONFIGURACIÓN">
+                <padding><Insets bottom="8" left="16" right="16" top="0"/></padding>
+            </Label>
+            <Button fx:id="btnNavHotel" maxWidth="Infinity" onAction="#navHotel"
+                    styleClass="maestros-nav-btn" text="🏨  Hotel"/>
+            <Separator styleClass="sidebar-sep"><padding><Insets bottom="4" top="4"/></padding></Separator>
+            <Label styleClass="sidebar-section-label" text="INVENTARIO">
+                <padding><Insets bottom="8" left="16" right="16" top="4"/></padding>
+            </Label>
+            <Button fx:id="btnNavTiposHab" maxWidth="Infinity" onAction="#navTiposHab"
+                    styleClass="maestros-nav-btn" text="🛏  Tipos de Habitación"/>
+            <Button fx:id="btnNavHabs" maxWidth="Infinity" onAction="#navHabs"
+                    styleClass="maestros-nav-btn" text="🔑  Habitaciones"/>
+            <Separator styleClass="sidebar-sep"><padding><Insets bottom="4" top="4"/></padding></Separator>
+            <Label styleClass="sidebar-section-label" text="SISTEMA">
+                <padding><Insets bottom="8" left="16" right="16" top="4"/></padding>
+            </Label>
+            <Button fx:id="btnNavUsuarios" maxWidth="Infinity" onAction="#navUsuarios"
+                    styleClass="maestros-nav-btn" text="👥  Usuarios"/>
+            <Button fx:id="btnNavTemporadas" maxWidth="Infinity" onAction="#navTemporadas"
+                    styleClass="maestros-nav-btn" text="📅  Temporadas"/>
+        </VBox>
+    </left>
+
+    <!-- ═══ CONTENIDO ═══ -->
+    <center>
+        <StackPane styleClass="maestros-content">
+
+            <!-- ══════ PANEL HOTEL ══════ -->
+            <VBox fx:id="pnlHotel" spacing="0" styleClass="maestros-panel">
+                <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" hbarPolicy="NEVER">
+                    <VBox spacing="20">
+                        <padding><Insets bottom="32" left="32" right="32" top="28"/></padding>
+                        <HBox styleClass="maestros-panel-header">
+                            <VBox spacing="2">
+                                <Label styleClass="maestros-panel-title" text="Configuración del Hotel"/>
+                                <Label styleClass="maestros-panel-subtitle" text="Datos generales, contacto y datos fiscales"/>
+                            </VBox>
+                        </HBox>
+
+                        <VBox spacing="16" styleClass="maestros-form-section">
+                            <Label styleClass="maestros-section-title" text="Datos generales"/>
+                            <GridPane hgap="16" vgap="12">
+                                <columnConstraints>
+                                    <ColumnConstraints prefWidth="140"/>
+                                    <ColumnConstraints prefWidth="340" hgrow="ALWAYS"/>
+                                    <ColumnConstraints prefWidth="140"/>
+                                    <ColumnConstraints prefWidth="280" hgrow="ALWAYS"/>
+                                </columnConstraints>
+                                <Label text="Nombre:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                                <TextField fx:id="txtHotelNombre" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                                <Label text="Teléfono:" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+                                <TextField fx:id="txtHotelTelefono" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
+                                <Label text="Dirección:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                                <TextField fx:id="txtHotelDireccion" GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                                <Label text="Email:" GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+                                <TextField fx:id="txtHotelEmail" GridPane.columnIndex="3" GridPane.rowIndex="1"/>
+                                <Label text="Ciudad:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                                <TextField fx:id="txtHotelCiudad" GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                                <Label text="Web:" GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+                                <TextField fx:id="txtHotelWeb" GridPane.columnIndex="3" GridPane.rowIndex="2"/>
+                                <Label text="C.P.:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                                <TextField fx:id="txtHotelCp" GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                                <Label text="País:" GridPane.columnIndex="2" GridPane.rowIndex="3"/>
+                                <TextField fx:id="txtHotelPais" GridPane.columnIndex="3" GridPane.rowIndex="3"/>
+                            </GridPane>
+                        </VBox>
+
+                        <VBox spacing="16" styleClass="maestros-form-section">
+                            <Label styleClass="maestros-section-title" text="Datos fiscales"/>
+                            <GridPane hgap="16" vgap="12">
+                                <columnConstraints>
+                                    <ColumnConstraints prefWidth="140"/>
+                                    <ColumnConstraints prefWidth="340"/>
+                                    <ColumnConstraints prefWidth="140"/>
+                                    <ColumnConstraints prefWidth="280"/>
+                                </columnConstraints>
+                                <Label text="NIF / CIF:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                                <TextField fx:id="txtHotelNif" GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                                <Label text="IBAN:" GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+                                <TextField fx:id="txtHotelIban" GridPane.columnIndex="3" GridPane.rowIndex="0"/>
+                            </GridPane>
+                        </VBox>
+
+                        <HBox alignment="CENTER_RIGHT">
+                            <Button onAction="#guardarHotel" styleClass="maestros-btn-primary"
+                                    text="💾  Guardar configuración"/>
+                        </HBox>
+                    </VBox>
+                </ScrollPane>
+            </VBox>
+
+            <!-- ══════ PANEL TIPOS HABITACIÓN ══════ -->
+            <VBox fx:id="pnlTiposHab" spacing="0" styleClass="maestros-panel" visible="false" managed="false">
+                <padding><Insets bottom="24" left="24" right="24" top="24"/></padding>
+                <HBox styleClass="maestros-panel-header" alignment="CENTER_LEFT" spacing="12">
+                    <VBox spacing="2" HBox.hgrow="ALWAYS">
+                        <Label styleClass="maestros-panel-title" text="Tipos de Habitación"/>
+                        <Label styleClass="maestros-panel-subtitle" text="Define categorías, capacidad y precio base"/>
+                    </VBox>
+                    <Button onAction="#nuevoTipoHab" styleClass="maestros-btn-primary" text="➕ Nuevo tipo"/>
+                </HBox>
+
+                <HBox spacing="16" VBox.vgrow="ALWAYS">
+                    <!-- Tabla -->
+                    <TableView fx:id="tblTiposHab" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colThCod"       text="Código"    prefWidth="100"/>
+                            <TableColumn fx:id="colThNombre"    text="Nombre"    prefWidth="220"/>
+                            <TableColumn fx:id="colThCapacidad" text="Capacidad" prefWidth="90"/>
+                            <TableColumn fx:id="colThPrecio"    text="Precio/noche" prefWidth="130"/>
+                        </columns>
+                        <placeholder><Label text="No hay tipos de habitación"/></placeholder>
+                    </TableView>
+
+                    <!-- Formulario -->
+                    <VBox fx:id="vboxThForm" spacing="12" prefWidth="340"
+                          styleClass="maestros-form-panel" visible="false" managed="false">
+                        <Label styleClass="maestros-section-title" text="Detalle"/>
+                        <Label text="Código *" styleClass="maestros-field-label"/>
+                        <TextField fx:id="txtThCod" promptText="Ej: DBL-STD"/>
+                        <Label text="Nombre *" styleClass="maestros-field-label"/>
+                        <TextField fx:id="txtThNombre" promptText="Ej: Doble Estándar"/>
+                        <Label text="Descripción" styleClass="maestros-field-label"/>
+                        <TextArea fx:id="txtaThDesc" prefHeight="60" promptText="Descripción del tipo..."/>
+                        <Label text="Capacidad máx." styleClass="maestros-field-label"/>
+                        <TextField fx:id="txtThCapacidad" promptText="2"/>
+                        <Label text="Precio base / noche (€)" styleClass="maestros-field-label"/>
+                        <TextField fx:id="txtThPrecio" promptText="0.00"/>
+                        <Label text="Servicios / amenities" styleClass="maestros-field-label"/>
+                        <TextArea fx:id="txtaThAmenities" prefHeight="60" promptText="WiFi, TV, Minibar..."/>
+                        <HBox spacing="8">
+                            <Button onAction="#guardarTipoHab"    styleClass="maestros-btn-primary"   text="💾 Guardar" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                            <Button onAction="#cancelarFormTipoHab" styleClass="maestros-btn-secondary" text="✕"/>
+                        </HBox>
+                        <Button fx:id="btnThEliminar" onAction="#eliminarTipoHab"
+                                styleClass="maestros-btn-danger" text="🗑 Eliminar este tipo"
+                                maxWidth="Infinity" visible="false" managed="false"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+
+            <!-- ══════ PANEL HABITACIONES ══════ -->
+            <VBox fx:id="pnlHabs" spacing="0" styleClass="maestros-panel" visible="false" managed="false">
+                <padding><Insets bottom="24" left="24" right="24" top="24"/></padding>
+                <HBox styleClass="maestros-panel-header" alignment="CENTER_LEFT" spacing="12">
+                    <VBox spacing="2" HBox.hgrow="ALWAYS">
+                        <Label styleClass="maestros-panel-title" text="Habitaciones"/>
+                        <Label styleClass="maestros-panel-subtitle" text="Gestiona el inventario de habitaciones del hotel"/>
+                    </VBox>
+                    <Button onAction="#nuevaHab" styleClass="maestros-btn-primary" text="➕ Nueva habitación"/>
+                </HBox>
+
+                <HBox spacing="16" VBox.vgrow="ALWAYS">
+                    <TableView fx:id="tblHabs" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colHabNum"    text="Número"    prefWidth="100"/>
+                            <TableColumn fx:id="colHabPlanta" text="Planta"    prefWidth="80"/>
+                            <TableColumn fx:id="colHabTipo"   text="Tipo"      prefWidth="200"/>
+                            <TableColumn fx:id="colHabEstado" text="Estado"    prefWidth="160"/>
+                        </columns>
+                        <placeholder><Label text="No hay habitaciones registradas"/></placeholder>
+                    </TableView>
+
+                    <VBox fx:id="vboxHabForm" spacing="12" prefWidth="340"
+                          styleClass="maestros-form-panel" visible="false" managed="false">
+                        <Label styleClass="maestros-section-title" text="Detalle"/>
+                        <Label text="Número *" styleClass="maestros-field-label"/>
+                        <TextField fx:id="txtHabNum" promptText="Ej: 101"/>
+                        <Label text="Planta" styleClass="maestros-field-label"/>
+                        <TextField fx:id="txtHabPlanta" promptText="1"/>
+                        <Label text="Tipo de habitación" styleClass="maestros-field-label"/>
+                        <ComboBox fx:id="cmbHabTipo" maxWidth="Infinity" promptText="Seleccionar tipo..."/>
+                        <Label text="Estado" styleClass="maestros-field-label"/>
+                        <ComboBox fx:id="cmbHabEstado" maxWidth="Infinity"/>
+                        <Label text="Notas" styleClass="maestros-field-label"/>
+                        <TextArea fx:id="txtaHabNotas" prefHeight="70" promptText="Observaciones..."/>
+                        <HBox spacing="8">
+                            <Button onAction="#guardarHab"    styleClass="maestros-btn-primary"   text="💾 Guardar" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                            <Button onAction="#cancelarFormHab" styleClass="maestros-btn-secondary" text="✕"/>
+                        </HBox>
+                        <Button fx:id="btnHabEliminar" onAction="#eliminarHab"
+                                styleClass="maestros-btn-danger" text="🗑 Eliminar habitación"
+                                maxWidth="Infinity" visible="false" managed="false"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+
+            <!-- ══════ PANEL USUARIOS ══════ -->
+            <VBox fx:id="pnlUsuarios" spacing="0" styleClass="maestros-panel" visible="false" managed="false">
+                <padding><Insets bottom="24" left="24" right="24" top="24"/></padding>
+                <HBox styleClass="maestros-panel-header" alignment="CENTER_LEFT" spacing="12">
+                    <VBox spacing="2" HBox.hgrow="ALWAYS">
+                        <Label styleClass="maestros-panel-title" text="Usuarios del sistema"/>
+                        <Label styleClass="maestros-panel-subtitle" text="Personal con acceso al PMS y sus roles"/>
+                    </VBox>
+                    <Button onAction="#nuevoUsuario" styleClass="maestros-btn-primary" text="➕ Nuevo usuario"/>
+                </HBox>
+
+                <HBox spacing="16" VBox.vgrow="ALWAYS">
+                    <TableView fx:id="tblUsuarios" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colUsrNombre"   text="Nombre completo" prefWidth="200"/>
+                            <TableColumn fx:id="colUsrUsername" text="Usuario"         prefWidth="140"/>
+                            <TableColumn fx:id="colUsrRol"      text="Rol"             prefWidth="160"/>
+                            <TableColumn fx:id="colUsrActivo"   text="Estado"          prefWidth="100"/>
+                        </columns>
+                        <placeholder><Label text="No hay usuarios registrados"/></placeholder>
+                    </TableView>
+
+                    <VBox fx:id="vboxUsrForm" spacing="12" prefWidth="340"
+                          styleClass="maestros-form-panel" visible="false" managed="false">
+                        <Label styleClass="maestros-section-title" text="Detalle"/>
+                        <Label text="Nombre completo *" styleClass="maestros-field-label"/>
+                        <TextField fx:id="txtUsrNombre" promptText="Nombre y apellidos"/>
+                        <Label text="Usuario *" styleClass="maestros-field-label"/>
+                        <TextField fx:id="txtUsrUsername" promptText="Nombre de usuario"/>
+                        <Label text="Email *" styleClass="maestros-field-label"/>
+                        <TextField fx:id="txtUsrEmail" promptText="correo@hotel.com"/>
+                        <Label text="Contraseña (dejar vacío para no cambiar)" styleClass="maestros-field-label"/>
+                        <PasswordField fx:id="txtUsrPassword" promptText="••••••••"/>
+                        <Label text="Rol" styleClass="maestros-field-label"/>
+                        <ComboBox fx:id="cmbUsrRol" maxWidth="Infinity"/>
+                        <CheckBox fx:id="chkUsrActivo" text="Usuario activo" selected="true"/>
+                        <HBox spacing="8">
+                            <Button onAction="#guardarUsuario"    styleClass="maestros-btn-primary"   text="💾 Guardar" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                            <Button onAction="#cancelarFormUsr" styleClass="maestros-btn-secondary" text="✕"/>
+                        </HBox>
+                        <Button fx:id="btnUsrEliminar" onAction="#eliminarUsuario"
+                                styleClass="maestros-btn-danger" text="🗑 Eliminar usuario"
+                                maxWidth="Infinity" visible="false" managed="false"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+
+            <!-- ══════ PANEL TEMPORADAS ══════ -->
+            <VBox fx:id="pnlTemporadas" spacing="0" styleClass="maestros-panel" visible="false" managed="false">
+                <padding><Insets bottom="24" left="24" right="24" top="24"/></padding>
+                <HBox styleClass="maestros-panel-header" alignment="CENTER_LEFT" spacing="12">
+                    <VBox spacing="2" HBox.hgrow="ALWAYS">
+                        <Label styleClass="maestros-panel-title" text="Temporadas"/>
+                        <Label styleClass="maestros-panel-subtitle" text="Períodos tarifarios con multiplicador de precio"/>
+                    </VBox>
+                    <Button onAction="#nuevaTemporada" styleClass="maestros-btn-primary" text="➕ Nueva temporada"/>
+                </HBox>
+
+                <HBox spacing="16" VBox.vgrow="ALWAYS">
+                    <TableView fx:id="tblTemporadas" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colTmpNombre" text="Nombre"     prefWidth="220"/>
+                            <TableColumn fx:id="colTmpDesde"  text="Desde"      prefWidth="130"/>
+                            <TableColumn fx:id="colTmpHasta"  text="Hasta"      prefWidth="130"/>
+                            <TableColumn fx:id="colTmpMult"   text="Multiplicador" prefWidth="120"/>
+                        </columns>
+                        <placeholder><Label text="No hay temporadas definidas"/></placeholder>
+                    </TableView>
+
+                    <VBox fx:id="vboxTmpForm" spacing="12" prefWidth="340"
+                          styleClass="maestros-form-panel" visible="false" managed="false">
+                        <Label styleClass="maestros-section-title" text="Detalle"/>
+                        <Label text="Nombre *" styleClass="maestros-field-label"/>
+                        <TextField fx:id="txtTmpNombre" promptText="Ej: Temporada Alta"/>
+                        <Label text="Fecha inicio *" styleClass="maestros-field-label"/>
+                        <DatePicker fx:id="dpTmpDesde" maxWidth="Infinity"/>
+                        <Label text="Fecha fin *" styleClass="maestros-field-label"/>
+                        <DatePicker fx:id="dpTmpHasta" maxWidth="Infinity"/>
+                        <Label text="Multiplicador de precio" styleClass="maestros-field-label"/>
+                        <TextField fx:id="txtTmpMult" promptText="Ej: 1.50  (=+50%)"/>
+                        <HBox spacing="8">
+                            <Button onAction="#guardarTemporada"    styleClass="maestros-btn-primary"   text="💾 Guardar" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                            <Button onAction="#cancelarFormTmp" styleClass="maestros-btn-secondary" text="✕"/>
+                        </HBox>
+                        <Button fx:id="btnTmpEliminar" onAction="#eliminarTemporada"
+                                styleClass="maestros-btn-danger" text="🗑 Eliminar temporada"
+                                maxWidth="Infinity" visible="false" managed="false"/>
+                    </VBox>
+                </HBox>
+            </VBox>
+
+        </StackPane>
+    </center>
+</BorderPane>
