@@ -1,0 +1,344 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane stylesheets="@styles/precios.css"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="es.simonsg.pmsuite.controller.PreciosController">
+
+    <!-- ===== BREADCRUMB ===== -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="8" styleClass="breadcrumb-bar">
+            <padding><Insets bottom="10" left="20" right="20" top="10"/></padding>
+            <Button onAction="#volverInicio" styleClass="back-button" text="← Inicio"/>
+            <Label styleClass="breadcrumb-sep" text="/"/>
+            <Label styleClass="breadcrumb-active" text="Precios"/>
+        </HBox>
+    </top>
+
+    <!-- ===== LAYOUT: sidebar + contenido ===== -->
+    <center>
+        <HBox>
+
+            <!-- ── SIDEBAR ── -->
+            <VBox styleClass="prec-sidebar" spacing="2">
+                <padding><Insets top="20" bottom="20"/></padding>
+
+                <Label styleClass="sidebar-section-label" text="TARIFAS"/>
+                <Button fx:id="btnNavTemporadas"  maxWidth="Infinity" onAction="#mostrarTemporadas"  styleClass="prec-nav-btn" text="🗓  Temporadas"/>
+                <Button fx:id="btnNavTarifas"     maxWidth="Infinity" onAction="#mostrarTarifas"     styleClass="prec-nav-btn" text="💶  Planes de Tarifa"/>
+
+                <Separator styleClass="sidebar-sep" style="-fx-padding: 6 16 6 16;"/>
+                <Label styleClass="sidebar-section-label" text="PRECIOS"/>
+                <Button fx:id="btnNavPreciosDia"  maxWidth="Infinity" onAction="#mostrarPreciosDia"  styleClass="prec-nav-btn" text="📅  Precios por Día"/>
+                <Button fx:id="btnNavPromociones" maxWidth="Infinity" onAction="#mostrarPromociones" styleClass="prec-nav-btn" text="🏷  Promociones"/>
+                <Button fx:id="btnNavPaquetes"    maxWidth="Infinity" onAction="#mostrarPaquetes"    styleClass="prec-nav-btn" text="📦  Paquetes"/>
+
+                <Separator styleClass="sidebar-sep" style="-fx-padding: 6 16 6 16;"/>
+                <Label styleClass="sidebar-section-label" text="ANÁLISIS"/>
+                <Button fx:id="btnNavYield"       maxWidth="Infinity" onAction="#mostrarYield"       styleClass="prec-nav-btn" text="📈  Yield Management"/>
+            </VBox>
+
+            <!-- ── CONTENIDO ── -->
+            <StackPane HBox.hgrow="ALWAYS" styleClass="prec-content-area">
+
+                <!-- ======================================================
+                     PANEL 1 – TEMPORADAS
+                     ====================================================== -->
+                <VBox fx:id="pnlTemporadas" spacing="16" styleClass="prec-panel" visible="false" managed="false">
+                    <padding><Insets bottom="24" left="24" right="24" top="24"/></padding>
+
+                    <VBox styleClass="panel-header">
+                        <Label styleClass="panel-title" text="Temporadas"/>
+                        <Label styleClass="panel-subtitle" text="Define períodos de precio con multiplicador"/>
+                    </VBox>
+
+                    <HBox spacing="16" VBox.vgrow="ALWAYS">
+
+                        <!-- Tabla -->
+                        <TableView fx:id="tblTemporadas" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="colTempNombre"    text="Nombre"       prefWidth="160"/>
+                                <TableColumn fx:id="colTempInicio"    text="Inicio"       prefWidth="100"/>
+                                <TableColumn fx:id="colTempFin"       text="Fin"          prefWidth="100"/>
+                                <TableColumn fx:id="colTempMultipl"   text="Multiplicador" prefWidth="110"/>
+                            </columns>
+                        </TableView>
+
+                        <!-- Formulario -->
+                        <VBox spacing="10" minWidth="260" maxWidth="260" styleClass="form-section">
+                            <Label styleClass="form-section-title" text="NUEVA / EDITAR TEMPORADA"/>
+                            <Label text="Nombre"/>
+                            <TextField fx:id="txtTempNombre" promptText="Ej: Temporada Alta"/>
+                            <Label text="Fecha inicio"/>
+                            <DatePicker fx:id="dpTempInicio" maxWidth="Infinity"/>
+                            <Label text="Fecha fin"/>
+                            <DatePicker fx:id="dpTempFin" maxWidth="Infinity"/>
+                            <Label text="Multiplicador (ej: 1.30 = +30%)"/>
+                            <TextField fx:id="txtTempMultipl" promptText="1.00"/>
+                            <HBox spacing="8">
+                                <Button onAction="#guardarTemporada"  styleClass="btn-primary"   text="Guardar"   HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                                <Button onAction="#eliminarTemporada" styleClass="btn-danger"    text="Eliminar"/>
+                            </HBox>
+                            <Button onAction="#limpiarTemporada" styleClass="btn-secondary" text="Limpiar" maxWidth="Infinity"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <!-- ======================================================
+                     PANEL 2 – PLANES DE TARIFA
+                     ====================================================== -->
+                <VBox fx:id="pnlTarifas" spacing="16" styleClass="prec-panel" visible="false" managed="false">
+                    <padding><Insets bottom="24" left="24" right="24" top="24"/></padding>
+
+                    <VBox styleClass="panel-header">
+                        <Label styleClass="panel-title" text="Planes de Tarifa"/>
+                        <Label styleClass="panel-subtitle" text="Precio por noche según tipo de habitación y temporada, con restricciones de estancia"/>
+                    </VBox>
+
+                    <HBox spacing="16" VBox.vgrow="ALWAYS">
+                        <TableView fx:id="tblTarifas" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="colTarTipo"       text="Tipo hab."     prefWidth="130"/>
+                                <TableColumn fx:id="colTarTemporada"  text="Temporada"     prefWidth="130"/>
+                                <TableColumn fx:id="colTarNombre"     text="Nombre"        prefWidth="130"/>
+                                <TableColumn fx:id="colTarPrecio"     text="€/noche"       prefWidth="90"/>
+                                <TableColumn fx:id="colTarMin"        text="Mín noches"    prefWidth="90"/>
+                                <TableColumn fx:id="colTarMax"        text="Máx noches"    prefWidth="90"/>
+                                <TableColumn fx:id="colTarDesayuno"   text="Desayuno"      prefWidth="80"/>
+                            </columns>
+                        </TableView>
+
+                        <VBox spacing="10" minWidth="270" maxWidth="270" styleClass="form-section">
+                            <Label styleClass="form-section-title" text="NUEVA / EDITAR TARIFA"/>
+                            <Label text="Tipo de habitación"/>
+                            <ComboBox fx:id="cmbTarTipo" maxWidth="Infinity" promptText="Seleccionar..."/>
+                            <Label text="Temporada"/>
+                            <ComboBox fx:id="cmbTarTemporada" maxWidth="Infinity" promptText="Sin temporada (base)"/>
+                            <Label text="Nombre del plan"/>
+                            <TextField fx:id="txtTarNombre" promptText="Ej: Tarifa Rack"/>
+                            <Label text="Precio por noche (€)"/>
+                            <TextField fx:id="txtTarPrecio" promptText="0.00"/>
+                            <HBox spacing="10">
+                                <VBox spacing="4" HBox.hgrow="ALWAYS">
+                                    <Label text="Estancia mín."/>
+                                    <Spinner fx:id="spnTarMin" min="1" max="365" initialValue="1" editable="true" maxWidth="Infinity"/>
+                                </VBox>
+                                <VBox spacing="4" HBox.hgrow="ALWAYS">
+                                    <Label text="Estancia máx."/>
+                                    <Spinner fx:id="spnTarMax" min="0" max="365" initialValue="0" editable="true" maxWidth="Infinity"/>
+                                </VBox>
+                            </HBox>
+                            <Label style="-fx-font-size:10px; -fx-text-fill:#888;" text="(0 = sin límite máximo)"/>
+                            <CheckBox fx:id="chkTarDesayuno" text="Incluye desayuno"/>
+                            <HBox spacing="8">
+                                <Button onAction="#guardarTarifa"  styleClass="btn-primary"  text="Guardar"  HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                                <Button onAction="#eliminarTarifa" styleClass="btn-danger"   text="Eliminar"/>
+                            </HBox>
+                            <Button onAction="#limpiarTarifa" styleClass="btn-secondary" text="Limpiar" maxWidth="Infinity"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <!-- ======================================================
+                     PANEL 3 – PRECIOS POR DÍA
+                     ====================================================== -->
+                <VBox fx:id="pnlPreciosDia" spacing="16" styleClass="prec-panel" visible="false" managed="false">
+                    <padding><Insets bottom="24" left="24" right="24" top="24"/></padding>
+
+                    <VBox styleClass="panel-header">
+                        <Label styleClass="panel-title" text="Precios por Día"/>
+                        <Label styleClass="panel-subtitle" text="Override de precio para fechas específicas"/>
+                    </VBox>
+
+                    <!-- Filtro de rango -->
+                    <HBox spacing="12" alignment="CENTER_LEFT" styleClass="form-section">
+                        <Label text="Desde:"/>
+                        <DatePicker fx:id="dpDiaDesde" promptText="Desde"/>
+                        <Label text="Hasta:"/>
+                        <DatePicker fx:id="dpDiaHasta" promptText="Hasta"/>
+                        <Button onAction="#filtrarPreciosDia" styleClass="btn-primary" text="Buscar"/>
+                    </HBox>
+
+                    <HBox spacing="16" VBox.vgrow="ALWAYS">
+                        <TableView fx:id="tblPreciosDia" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="colDiaTipo"  text="Tipo hab."   prefWidth="150"/>
+                                <TableColumn fx:id="colDiaFecha" text="Fecha"       prefWidth="120"/>
+                                <TableColumn fx:id="colDiaPrecio" text="Precio (€)" prefWidth="120"/>
+                                <TableColumn fx:id="colDiaNota"  text="Nota"        prefWidth="200"/>
+                            </columns>
+                        </TableView>
+
+                        <VBox spacing="10" minWidth="260" maxWidth="260" styleClass="form-section">
+                            <Label styleClass="form-section-title" text="NUEVO / EDITAR PRECIO DÍA"/>
+                            <Label text="Tipo de habitación"/>
+                            <ComboBox fx:id="cmbDiaTipo" maxWidth="Infinity" promptText="Seleccionar..."/>
+                            <Label text="Fecha"/>
+                            <DatePicker fx:id="dpDiaFecha" maxWidth="Infinity"/>
+                            <Label text="Precio (€)"/>
+                            <TextField fx:id="txtDiaPrecio" promptText="0.00"/>
+                            <Label text="Nota (opcional)"/>
+                            <TextField fx:id="txtDiaNota" promptText="Ej: Festivo, Feria..."/>
+                            <HBox spacing="8">
+                                <Button onAction="#guardarPrecioDia"  styleClass="btn-primary" text="Guardar"  HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                                <Button onAction="#eliminarPrecioDia" styleClass="btn-danger"  text="Eliminar"/>
+                            </HBox>
+                            <Button onAction="#limpiarPrecioDia" styleClass="btn-secondary" text="Limpiar" maxWidth="Infinity"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <!-- ======================================================
+                     PANEL 4 – PROMOCIONES
+                     ====================================================== -->
+                <VBox fx:id="pnlPromociones" spacing="16" styleClass="prec-panel" visible="false" managed="false">
+                    <padding><Insets bottom="24" left="24" right="24" top="24"/></padding>
+
+                    <VBox styleClass="panel-header">
+                        <Label styleClass="panel-title" text="Promociones"/>
+                        <Label styleClass="panel-subtitle" text="Códigos de descuento y ofertas especiales"/>
+                    </VBox>
+
+                    <HBox spacing="16" VBox.vgrow="ALWAYS">
+                        <TableView fx:id="tblPromociones" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="colPromoNombre"    text="Nombre"       prefWidth="140"/>
+                                <TableColumn fx:id="colPromoCodigo"    text="Código"       prefWidth="100"/>
+                                <TableColumn fx:id="colPromoTipo"      text="Tipo"         prefWidth="80"/>
+                                <TableColumn fx:id="colPromoDescuento" text="Descuento"    prefWidth="90"/>
+                                <TableColumn fx:id="colPromoInicio"    text="Desde"        prefWidth="100"/>
+                                <TableColumn fx:id="colPromoFin"       text="Hasta"        prefWidth="100"/>
+                                <TableColumn fx:id="colPromoActivo"    text="Activo"       prefWidth="70"/>
+                            </columns>
+                        </TableView>
+
+                        <VBox spacing="10" minWidth="270" maxWidth="270" styleClass="form-section">
+                            <Label styleClass="form-section-title" text="NUEVA / EDITAR PROMOCIÓN"/>
+                            <Label text="Nombre"/>
+                            <TextField fx:id="txtPromoNombre" promptText="Ej: Verano 2026"/>
+                            <Label text="Código"/>
+                            <TextField fx:id="txtPromoCodigo" promptText="Ej: VERANO26"/>
+                            <Label text="Tipo de descuento"/>
+                            <ComboBox fx:id="cmbPromoTipo" maxWidth="Infinity"/>
+                            <Label text="Valor del descuento"/>
+                            <TextField fx:id="txtPromoValor" promptText="Ej: 15 (%)  o  20 (€)"/>
+                            <Label text="Válida desde"/>
+                            <DatePicker fx:id="dpPromoInicio" maxWidth="Infinity"/>
+                            <Label text="Válida hasta"/>
+                            <DatePicker fx:id="dpPromoFin" maxWidth="Infinity"/>
+                            <CheckBox fx:id="chkPromoActivo" selected="true" text="Promoción activa"/>
+                            <Label text="Notas"/>
+                            <TextField fx:id="txtPromoNota" promptText="Opcional"/>
+                            <HBox spacing="8">
+                                <Button onAction="#guardarPromocion"  styleClass="btn-primary" text="Guardar"  HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                                <Button onAction="#eliminarPromocion" styleClass="btn-danger"  text="Eliminar"/>
+                            </HBox>
+                            <Button onAction="#limpiarPromocion" styleClass="btn-secondary" text="Limpiar" maxWidth="Infinity"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <!-- ======================================================
+                     PANEL 5 – PAQUETES
+                     ====================================================== -->
+                <VBox fx:id="pnlPaquetes" spacing="16" styleClass="prec-panel" visible="false" managed="false">
+                    <padding><Insets bottom="24" left="24" right="24" top="24"/></padding>
+
+                    <VBox styleClass="panel-header">
+                        <Label styleClass="panel-title" text="Paquetes"/>
+                        <Label styleClass="panel-subtitle" text="Paquetes turísticos con precio y contenido incluido"/>
+                    </VBox>
+
+                    <HBox spacing="16" VBox.vgrow="ALWAYS">
+                        <TableView fx:id="tblPaquetes" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="colPaqNombre"      text="Nombre"        prefWidth="160"/>
+                                <TableColumn fx:id="colPaqDescripcion" text="Descripción"   prefWidth="200"/>
+                                <TableColumn fx:id="colPaqPrecio"      text="Precio base (€)" prefWidth="120"/>
+                                <TableColumn fx:id="colPaqActivo"      text="Activo"        prefWidth="70"/>
+                            </columns>
+                        </TableView>
+
+                        <VBox spacing="10" minWidth="270" maxWidth="270" styleClass="form-section">
+                            <Label styleClass="form-section-title" text="NUEVO / EDITAR PAQUETE"/>
+                            <Label text="Nombre"/>
+                            <TextField fx:id="txtPaqNombre" promptText="Ej: Escapada Romántica"/>
+                            <Label text="Descripción"/>
+                            <TextField fx:id="txtPaqDescripcion" promptText="Breve descripción"/>
+                            <Label text="Precio base (€)"/>
+                            <TextField fx:id="txtPaqPrecio" promptText="0.00"/>
+                            <Label text="Contenido incluido"/>
+                            <TextArea fx:id="txtPaqContenido" promptText="Ej: 2 noches, desayuno, cena romántica, spa..." prefHeight="80" wrapText="true"/>
+                            <CheckBox fx:id="chkPaqActivo" selected="true" text="Paquete activo"/>
+                            <HBox spacing="8">
+                                <Button onAction="#guardarPaquete"  styleClass="btn-primary" text="Guardar"  HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                                <Button onAction="#eliminarPaquete" styleClass="btn-danger"  text="Eliminar"/>
+                            </HBox>
+                            <Button onAction="#limpiarPaquete" styleClass="btn-secondary" text="Limpiar" maxWidth="Infinity"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <!-- ======================================================
+                     PANEL 6 – YIELD MANAGEMENT
+                     ====================================================== -->
+                <VBox fx:id="pnlYield" spacing="16" styleClass="prec-panel" visible="false" managed="false">
+                    <padding><Insets bottom="24" left="24" right="24" top="24"/></padding>
+
+                    <VBox styleClass="panel-header">
+                        <Label styleClass="panel-title" text="Yield Management"/>
+                        <Label styleClass="panel-subtitle" text="Ajuste dinámico de precios basado en ocupación"/>
+                    </VBox>
+
+                    <!-- Reglas de yield -->
+                    <HBox spacing="16">
+                        <VBox spacing="8" HBox.hgrow="ALWAYS" styleClass="form-section">
+                            <Label styleClass="form-section-title" text="REGLAS DE AJUSTE"/>
+                            <HBox spacing="12" alignment="CENTER_LEFT">
+                                <Label text="Si ocupación &lt;" prefWidth="140"/>
+                                <TextField fx:id="txtYieldBajaUmbral" prefWidth="60" promptText="50"/>
+                                <Label text="\% → descuento"/>
+                                <TextField fx:id="txtYieldBajaDesc" prefWidth="60" promptText="10"/>
+                                <Label text="\%"/>
+                            </HBox>
+                            <HBox spacing="12" alignment="CENTER_LEFT">
+                                <Label text="Si ocupación >" prefWidth="140"/>
+                                <TextField fx:id="txtYieldAltaUmbral" prefWidth="60" promptText="80"/>
+                                <Label text="\% → premium"/>
+                                <TextField fx:id="txtYieldAltaPremium" prefWidth="60" promptText="20"/>
+                                <Label text="\%"/>
+                            </HBox>
+                            <HBox spacing="8" alignment="CENTER_LEFT">
+                                <Label text="Aplicar a los próximos"/>
+                                <TextField fx:id="txtYieldDias" prefWidth="60" promptText="30"/>
+                                <Label text="días"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Button onAction="#calcularYield"  styleClass="btn-secondary" text="Calcular"/>
+                                <Button onAction="#aplicarYield"   styleClass="btn-warning"   text="Aplicar precios"/>
+                            </HBox>
+                        </VBox>
+                    </HBox>
+
+                    <!-- Tabla de yield -->
+                    <TableView fx:id="tblYield" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colYieldFecha"       text="Fecha"           prefWidth="110"/>
+                            <TableColumn fx:id="colYieldOcupacion"   text="Ocupación %"     prefWidth="100"/>
+                            <TableColumn fx:id="colYieldHabLibres"   text="Habs. libres"    prefWidth="100"/>
+                            <TableColumn fx:id="colYieldPrecioBase"  text="Precio base (€)" prefWidth="120"/>
+                            <TableColumn fx:id="colYieldAjuste"      text="Ajuste"          prefWidth="90"/>
+                            <TableColumn fx:id="colYieldPrecioFinal" text="Precio final (€)" prefWidth="120"/>
+                        </columns>
+                    </TableView>
+                </VBox>
+
+            </StackPane>
+        </HBox>
+    </center>
+
+</BorderPane>
