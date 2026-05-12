@@ -1,0 +1,637 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.control.Spinner?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane
+        maxHeight="Infinity"
+        maxWidth="Infinity"
+        stylesheets="@styles/recepcion.css"
+        xmlns="http://javafx.com/javafx/25"
+        xmlns:fx="http://javafx.com/fxml/1"
+        fx:controller="es.simonsg.pmsuite.controller.RecepcionController">
+
+    <!-- ═══════════════ BREADCRUMB ═══════════════ -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="8" styleClass="breadcrumb-bar">
+            <padding><Insets bottom="10" left="24" right="24" top="10" /></padding>
+            <Button onAction="#volverInicio" styleClass="back-button" text="← Inicio" />
+            <Label styleClass="breadcrumb-sep" text="/" />
+            <Label styleClass="breadcrumb-active" text="Recepción" />
+        </HBox>
+    </top>
+
+    <!-- ═══════════════ SIDEBAR ═══════════════ -->
+    <left>
+        <VBox styleClass="recep-sidebar" spacing="2">
+            <padding><Insets bottom="16" left="0" right="0" top="16" /></padding>
+            <Label styleClass="sidebar-section-label" text="RECEPCIÓN">
+                <padding><Insets bottom="8" left="16" right="16" top="0" /></padding>
+            </Label>
+            <Button fx:id="btnNavCheckin" maxWidth="Infinity" onAction="#mostrarCheckin"
+                    styleClass="recep-nav-btn" text="🛎  Check-in" />
+            <Button fx:id="btnNavCheckout" maxWidth="Infinity" onAction="#mostrarCheckout"
+                    styleClass="recep-nav-btn" text="🏁  Check-out" />
+            <Separator styleClass="sidebar-sep">
+                <padding><Insets bottom="4" top="4" /></padding>
+            </Separator>
+            <Button fx:id="btnNavNuevaReserva" maxWidth="Infinity" onAction="#mostrarNuevaReserva"
+                    styleClass="recep-nav-btn" text="➕  Nueva Reserva" />
+            <Button fx:id="btnNavModRes" maxWidth="Infinity" onAction="#mostrarModificarReserva"
+                    styleClass="recep-nav-btn" text="✏ Modificar Reserva" />
+            <Separator styleClass="sidebar-sep">
+                <padding><Insets bottom="4" top="4" /></padding>
+            </Separator>
+            <Button fx:id="btnNavFichaHuesped" maxWidth="Infinity" onAction="#mostrarFichaHuesped"
+                    styleClass="recep-nav-btn" text="👤  Ficha Huésped" />
+            <Button fx:id="btnNavAsignar" maxWidth="Infinity" onAction="#mostrarAsignarHabitacion"
+                    styleClass="recep-nav-btn" text="🔑  Asignar Habitación" />
+            <Separator styleClass="sidebar-sep">
+                <padding><Insets bottom="4" top="4" /></padding>
+            </Separator>
+            <Button fx:id="btnNavExtras" maxWidth="Infinity" onAction="#mostrarExtras"
+                    styleClass="recep-nav-btn" text="🍽  Extras" />
+            <Button fx:id="btnNavPagos" maxWidth="Infinity" onAction="#mostrarPagos"
+                    styleClass="recep-nav-btn" text="💳  Pagos" />
+            <Button fx:id="btnNavFacturacion" maxWidth="Infinity" onAction="#mostrarFacturacion"
+                    styleClass="recep-nav-btn" text="📄 Facturación" />
+            <Separator styleClass="sidebar-sep">
+                <padding><Insets bottom="4" top="4" /></padding>
+            </Separator>
+            <Button fx:id="btnNavHistorial" maxWidth="Infinity" onAction="#mostrarHistorial"
+                    styleClass="recep-nav-btn" text="📋 Historial Cliente" />
+            <Separator styleClass="sidebar-sep">
+                <padding><Insets bottom="4" top="4" /></padding>
+            </Separator>
+            <Button fx:id="btnNavDetalle" maxWidth="Infinity" onAction="#mostrarDetalle"
+                    styleClass="recep-nav-btn" text="📄 Detalle Reserva" />
+        </VBox>
+    </left>
+
+    <!-- ═══════════════ CONTENIDO ═══════════════ -->
+    <center>
+        <StackPane styleClass="recep-content-area">
+
+            <!-- ══════ PANEL 1: CHECK-IN ══════ -->
+            <VBox fx:id="pnlCheckin" spacing="12" styleClass="recep-panel">
+                <padding><Insets bottom="20" left="20" right="20" top="20" /></padding>
+                <HBox alignment="CENTER_LEFT" spacing="10" styleClass="panel-header">
+                    <VBox spacing="2">
+                        <Label styleClass="panel-title" text="Check-in del día" />
+                        <Label fx:id="lblCheckinInfo" styleClass="panel-subtitle" text="Cargando..." />
+                    </VBox>
+                    <Region HBox.hgrow="ALWAYS" />
+                    <TextField fx:id="txtCheckinSearch" prefWidth="230" promptText="Buscar por nombre o Nº reserva..." />
+                    <Button onAction="#buscarCheckin" styleClass="btn-secondary" text="Buscar" />
+                    <Button onAction="#realizarCheckin" styleClass="btn-success" text="✓ Realizar Check-in" />
+                </HBox>
+                <TableView fx:id="tblCheckin" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colCiNum"       text="Nº Reserva"  prefWidth="140" />
+                        <TableColumn fx:id="colCiHuesped"   text="Huésped"     prefWidth="200" />
+                        <TableColumn fx:id="colCiHab"       text="Habitación"  prefWidth="110" />
+                        <TableColumn fx:id="colCiFecha"     text="Entrada"     prefWidth="100" />
+                        <TableColumn fx:id="colCiAdultos"   text="Pax"         prefWidth="55"  />
+                        <TableColumn fx:id="colCiPeticiones" text="Peticiones" prefWidth="220" />
+                        <TableColumn fx:id="colCiEstado"    text="Estado"      prefWidth="110" />
+                    </columns>
+                    <placeholder><Label text="No hay llegadas previstas para hoy" /></placeholder>
+                </TableView>
+            </VBox>
+
+            <!-- ══════ PANEL 2: CHECK-OUT ══════ -->
+            <VBox fx:id="pnlCheckout" spacing="12" styleClass="recep-panel" visible="false" managed="false">
+                <padding><Insets bottom="20" left="20" right="20" top="20" /></padding>
+                <HBox alignment="CENTER_LEFT" spacing="10" styleClass="panel-header">
+                    <VBox spacing="2">
+                        <Label styleClass="panel-title" text="Check-out del día" />
+                        <Label fx:id="lblCheckoutInfo" styleClass="panel-subtitle" text="Cargando..." />
+                    </VBox>
+                    <Region HBox.hgrow="ALWAYS" />
+                    <TextField fx:id="txtCheckoutSearch" prefWidth="230" promptText="Buscar por nombre o Nº reserva..." />
+                    <Button onAction="#buscarCheckout" styleClass="btn-secondary" text="Buscar" />
+                    <Button onAction="#realizarCheckout" styleClass="btn-danger" text="✓ Realizar Check-out" />
+                </HBox>
+                <TableView fx:id="tblCheckout" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colCoNum"     text="Nº Reserva"  prefWidth="140" />
+                        <TableColumn fx:id="colCoHuesped" text="Huésped"     prefWidth="200" />
+                        <TableColumn fx:id="colCoHab"     text="Habitación"  prefWidth="110" />
+                        <TableColumn fx:id="colCoFecha"   text="Salida"      prefWidth="100" />
+                        <TableColumn fx:id="colCoNoches"  text="Noches"      prefWidth="70"  />
+                        <TableColumn fx:id="colCoTotal"   text="Total"       prefWidth="110" />
+                    </columns>
+                    <placeholder><Label text="No hay salidas previstas para hoy" /></placeholder>
+                </TableView>
+            </VBox>
+
+            <!-- ══════ PANEL 3: NUEVA RESERVA ══════ -->
+            <VBox fx:id="pnlNuevaReserva" spacing="12" styleClass="recep-panel" visible="false" managed="false">
+                <padding><Insets bottom="20" left="20" right="20" top="20" /></padding>
+                <HBox styleClass="panel-header">
+                    <Label styleClass="panel-title" text="Nueva Reserva" />
+                </HBox>
+                <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" hbarPolicy="NEVER">
+                    <VBox spacing="16">
+                        <padding><Insets bottom="8" left="4" right="4" top="8" /></padding>
+
+                        <!-- Búsqueda de huésped -->
+                        <VBox spacing="6" styleClass="form-section">
+                            <Label styleClass="form-section-title" text="Huésped" />
+                            <HBox spacing="8" alignment="CENTER_LEFT">
+                                <TextField fx:id="txtBuscarHuesped" prefWidth="260" promptText="Buscar por nombre, NIF o email..." />
+                                <Button onAction="#buscarHuesped" styleClass="btn-secondary" text="Buscar" />
+                                <ComboBox fx:id="cmbHuesped" prefWidth="280" promptText="Seleccionar huésped..." />
+                            </HBox>
+                        </VBox>
+
+                        <!-- Habitación y fechas -->
+                        <VBox spacing="6" styleClass="form-section">
+                            <Label styleClass="form-section-title" text="Estancia" />
+                            <GridPane hgap="14" vgap="10">
+                                <columnConstraints>
+                                    <ColumnConstraints prefWidth="160" />
+                                    <ColumnConstraints prefWidth="200" />
+                                    <ColumnConstraints prefWidth="160" />
+                                    <ColumnConstraints prefWidth="200" />
+                                </columnConstraints>
+                                <Label text="Habitación:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                <ComboBox fx:id="cmbHabitacion" prefWidth="200" promptText="Seleccionar..."
+                                          GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                <Label text="Adultos:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                                <Spinner fx:id="spnAdultos" prefWidth="90" editable="true"
+                                         GridPane.columnIndex="3" GridPane.rowIndex="0" />
+
+                                <Label text="Entrada:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                <DatePicker fx:id="dpCheckinNueva" prefWidth="200"
+                                            GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                <Label text="Niños:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                <Spinner fx:id="spnNinos" prefWidth="90" editable="true"
+                                         GridPane.columnIndex="3" GridPane.rowIndex="1" />
+
+                                <Label text="Salida:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                <DatePicker fx:id="dpCheckoutNueva" prefWidth="200"
+                                            GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                <Label text="Precio total:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                <Label fx:id="lblPrecioTotal" styleClass="price-label" text="—"
+                                       GridPane.columnIndex="3" GridPane.rowIndex="2" />
+                            </GridPane>
+                        </VBox>
+
+                        <!-- Peticiones especiales -->
+                        <VBox spacing="6" styleClass="form-section">
+                            <Label styleClass="form-section-title" text="Observaciones" />
+                            <Label text="Peticiones especiales:" />
+                            <TextArea fx:id="txtPeticiones" prefHeight="70" promptText="Cama supletoria, habitación alta, vista al mar..." />
+                            <Label text="Notas internas:" />
+                            <TextArea fx:id="txtNotasNueva" prefHeight="60" promptText="Notas internas..." />
+                        </VBox>
+
+                        <HBox spacing="10" alignment="CENTER_RIGHT">
+                            <Button onAction="#crearReserva" styleClass="btn-primary" text="Crear Reserva" />
+                        </HBox>
+                    </VBox>
+                </ScrollPane>
+            </VBox>
+
+            <!-- ══════ PANEL 4: MODIFICAR RESERVA ══════ -->
+            <VBox fx:id="pnlModificarReserva" spacing="12" styleClass="recep-panel" visible="false" managed="false">
+                <padding><Insets bottom="20" left="20" right="20" top="20" /></padding>
+                <HBox styleClass="panel-header">
+                    <Label styleClass="panel-title" text="Modificar Reserva" />
+                </HBox>
+                <HBox spacing="8" alignment="CENTER_LEFT">
+                    <TextField fx:id="txtBuscarReserva" prefWidth="280" promptText="Buscar por Nº reserva, nombre o NIF..." />
+                    <Button onAction="#buscarReserva" styleClass="btn-secondary" text="Buscar" />
+                </HBox>
+                <HBox spacing="14" VBox.vgrow="ALWAYS">
+                    <!-- Tabla de resultados -->
+                    <VBox spacing="6" HBox.hgrow="SOMETIMES" prefWidth="420">
+                        <Label styleClass="form-section-title" text="Resultados" />
+                        <TableView fx:id="tblReservas" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="colResNum"      text="Nº Reserva" prefWidth="130" />
+                                <TableColumn fx:id="colResHuesped"  text="Huésped"    prefWidth="160" />
+                                <TableColumn fx:id="colResEntrada"  text="Entrada"    prefWidth="90"  />
+                                <TableColumn fx:id="colResSalida"   text="Salida"     prefWidth="90"  />
+                                <TableColumn fx:id="colResEstado"   text="Estado"     prefWidth="100" />
+                            </columns>
+                            <placeholder><Label text="Sin resultados" /></placeholder>
+                        </TableView>
+                    </VBox>
+                    <!-- Formulario de edición -->
+                    <VBox spacing="10" HBox.hgrow="ALWAYS">
+                        <Label styleClass="form-section-title" text="Editar reserva seleccionada" />
+                        <GridPane hgap="12" vgap="10">
+                            <columnConstraints>
+                                <ColumnConstraints prefWidth="120" />
+                                <ColumnConstraints prefWidth="180" />
+                                <ColumnConstraints prefWidth="120" />
+                                <ColumnConstraints prefWidth="150" />
+                            </columnConstraints>
+                            <Label text="Entrada:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                            <DatePicker fx:id="dpCiMod" prefWidth="180" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                            <Label text="Adultos:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                            <Spinner fx:id="spnAdultosMod" prefWidth="100" editable="true"
+                                     GridPane.columnIndex="3" GridPane.rowIndex="0" />
+
+                            <Label text="Salida:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                            <DatePicker fx:id="dpCoMod" prefWidth="180" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                            <Label text="Niños:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                            <Spinner fx:id="spnNinosMod" prefWidth="100" editable="true"
+                                     GridPane.columnIndex="3" GridPane.rowIndex="1" />
+
+                            <Label text="Estado:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                            <ComboBox fx:id="cmbEstadoMod" prefWidth="180"
+                                      GridPane.columnIndex="1" GridPane.rowIndex="2" GridPane.columnSpan="3" />
+                        </GridPane>
+                        <Label text="Peticiones especiales:" />
+                        <TextArea fx:id="txtPeticionesMod" prefHeight="65" />
+                        <Label text="Notas internas:" />
+                        <TextArea fx:id="txtNotasMod" prefHeight="55" />
+                        <HBox spacing="8">
+                            <Button onAction="#guardarModificacion" styleClass="btn-primary" text="Guardar Cambios" />
+                            <Button onAction="#cancelarReserva" styleClass="btn-danger" text="Cancelar Reserva" />
+                        </HBox>
+                    </VBox>
+                </HBox>
+            </VBox>
+
+            <!-- ══════ PANEL 5: FICHA HUÉSPED ══════ -->
+            <VBox fx:id="pnlFichaHuesped" spacing="12" styleClass="recep-panel" visible="false" managed="false">
+                <padding><Insets bottom="20" left="20" right="20" top="20" /></padding>
+                <HBox styleClass="panel-header">
+                    <Label styleClass="panel-title" text="Ficha del Huésped" />
+                </HBox>
+                <HBox spacing="8" alignment="CENTER_LEFT">
+                    <TextField fx:id="txtBuscarFicha" prefWidth="280" promptText="Buscar por nombre, NIF o email..." />
+                    <Button onAction="#buscarFicha" styleClass="btn-secondary" text="Buscar" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button onAction="#nuevoHuesped" styleClass="btn-primary" text="+ Nuevo Huésped" />
+                </HBox>
+                <HBox spacing="14" VBox.vgrow="ALWAYS">
+                    <!-- Tabla de resultados -->
+                    <VBox spacing="6" HBox.hgrow="SOMETIMES" prefWidth="380">
+                        <Label styleClass="form-section-title" text="Huéspedes" />
+                        <TableView fx:id="tblFichaHuespedes" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="colFichaNif"      text="NIF"       prefWidth="100" />
+                                <TableColumn fx:id="colFichaNombre"   text="Nombre"    prefWidth="160" />
+                                <TableColumn fx:id="colFichaEmail"    text="Email"     prefWidth="160" />
+                                <TableColumn fx:id="colFichaTelefono" text="Teléfono"  prefWidth="110" />
+                            </columns>
+                            <placeholder><Label text="Sin resultados" /></placeholder>
+                        </TableView>
+                    </VBox>
+                    <!-- Formulario -->
+                    <ScrollPane fitToWidth="true" HBox.hgrow="ALWAYS" hbarPolicy="NEVER">
+                        <VBox spacing="10">
+                            <Label styleClass="form-section-title" text="Datos del huésped" />
+                            <GridPane hgap="12" vgap="10">
+                                <columnConstraints>
+                                    <ColumnConstraints prefWidth="130" />
+                                    <ColumnConstraints prefWidth="200" hgrow="ALWAYS" />
+                                    <ColumnConstraints prefWidth="130" />
+                                    <ColumnConstraints prefWidth="200" hgrow="ALWAYS" />
+                                </columnConstraints>
+                                <Label styleClass="form-label" text="NIF / Pasaporte:" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                                <TextField fx:id="txtFichaNif" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                                <Label styleClass="form-label" text="Fecha nacimiento:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                                <DatePicker fx:id="dpFichaNacimiento" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+
+                                <Label styleClass="form-label" text="Nombre:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                                <TextField fx:id="txtFichaNombre" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                                <Label styleClass="form-label" text="Apellidos:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                                <TextField fx:id="txtFichaApellidos" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+
+                                <Label styleClass="form-label" text="Email:" GridPane.columnIndex="0" GridPane.rowIndex="2" />
+                                <TextField fx:id="txtFichaEmail" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                                <Label styleClass="form-label" text="Teléfono:" GridPane.columnIndex="2" GridPane.rowIndex="2" />
+                                <TextField fx:id="txtFichaTelefono" GridPane.columnIndex="3" GridPane.rowIndex="2" />
+
+                                <Label styleClass="form-label" text="Nacionalidad:" GridPane.columnIndex="0" GridPane.rowIndex="3" />
+                                <TextField fx:id="txtFichaNacionalidad" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                                <Label styleClass="form-label" text="País:" GridPane.columnIndex="2" GridPane.rowIndex="3" />
+                                <TextField fx:id="txtFichaPais" GridPane.columnIndex="3" GridPane.rowIndex="3" />
+
+                                <Label styleClass="form-label" text="Dirección:" GridPane.columnIndex="0" GridPane.rowIndex="4" />
+                                <TextField fx:id="txtFichaDireccion" GridPane.columnIndex="1" GridPane.rowIndex="4" GridPane.columnSpan="3" />
+
+                                <Label styleClass="form-label" text="Ciudad:" GridPane.columnIndex="0" GridPane.rowIndex="5" />
+                                <TextField fx:id="txtFichaCiudad" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                                <Label styleClass="form-label" text="Código postal:" GridPane.columnIndex="2" GridPane.rowIndex="5" />
+                                <TextField fx:id="txtFichaCP" GridPane.columnIndex="3" GridPane.rowIndex="5" />
+                            </GridPane>
+                            <Label styleClass="form-label" text="Notas:" />
+                            <TextArea fx:id="txtFichaNotas" prefHeight="70" promptText="Observaciones, alergias, preferencias..." />
+                            <HBox>
+                                <Button onAction="#guardarHuesped" styleClass="btn-primary" text="Guardar Ficha" />
+                            </HBox>
+                        </VBox>
+                    </ScrollPane>
+                </HBox>
+            </VBox>
+
+            <!-- ══════ PANEL 6: ASIGNAR HABITACIÓN ══════ -->
+            <VBox fx:id="pnlAsignarHabitacion" spacing="12" styleClass="recep-panel" visible="false" managed="false">
+                <padding><Insets bottom="20" left="20" right="20" top="20" /></padding>
+                <HBox alignment="CENTER_LEFT" styleClass="panel-header">
+                    <Label styleClass="panel-title" text="Asignar Habitación" />
+                    <Region HBox.hgrow="ALWAYS" />
+                    <Button onAction="#asignarHabitacion" styleClass="btn-primary" text="🔑 Asignar Habitación" />
+                </HBox>
+                <HBox spacing="14" VBox.vgrow="ALWAYS">
+                    <VBox spacing="6" HBox.hgrow="ALWAYS">
+                        <Label styleClass="form-section-title" text="Reservas sin habitación" />
+                        <TableView fx:id="tblSinRoom" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="colSrNum"     text="Nº Reserva" prefWidth="140" />
+                                <TableColumn fx:id="colSrHuesped" text="Huésped"    prefWidth="200" />
+                                <TableColumn fx:id="colSrEntrada" text="Entrada"    prefWidth="100" />
+                            </columns>
+                            <placeholder><Label text="Todas las reservas tienen habitación asignada" /></placeholder>
+                        </TableView>
+                    </VBox>
+                    <VBox spacing="6" HBox.hgrow="ALWAYS">
+                        <Label styleClass="form-section-title" text="Habitaciones disponibles" />
+                        <TableView fx:id="tblRoomsDisp" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="colRdNum"    text="Hab."     prefWidth="80"  />
+                                <TableColumn fx:id="colRdTipo"   text="Tipo"     prefWidth="180" />
+                                <TableColumn fx:id="colRdPlanta" text="Planta"   prefWidth="80"  />
+                                <TableColumn fx:id="colRdPrecio" text="Precio"   prefWidth="100" />
+                            </columns>
+                            <placeholder><Label text="No hay habitaciones disponibles" /></placeholder>
+                        </TableView>
+                    </VBox>
+                </HBox>
+            </VBox>
+
+            <!-- ══════ PANEL 7: EXTRAS ══════ -->
+            <VBox fx:id="pnlExtras" spacing="12" styleClass="recep-panel" visible="false" managed="false">
+                <padding><Insets bottom="20" left="20" right="20" top="20" /></padding>
+                <HBox styleClass="panel-header">
+                    <Label styleClass="panel-title" text="Añadir Extras" />
+                </HBox>
+                <HBox spacing="8" alignment="CENTER_LEFT">
+                    <Label text="Reserva:" />
+                    <ComboBox fx:id="cmbResExtras" prefWidth="340" promptText="Seleccionar reserva activa..." />
+                </HBox>
+                <Label styleClass="form-section-title" text="Líneas actuales" />
+                <TableView fx:id="tblExtrasLineas" prefHeight="220">
+                    <columns>
+                        <TableColumn fx:id="colExtDesc"   text="Descripción"  prefWidth="290" />
+                        <TableColumn fx:id="colExtCant"   text="Cantidad"     prefWidth="80"  />
+                        <TableColumn fx:id="colExtPrecio" text="Precio unit." prefWidth="100" />
+                        <TableColumn fx:id="colExtTotal"  text="Total"        prefWidth="100" />
+                        <TableColumn fx:id="colExtElim"   text=""             prefWidth="42"  />
+                    </columns>
+                    <placeholder><Label text="Sin líneas registradas" /></placeholder>
+                </TableView>
+                <VBox spacing="8" styleClass="form-section">
+                    <HBox alignment="CENTER_LEFT" spacing="10">
+                        <Label fx:id="lblExtFormTitle" styleClass="form-section-title" text="Añadir concepto" />
+                        <Button fx:id="btnExtCancelar" onAction="#cancelarEdicionExtra"
+                                styleClass="btn-secondary" text="✕ Cancelar edición"
+                                visible="false" managed="false"/>
+                    </HBox>
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Label text="Descripción:" />
+                        <TextField fx:id="txtExtDesc" prefWidth="280" promptText="Ej: Cena, Minibar, Parking..." />
+                        <Label text="Cantidad:" />
+                        <TextField fx:id="txtExtCant" prefWidth="70" promptText="1" />
+                        <Label text="Precio €:" />
+                        <TextField fx:id="txtExtPrecio" prefWidth="90" promptText="0.00" />
+                        <Button fx:id="btnExtGuardar" onAction="#guardarExtra"
+                                styleClass="btn-primary" text="+ Añadir" />
+                    </HBox>
+                </VBox>
+
+            </VBox>
+
+            <!-- ══════ PANEL 8: PAGOS ══════ -->
+            <VBox fx:id="pnlPagos" spacing="14" styleClass="recep-panel" visible="false" managed="false">
+                <padding><Insets bottom="20" left="20" right="20" top="20" /></padding>
+                <HBox styleClass="panel-header">
+                    <Label styleClass="panel-title" text="Registrar Pago" />
+                </HBox>
+                <HBox spacing="8" alignment="CENTER_LEFT">
+                    <Label text="Factura:" />
+                    <ComboBox fx:id="cmbFacturaPago" prefWidth="380" promptText="Seleccionar factura pendiente..." />
+                </HBox>
+                <!-- Resumen -->
+                <HBox spacing="24" styleClass="payment-summary">
+                    <padding><Insets bottom="14" left="20" right="20" top="14" /></padding>
+                    <VBox spacing="4" alignment="CENTER">
+                        <Label styleClass="payment-label" text="TOTAL FACTURA" />
+                        <Label fx:id="lblPagoTotal" styleClass="payment-value" text="—" />
+                    </VBox>
+                    <Separator orientation="VERTICAL" />
+                    <VBox spacing="4" alignment="CENTER">
+                        <Label styleClass="payment-label" text="PAGADO" />
+                        <Label fx:id="lblPagoPagado" styleClass="payment-value-green" text="—" />
+                    </VBox>
+                    <Separator orientation="VERTICAL" />
+                    <VBox spacing="4" alignment="CENTER">
+                        <Label styleClass="payment-label" text="PENDIENTE" />
+                        <Label fx:id="lblPagoPendiente" styleClass="payment-value-red" text="—" />
+                    </VBox>
+                </HBox>
+                <!-- Formulario de pago -->
+                <VBox spacing="10" styleClass="form-section">
+                    <Label styleClass="form-section-title" text="Nuevo pago" />
+                    <GridPane hgap="14" vgap="10">
+                        <columnConstraints>
+                            <ColumnConstraints prefWidth="130" />
+                            <ColumnConstraints prefWidth="200" />
+                            <ColumnConstraints prefWidth="130" />
+                            <ColumnConstraints prefWidth="200" />
+                        </columnConstraints>
+                        <Label text="Importe (€):" GridPane.columnIndex="0" GridPane.rowIndex="0" />
+                        <TextField fx:id="txtPagoImporte" promptText="0.00" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                        <Label text="Método de pago:" GridPane.columnIndex="2" GridPane.rowIndex="0" />
+                        <ComboBox fx:id="cmbPagoMetodo" prefWidth="200" GridPane.columnIndex="3" GridPane.rowIndex="0" />
+
+                        <Label text="Referencia:" GridPane.columnIndex="0" GridPane.rowIndex="1" />
+                        <TextField fx:id="txtPagoRef" promptText="Nº tarjeta, TPV, transferencia..." GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                        <Label text="Notas:" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+                        <TextField fx:id="txtPagoNotas" GridPane.columnIndex="3" GridPane.rowIndex="1" />
+                    </GridPane>
+                    <HBox>
+                        <Button onAction="#registrarPago" styleClass="btn-success" text="💳 Registrar Pago" />
+                    </HBox>
+                </VBox>
+            </VBox>
+
+            <!-- ══════ PANEL 9: FACTURACIÓN ══════ -->
+            <VBox fx:id="pnlFacturacion" spacing="12" styleClass="recep-panel" visible="false" managed="false">
+                <padding><Insets bottom="20" left="20" right="20" top="20" /></padding>
+                <HBox styleClass="panel-header">
+                    <Label styleClass="panel-title" text="Facturación" />
+                </HBox>
+                <Label styleClass="form-section-title" text="Facturas" />
+                <TableView fx:id="tblFacturas" prefHeight="250">
+                    <columns>
+                        <TableColumn fx:id="colFactNum"     text="Nº Factura" prefWidth="140" />
+                        <TableColumn fx:id="colFactHuesped" text="Huésped"    prefWidth="180" />
+                        <TableColumn fx:id="colFactReserva" text="Reserva"    prefWidth="130" />
+                        <TableColumn fx:id="colFactTotal"   text="Total"      prefWidth="110" />
+                        <TableColumn fx:id="colFactPagado"  text="Pagado"     prefWidth="110" />
+                        <TableColumn fx:id="colFactEstado"  text="Estado"     prefWidth="120" />
+                    </columns>
+                    <placeholder><Label text="No hay facturas" /></placeholder>
+                </TableView>
+                <Label styleClass="form-section-title" text="Detalle de líneas" />
+                <TableView fx:id="tblFactLineas" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colFLDesc"   text="Descripción"  prefWidth="320" />
+                        <TableColumn fx:id="colFLCant"   text="Cantidad"     prefWidth="90"  />
+                        <TableColumn fx:id="colFLPrecio" text="Precio unit." prefWidth="120" />
+                        <TableColumn fx:id="colFLTotal"  text="Total"        prefWidth="120" />
+                    </columns>
+                    <placeholder><Label text="Selecciona una factura para ver el detalle" /></placeholder>
+                </TableView>
+            </VBox>
+
+            <!-- ══════ PANEL 10: HISTORIAL ══════ -->
+            <VBox fx:id="pnlHistorial" spacing="12" styleClass="recep-panel" visible="false" managed="false">
+                <padding><Insets bottom="20" left="20" right="20" top="20" /></padding>
+                <HBox styleClass="panel-header">
+                    <Label styleClass="panel-title" text="Historial del Cliente" />
+                </HBox>
+                <HBox spacing="8" alignment="CENTER_LEFT">
+                    <TextField fx:id="txtBuscarHistorial" prefWidth="280" promptText="Buscar huésped por nombre, NIF o email..." />
+                    <Button onAction="#buscarHistorial" styleClass="btn-secondary" text="Buscar" />
+                </HBox>
+                <!-- Resumen del cliente -->
+                <HBox spacing="24" styleClass="guest-summary">
+                    <padding><Insets bottom="14" left="20" right="20" top="14" /></padding>
+                    <VBox spacing="4">
+                        <Label styleClass="payment-label" text="CLIENTE" />
+                        <Label fx:id="lblHistNombre" styleClass="hist-nombre" text="—" />
+                    </VBox>
+                    <Separator orientation="VERTICAL" />
+                    <VBox spacing="4">
+                        <Label styleClass="payment-label" text="EMAIL" />
+                        <Label fx:id="lblHistEmail" text="—" />
+                    </VBox>
+                    <Separator orientation="VERTICAL" />
+                    <VBox spacing="4" alignment="CENTER">
+                        <Label styleClass="payment-label" text="ESTANCIAS" />
+                        <Label fx:id="lblHistEstancias" styleClass="payment-value" text="—" />
+                    </VBox>
+                    <Separator orientation="VERTICAL" />
+                    <VBox spacing="4" alignment="CENTER">
+                        <Label styleClass="payment-label" text="TOTAL GASTADO" />
+                        <Label fx:id="lblHistGastado" styleClass="payment-value-green" text="—" />
+                    </VBox>
+                </HBox>
+                <Label styleClass="form-section-title" text="Historial de reservas" />
+                <TableView fx:id="tblHistorial" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colHistNum"     text="Nº Reserva" prefWidth="140" />
+                        <TableColumn fx:id="colHistEntrada" text="Entrada"    prefWidth="100" />
+                        <TableColumn fx:id="colHistSalida"  text="Salida"     prefWidth="100" />
+                        <TableColumn fx:id="colHistHab"     text="Habitación" prefWidth="110" />
+                        <TableColumn fx:id="colHistEstado"  text="Estado"     prefWidth="120" />
+                        <TableColumn fx:id="colHistTotal"   text="Total"      prefWidth="110" />
+                    </columns>
+                    <placeholder><Label text="Busca un huésped para ver su historial" /></placeholder>
+                </TableView>
+            </VBox>
+
+            <!-- ══════ PANEL DETALLE RESERVA ══════ -->
+            <VBox fx:id="pnlDetalle" spacing="14" styleClass="recep-panel" visible="false" managed="false">
+                <padding><Insets bottom="24" left="24" right="24" top="24" /></padding>
+
+                <HBox styleClass="panel-header" alignment="CENTER_LEFT">
+                    <VBox spacing="2">
+                        <Label styleClass="panel-title" text="Detalle de Reserva" />
+                        <Label styleClass="panel-subtitle" text="Consulta costes desglosados por nombre, DNI o Nº de reserva" />
+                    </VBox>
+                </HBox>
+
+                <!-- Búsqueda -->
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <TextField fx:id="txtDetalleBuscar" prefWidth="320"
+                               promptText="Nombre, DNI / NIF o Nº reserva..." />
+                    <Button onAction="#buscarDetalleReserva" styleClass="btn-primary" text="🔍 Buscar" />
+                    <ComboBox fx:id="cmbDetalleReserva" prefWidth="340"
+                              promptText="Selecciona la reserva..." />
+                </HBox>
+
+                <!-- Info huésped y reserva -->
+                <VBox fx:id="vboxDetalleInfo" spacing="0" visible="false" managed="false">
+                    <HBox spacing="0" styleClass="detalle-info-header">
+                        <VBox spacing="4" HBox.hgrow="ALWAYS" styleClass="detalle-info-col">
+                            <Label styleClass="detalle-info-label" text="HUÉSPED" />
+                            <Label fx:id="lblDetalleHuesped" styleClass="detalle-info-value" text="—" />
+                            <Label fx:id="lblDetalleDni"     styleClass="detalle-info-sub"   text="—" />
+                        </VBox>
+                        <VBox spacing="4" HBox.hgrow="ALWAYS" styleClass="detalle-info-col">
+                            <Label styleClass="detalle-info-label" text="RESERVA" />
+                            <Label fx:id="lblDetalleNum"    styleClass="detalle-info-value" text="—" />
+                            <Label fx:id="lblDetalleFechas" styleClass="detalle-info-sub"   text="—" />
+                        </VBox>
+                        <VBox spacing="4" HBox.hgrow="ALWAYS" styleClass="detalle-info-col">
+                            <Label styleClass="detalle-info-label" text="HABITACIÓN" />
+                            <Label fx:id="lblDetalleHab"    styleClass="detalle-info-value" text="—" />
+                            <Label fx:id="lblDetalleNoches" styleClass="detalle-info-sub"   text="—" />
+                        </VBox>
+                    </HBox>
+
+                    <!-- Tabla de líneas de coste -->
+                    <TableView fx:id="tblDetalleLineas" VBox.vgrow="ALWAYS" prefHeight="280">
+                        <columns>
+                            <TableColumn fx:id="colDetDesc"   text="Concepto"     prefWidth="380" />
+                            <TableColumn fx:id="colDetCant"   text="Cantidad"     prefWidth="90"  />
+                            <TableColumn fx:id="colDetPrecio" text="Precio unit." prefWidth="120" />
+                            <TableColumn fx:id="colDetTotal"  text="Total"        prefWidth="120" />
+                        </columns>
+                        <placeholder><Label text="Sin líneas registradas aún" /></placeholder>
+                    </TableView>
+
+                    <!-- Resumen totales -->
+                    <HBox alignment="CENTER_RIGHT" spacing="0" styleClass="detalle-totales">
+                        <VBox spacing="6" styleClass="detalle-totales-box">
+                            <HBox spacing="20" alignment="CENTER_RIGHT">
+                                <Label text="Base imponible:" styleClass="detalle-total-label" />
+                                <Label fx:id="lblDetalleSubtotal" styleClass="detalle-total-value" text="0,00 €" />
+                            </HBox>
+                            <HBox spacing="20" alignment="CENTER_RIGHT">
+                                <Label text="IVA (10%):" styleClass="detalle-total-label" />
+                                <Label fx:id="lblDetalleIva" styleClass="detalle-total-value" text="0,00 €" />
+                            </HBox>
+                            <Separator />
+                            <HBox spacing="20" alignment="CENTER_RIGHT">
+                                <Label text="TOTAL:" styleClass="detalle-total-label-big" />
+                                <Label fx:id="lblDetalleTotalFinal" styleClass="detalle-total-value-big" text="0,00 €" />
+                            </HBox>
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+            </VBox>
+
+        </StackPane>
+    </center>
+
+</BorderPane>

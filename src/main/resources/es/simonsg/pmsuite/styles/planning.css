@@ -1,0 +1,236 @@
+/* ================================================================
+   PLANNING.CSS — Room Rack / Calendar Planning Module
+   Paleta: teal (#2A9D8F / #21867A), verde, ámbar, rojo, morado
+   ================================================================ */
+
+/* ── ROOT ────────────────────────────────────────────────────── */
+
+.dashboard-root {
+    -fx-background-color:
+            radial-gradient(center 15% 20%, radius 70%, rgba(42,157,143,0.08), transparent),
+            linear-gradient(to bottom, #F7F9FB, #EAF4F2);
+    -fx-font-family: "Segoe UI";
+}
+
+/* ── BREADCRUMB (reutiliza central.css) ─────────────────────── */
+
+.breadcrumb-bar {
+    -fx-background-color: white;
+    -fx-border-color: #E5E7EB;
+    -fx-border-width: 0 0 1 0;
+}
+
+.breadcrumb-sep {
+    -fx-text-fill: #D1D5DB;
+    -fx-font-size: 14px;
+}
+
+.breadcrumb-active {
+    -fx-text-fill: #1A2E2B;
+    -fx-font-weight: bold;
+    -fx-font-size: 13px;
+}
+
+.update-label {
+    -fx-text-fill: #9CA3AF;
+    -fx-font-size: 11px;
+}
+
+.back-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #2A9D8F;
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+    -fx-border-color: #2A9D8F;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 4 12 4 12;
+}
+
+.back-button:hover {
+    -fx-background-color: #E8F5F3;
+}
+
+/* ── PAGE TITLE ─────────────────────────────────────────────── */
+
+.page-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1A2E2B;
+}
+
+.page-subtitle {
+    -fx-font-size: 12px;
+    -fx-text-fill: #6B7280;
+}
+
+/* ── CONTROLS BAR ───────────────────────────────────────────── */
+
+.planning-controls-bar {
+    -fx-background-color: white;
+    -fx-border-color: #E5E7EB;
+    -fx-border-width: 0 0 1 0;
+}
+
+/* ── OVERBOOKING ALERT ──────────────────────────────────────── */
+
+.overbooking-alert {
+    -fx-background-color: #FEF3C7;
+    -fx-text-fill: #92400E;
+    -fx-background-radius: 20;
+    -fx-padding: 4 12 4 12;
+    -fx-font-size: 11px;
+    -fx-font-weight: bold;
+    -fx-border-color: #F59E0B;
+    -fx-border-radius: 20;
+    -fx-border-width: 1;
+}
+
+/* ── MONTH NAVIGATION ───────────────────────────────────────── */
+
+.month-nav-box {
+    -fx-background-color: #F3F4F6;
+    -fx-background-radius: 8;
+    -fx-border-color: #E5E7EB;
+    -fx-border-radius: 8;
+    -fx-padding: 4 8 4 8;
+}
+
+.nav-btn {
+    -fx-background-color: white;
+    -fx-text-fill: #374151;
+    -fx-background-radius: 6;
+    -fx-border-color: #D1D5DB;
+    -fx-border-radius: 6;
+    -fx-font-size: 16px;
+    -fx-padding: 2 10 2 10;
+    -fx-cursor: hand;
+    -fx-min-width: 32;
+}
+
+.nav-btn:hover {
+    -fx-background-color: #E8F5F3;
+    -fx-border-color: #2A9D8F;
+    -fx-text-fill: #2A9D8F;
+}
+
+.month-label {
+    -fx-font-size: 14px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1A2E2B;
+    -fx-alignment: CENTER;
+}
+
+.today-btn {
+    -fx-background-color: #2A9D8F;
+    -fx-text-fill: white;
+    -fx-background-radius: 6;
+    -fx-font-size: 12px;
+    -fx-padding: 4 12 4 12;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+}
+
+.today-btn:hover {
+    -fx-background-color: #21867A;
+}
+
+/* ── FILTERS ────────────────────────────────────────────────── */
+
+.filter-label {
+    -fx-text-fill: #6B7280;
+    -fx-font-size: 12px;
+}
+
+.combo-box {
+    -fx-background-color: white;
+    -fx-border-color: #D1D5DB;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-font-size: 12px;
+}
+
+.combo-box:hover {
+    -fx-border-color: #2A9D8F;
+}
+
+.combo-box .list-cell {
+    -fx-font-size: 12px;
+    -fx-text-fill: #374151;
+}
+
+/* ── ACTION BUTTONS ─────────────────────────────────────────── */
+
+.btn-primary {
+    -fx-background-color: #2A9D8F;
+    -fx-text-fill: white;
+    -fx-background-radius: 7;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-padding: 6 14 6 14;
+    -fx-cursor: hand;
+}
+
+.btn-primary:hover {
+    -fx-background-color: #21867A;
+    -fx-effect: dropshadow(gaussian, rgba(42,157,143,0.35), 8, 0, 0, 2);
+}
+
+.btn-outline {
+    -fx-background-color: transparent;
+    -fx-text-fill: #374151;
+    -fx-border-color: #D1D5DB;
+    -fx-border-radius: 7;
+    -fx-background-radius: 7;
+    -fx-font-size: 12px;
+    -fx-padding: 6 14 6 14;
+    -fx-cursor: hand;
+}
+
+.btn-outline:hover {
+    -fx-background-color: #F3F4F6;
+    -fx-border-color: #9CA3AF;
+}
+
+/* ── LEGEND BAR ─────────────────────────────────────────────── */
+
+.legend-bar {
+    -fx-background-color: #F8FAFC;
+    -fx-border-color: #E5E7EB;
+    -fx-border-width: 0 0 1 0;
+}
+
+/* ── RACK CONTAINER ─────────────────────────────────────────── */
+
+.rack-container {
+    -fx-background-color: white;
+}
+
+/* ── SCROLL PANE ────────────────────────────────────────────── */
+
+.scroll-pane {
+    -fx-background-color: white;
+    -fx-background: white;
+    -fx-border-color: transparent;
+    -fx-padding: 0;
+}
+
+.scroll-pane > .viewport {
+    -fx-background-color: white;
+}
+
+.scroll-pane .scroll-bar:horizontal,
+.scroll-pane .scroll-bar:vertical {
+    -fx-background-color: #F1F5F9;
+}
+
+.scroll-pane .scroll-bar:horizontal .thumb,
+.scroll-pane .scroll-bar:vertical .thumb {
+    -fx-background-color: #CBD5E1;
+    -fx-background-radius: 4;
+}
+
+.scroll-pane .scroll-bar:horizontal .thumb:hover,
+.scroll-pane .scroll-bar:vertical .thumb:hover {
+    -fx-background-color: #94A3B8;
+}
