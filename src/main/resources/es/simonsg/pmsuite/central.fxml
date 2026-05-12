@@ -1,0 +1,389 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.PieChart?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Separator?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.VBox?>
+
+<BorderPane
+   maxHeight="Infinity"
+   maxWidth="Infinity"
+   stylesheets="@styles/central.css"
+   xmlns="http://javafx.com/javafx/25"
+   xmlns:fx="http://javafx.com/fxml/1"
+   fx:controller="es.simonsg.pmsuite.controller.CentralController">
+
+   <!-- ================= BREADCRUMB ================= -->
+   <top>
+      <HBox alignment="CENTER_LEFT" spacing="8" styleClass="breadcrumb-bar">
+         <padding>
+            <Insets bottom="10" left="24" right="24" top="10" />
+         </padding>
+         <Button onAction="#volverInicio" styleClass="back-button" text="← Inicio" />
+         <Label styleClass="breadcrumb-sep" text="/" />
+         <Label styleClass="breadcrumb-active" text="Central" />
+         <Region HBox.hgrow="ALWAYS" />
+         <Label fx:id="updateLabel" styleClass="update-label" text="Actualizado: --:--" />
+      </HBox>
+   </top>
+
+   <!-- ================= CONTENIDO PRINCIPAL ================= -->
+   <center>
+      <ScrollPane fitToWidth="true" hbarPolicy="NEVER" styleClass="main-scroll">
+         <VBox spacing="16" styleClass="dashboard-root">
+            <padding>
+               <Insets bottom="28" left="24" right="24" top="12" />
+            </padding>
+
+            <!-- ===== ENCABEZADO ===== -->
+            <HBox alignment="CENTER_LEFT">
+               <VBox spacing="3">
+                  <Label styleClass="page-title" text="Panel Central" />
+                  <Label fx:id="fechaLabel" styleClass="page-subtitle" text="Resumen general · Cargando..." />
+               </VBox>
+            </HBox>
+
+            <!-- ===== KPI CARDS ===== -->
+            <HBox spacing="14">
+
+               <!-- Ocupación -->
+               <VBox alignment="CENTER_LEFT" spacing="5" styleClass="kpi-card-teal" HBox.hgrow="ALWAYS">
+                  <padding>
+                     <Insets bottom="18" left="20" right="20" top="18" />
+                  </padding>
+                  <Label styleClass="kpi-card-label" text="OCUPACIÓN" />
+                  <Label fx:id="kpiOcupacion" styleClass="kpi-card-value" text="86%" />
+                  <Label styleClass="kpi-card-sub" text="68 de 79 habitaciones" />
+               </VBox>
+
+               <!-- ADR -->
+               <VBox alignment="CENTER_LEFT" spacing="5" styleClass="kpi-card-white" HBox.hgrow="ALWAYS">
+                  <padding>
+                     <Insets bottom="18" left="20" right="20" top="18" />
+                  </padding>
+                  <Label styleClass="kpi-card-label-dark" text="ADR" />
+                  <Label fx:id="kpiAdr" styleClass="kpi-card-value-dark" text="124,50 €" />
+                  <Label styleClass="kpi-card-sub-dark" text="Precio medio por hab." />
+               </VBox>
+
+               <!-- RevPAR -->
+               <VBox alignment="CENTER_LEFT" spacing="5" styleClass="kpi-card-white" HBox.hgrow="ALWAYS">
+                  <padding>
+                     <Insets bottom="18" left="20" right="20" top="18" />
+                  </padding>
+                  <Label styleClass="kpi-card-label-dark" text="RevPAR" />
+                  <Label fx:id="kpiRevpar" styleClass="kpi-card-value-dark" text="107,07 €" />
+                  <Label styleClass="kpi-card-sub-dark" text="Ingreso por hab. disponible" />
+               </VBox>
+
+               <!-- Ingresos hoy -->
+               <VBox alignment="CENTER_LEFT" spacing="5" styleClass="kpi-card-green" HBox.hgrow="ALWAYS">
+                  <padding>
+                     <Insets bottom="18" left="20" right="20" top="18" />
+                  </padding>
+                  <Label styleClass="kpi-card-label" text="INGRESOS HOY" />
+                  <Label fx:id="kpiIngresos" styleClass="kpi-card-value" text="2.490,00 €" />
+                  <Label styleClass="kpi-card-sub" text="Pendiente: 540,00 €" />
+               </VBox>
+
+            </HBox>
+
+            <!-- ===== LLEGADAS Y SALIDAS ===== -->
+            <HBox spacing="14">
+
+               <!-- Llegadas del día -->
+               <VBox spacing="10" styleClass="dash-card" HBox.hgrow="ALWAYS">
+                  <HBox alignment="CENTER_LEFT">
+                     <VBox spacing="2">
+                        <Label styleClass="card-title" text="Llegadas de hoy" />
+                        <Label styleClass="card-subtitle" text="13 reservas previstas" />
+                     </VBox>
+                     <Region HBox.hgrow="ALWAYS" />
+                     <Label styleClass="badge-success" text="7 realizadas" />
+                  </HBox>
+                  <Separator />
+
+                  <HBox alignment="CENTER_LEFT" spacing="10" styleClass="list-item">
+                     <Label styleClass="room-badge-teal" text="201" />
+                     <VBox spacing="1" HBox.hgrow="ALWAYS">
+                        <Label styleClass="item-name" text="García Ruiz, Luis M." />
+                        <Label styleClass="item-sub" text="2 noches · DBL Standard" />
+                     </VBox>
+                     <Label styleClass="badge-warning" text="Pendiente" />
+                  </HBox>
+
+                  <HBox alignment="CENTER_LEFT" spacing="10" styleClass="list-item">
+                     <Label styleClass="room-badge-teal" text="305" />
+                     <VBox spacing="1" HBox.hgrow="ALWAYS">
+                        <Label styleClass="item-name" text="Smith, John A." />
+                        <Label styleClass="item-sub" text="5 noches · SGL Superior" />
+                     </VBox>
+                     <Label styleClass="badge-success" text="Check-in" />
+                  </HBox>
+
+                  <HBox alignment="CENTER_LEFT" spacing="10" styleClass="list-item">
+                     <Label styleClass="room-badge-teal" text="412" />
+                     <VBox spacing="1" HBox.hgrow="ALWAYS">
+                        <Label styleClass="item-name" text="Fernández Mora, Ana" />
+                        <Label styleClass="item-sub" text="3 noches · DBL Vista Mar" />
+                     </VBox>
+                     <Label styleClass="badge-warning" text="Pendiente" />
+                  </HBox>
+
+                  <HBox alignment="CENTER_LEFT" spacing="10" styleClass="list-item">
+                     <Label styleClass="room-badge-teal" text="118" />
+                     <VBox spacing="1" HBox.hgrow="ALWAYS">
+                        <Label styleClass="item-name" text="Müller, Hans K." />
+                        <Label styleClass="item-sub" text="1 noche · SGL Economy" />
+                     </VBox>
+                     <Label styleClass="badge-success" text="Check-in" />
+                  </HBox>
+
+                  <HBox alignment="CENTER_LEFT" spacing="10" styleClass="list-item">
+                     <Label styleClass="room-badge-teal" text="220" />
+                     <VBox spacing="1" HBox.hgrow="ALWAYS">
+                        <Label styleClass="item-name" text="López Sanz, Carmen" />
+                        <Label styleClass="item-sub" text="4 noches · Suite Junior" />
+                     </VBox>
+                     <Label styleClass="badge-warning" text="Pendiente" />
+                  </HBox>
+
+                  <Label styleClass="link-label" text="+ Ver las 13 llegadas..." />
+               </VBox>
+
+               <!-- Salidas del día -->
+               <VBox spacing="10" styleClass="dash-card" HBox.hgrow="ALWAYS">
+                  <HBox alignment="CENTER_LEFT">
+                     <VBox spacing="2">
+                        <Label styleClass="card-title" text="Salidas de hoy" />
+                        <Label styleClass="card-subtitle" text="5 reservas previstas" />
+                     </VBox>
+                     <Region HBox.hgrow="ALWAYS" />
+                     <Label styleClass="badge-success" text="4 realizadas" />
+                  </HBox>
+                  <Separator />
+
+                  <HBox alignment="CENTER_LEFT" spacing="10" styleClass="list-item">
+                     <Label styleClass="room-badge-gray" text="103" />
+                     <VBox spacing="1" HBox.hgrow="ALWAYS">
+                        <Label styleClass="item-name" text="Martínez, Pedro J." />
+                        <Label styleClass="item-sub" text="3 noches · DBL Standard" />
+                     </VBox>
+                     <Label styleClass="badge-success" text="Check-out" />
+                  </HBox>
+
+                  <HBox alignment="CENTER_LEFT" spacing="10" styleClass="list-item">
+                     <Label styleClass="room-badge-gray" text="208" />
+                     <VBox spacing="1" HBox.hgrow="ALWAYS">
+                        <Label styleClass="item-name" text="Rossi, Marco" />
+                        <Label styleClass="item-sub" text="2 noches · SGL Superior" />
+                     </VBox>
+                     <Label styleClass="badge-warning" text="Pendiente" />
+                  </HBox>
+
+                  <HBox alignment="CENTER_LEFT" spacing="10" styleClass="list-item">
+                     <Label styleClass="room-badge-gray" text="401" />
+                     <VBox spacing="1" HBox.hgrow="ALWAYS">
+                        <Label styleClass="item-name" text="Nakamura, Yuki" />
+                        <Label styleClass="item-sub" text="7 noches · Suite Junior" />
+                     </VBox>
+                     <Label styleClass="badge-success" text="Check-out" />
+                  </HBox>
+
+                  <HBox alignment="CENTER_LEFT" spacing="10" styleClass="list-item">
+                     <Label styleClass="room-badge-gray" text="315" />
+                     <VBox spacing="1" HBox.hgrow="ALWAYS">
+                        <Label styleClass="item-name" text="Dubois, Claire" />
+                        <Label styleClass="item-sub" text="4 noches · DBL Vista Mar" />
+                     </VBox>
+                     <Label styleClass="badge-success" text="Check-out" />
+                  </HBox>
+
+                  <HBox alignment="CENTER_LEFT" spacing="10" styleClass="list-item">
+                     <Label styleClass="room-badge-danger" text="507" />
+                     <VBox spacing="1" HBox.hgrow="ALWAYS">
+                        <Label styleClass="item-name" text="González, María T." />
+                        <Label styleClass="item-sub" text="1 noche · SGL Economy" />
+                     </VBox>
+                     <Label styleClass="badge-danger" text="Retrasada" />
+                  </HBox>
+
+               </VBox>
+
+            </HBox>
+
+            <!-- ===== ESTADO DE HABITACIONES + FUERA SERVICIO + GRÁFICO ===== -->
+            <HBox spacing="14">
+
+               <!-- Estado de habitaciones -->
+               <VBox spacing="12" styleClass="dash-card" HBox.hgrow="ALWAYS">
+                  <Label styleClass="card-title" text="Estado de habitaciones" />
+                  <Separator />
+
+                  <HBox spacing="0" alignment="CENTER">
+                     <VBox alignment="CENTER" spacing="6" HBox.hgrow="ALWAYS">
+                        <Label styleClass="stat-value-teal" text="68" />
+                        <Label styleClass="stat-label" text="Ocupadas" />
+                     </VBox>
+                     <VBox alignment="CENTER" spacing="6" HBox.hgrow="ALWAYS">
+                        <Label styleClass="stat-value-green" text="9" />
+                        <Label styleClass="stat-label" text="Libres" />
+                     </VBox>
+                     <VBox alignment="CENTER" spacing="6" HBox.hgrow="ALWAYS">
+                        <Label styleClass="stat-value-red" text="2" />
+                        <Label styleClass="stat-label" text="F. Servicio" />
+                     </VBox>
+                     <VBox alignment="CENTER" spacing="6" HBox.hgrow="ALWAYS">
+                        <Label styleClass="stat-value-amber" text="0" />
+                        <Label styleClass="stat-label" text="Bloqueadas" />
+                     </VBox>
+                  </HBox>
+
+                  <!-- Barra de ocupación proporcional -->
+                  <VBox spacing="4">
+                     <HBox spacing="3">
+                        <Region styleClass="bar-teal" HBox.hgrow="ALWAYS" />
+                        <Region styleClass="bar-green" style="-fx-pref-width: 32;" />
+                        <Region styleClass="bar-red" style="-fx-pref-width: 7;" />
+                     </HBox>
+                     <HBox spacing="16">
+                        <Label styleClass="bar-label" text="Ocupadas 86%" />
+                        <Label styleClass="bar-label" text="Libres 11%" />
+                        <Label styleClass="bar-label" text="F. Servicio 3%" />
+                     </HBox>
+                  </VBox>
+               </VBox>
+
+               <!-- Habitaciones fuera de servicio -->
+               <VBox spacing="10" styleClass="dash-card" style="-fx-pref-width: 270;">
+                  <Label styleClass="card-title" text="Fuera de servicio" />
+                  <Separator />
+
+                  <HBox alignment="CENTER_LEFT" spacing="10" styleClass="list-item">
+                     <Label styleClass="room-badge-danger" text="312" />
+                     <VBox spacing="1" HBox.hgrow="ALWAYS">
+                        <Label styleClass="item-name" text="Gotera en baño" />
+                        <Label styleClass="item-sub" text="Desde 03/03 · Mantenimiento" />
+                     </VBox>
+                  </HBox>
+
+                  <HBox alignment="CENTER_LEFT" spacing="10" styleClass="list-item">
+                     <Label styleClass="room-badge-danger" text="417" />
+                     <VBox spacing="1" HBox.hgrow="ALWAYS">
+                        <Label styleClass="item-name" text="Reforma pintura" />
+                        <Label styleClass="item-sub" text="Desde 01/03 · Est. alta 07/03" />
+                     </VBox>
+                  </HBox>
+
+                  <Label styleClass="card-subtitle" text="Total: 2 habitaciones bloqueadas" />
+               </VBox>
+
+               <!-- Gráfico de ocupación -->
+               <VBox alignment="CENTER" spacing="10" styleClass="dash-card" style="-fx-pref-width: 200;">
+                  <Label styleClass="card-title" text="Ocupación actual" />
+                  <Separator />
+                  <PieChart fx:id="ocupacionChart" prefHeight="140" prefWidth="140" labelsVisible="false" legendVisible="false" />
+                  <HBox alignment="CENTER" spacing="12">
+                     <HBox alignment="CENTER_LEFT" spacing="5">
+                        <Region styleClass="legend-teal" />
+                        <Label styleClass="legend-label" text="Ocupadas" />
+                     </HBox>
+                     <HBox alignment="CENTER_LEFT" spacing="5">
+                        <Region styleClass="legend-green" />
+                        <Label styleClass="legend-label" text="Libres" />
+                     </HBox>
+                  </HBox>
+               </VBox>
+
+            </HBox>
+
+            <!-- ===== ALERTAS E INCIDENCIAS ===== -->
+            <HBox spacing="14">
+
+               <!-- Alertas del sistema -->
+               <VBox spacing="10" styleClass="dash-card" HBox.hgrow="ALWAYS">
+                  <HBox alignment="CENTER_LEFT">
+                     <Label styleClass="card-title" text="Alertas del sistema" />
+                     <Region HBox.hgrow="ALWAYS" />
+                     <Label styleClass="badge-danger" text="2 criticas" />
+                  </HBox>
+                  <Separator />
+
+                  <HBox alignment="CENTER_LEFT" spacing="10">
+                     <Region styleClass="dot-red" />
+                     <VBox spacing="1" HBox.hgrow="ALWAYS">
+                        <Label styleClass="item-name" text="Overbooking tipo DBL para 07/03" />
+                        <Label styleClass="item-sub" text="1 reserva sin asignar · Acción inmediata" />
+                     </VBox>
+                     <Label styleClass="time-label" text="09:14" />
+                  </HBox>
+
+                  <HBox alignment="CENTER_LEFT" spacing="10">
+                     <Region styleClass="dot-red" />
+                     <VBox spacing="1" HBox.hgrow="ALWAYS">
+                        <Label styleClass="item-name" text="Factura pendiente hab. 312" />
+                        <Label styleClass="item-sub" text="540 € sin cobrar · Cliente en checkout" />
+                     </VBox>
+                     <Label styleClass="time-label" text="11:32" />
+                  </HBox>
+
+                  <HBox alignment="CENTER_LEFT" spacing="10">
+                     <Region styleClass="dot-amber" />
+                     <VBox spacing="1" HBox.hgrow="ALWAYS">
+                        <Label styleClass="item-name" text="Minibar hab. 204 sin reponer" />
+                        <Label styleClass="item-sub" text="Pendiente desde ayer" />
+                     </VBox>
+                     <Label styleClass="time-label" text="08:45" />
+                  </HBox>
+
+                  <HBox alignment="CENTER_LEFT" spacing="10">
+                     <Region styleClass="dot-green" />
+                     <VBox spacing="1" HBox.hgrow="ALWAYS">
+                        <Label styleClass="item-name" text="Limpieza completada: planta 2" />
+                        <Label styleClass="item-sub" text="Todas las habitaciones listas" />
+                     </VBox>
+                     <Label styleClass="time-label" text="10:20" />
+                  </HBox>
+
+               </VBox>
+
+               <!-- Overbooking e incidencias -->
+               <VBox spacing="10" styleClass="dash-card" HBox.hgrow="ALWAYS">
+                  <HBox alignment="CENTER_LEFT">
+                     <Label styleClass="card-title" text="Overbooking e incidencias" />
+                     <Region HBox.hgrow="ALWAYS" />
+                     <Label styleClass="badge-danger" text="1 activo" />
+                  </HBox>
+                  <Separator />
+
+                  <!-- Tarjeta de overbooking -->
+                  <VBox spacing="8" styleClass="incident-card">
+                     <HBox alignment="CENTER_LEFT" spacing="8">
+                        <Label styleClass="tag-danger" text="OVERBOOKING" />
+                        <Label styleClass="item-name" text="Tipo DBL · 07/03/2026" />
+                     </HBox>
+                     <Label styleClass="item-sub" text="1 reserva sin habitación disponible" />
+                     <Label styleClass="item-sub" text="Reserva #48291 · López, C. (2 noches)" />
+                     <HBox spacing="8">
+                        <Button styleClass="btn-primary" text="Reubicar" />
+                        <Button styleClass="btn-outline-danger" text="Contactar" />
+                     </HBox>
+                  </VBox>
+
+                  <Label styleClass="card-subtitle" text="Sin otros overbookings activos en los proximos 7 dias." />
+
+               </VBox>
+
+            </HBox>
+
+         </VBox>
+      </ScrollPane>
+   </center>
+
+</BorderPane>
