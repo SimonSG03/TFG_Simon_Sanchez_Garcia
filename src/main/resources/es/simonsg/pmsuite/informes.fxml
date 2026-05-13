@@ -1,0 +1,382 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane stylesheets="@styles/informes.css"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="es.simonsg.pmsuite.controller.InformesController">
+
+    <!-- ── Breadcrumb bar ──────────────────────────────────────────────── -->
+    <top>
+        <HBox styleClass="inf-topbar" alignment="CENTER_LEFT" spacing="6">
+            <padding><Insets top="10" right="10" bottom="10" left="10"/></padding>
+            <Button text="← Inicio" onAction="#volverInicio" styleClass="back-button"/>
+            <Label text="/" styleClass="breadcrumb-sep"/>
+            <Label text="Informes" styleClass="breadcrumb-active"/>
+            <Region HBox.hgrow="ALWAYS"/>
+            <Label text="Análisis y Reporting del Hotel" styleClass="inf-topbar-sub"/>
+        </HBox>
+    </top>
+
+    <!-- ── Main body ───────────────────────────────────────────────────── -->
+    <center>
+        <HBox>
+
+            <!-- ── Sidebar ─────────────────────────────────────────────────── -->
+            <VBox styleClass="inf-sidebar" spacing="2">
+                <padding><Insets top="16" bottom="16"/></padding>
+
+                <Label text="PANEL GENERAL" styleClass="sidebar-section-label"/>
+                <Button fx:id="btnNavResumen"   text="📊  Resumen"       onAction="#navResumen"
+                        styleClass="inf-nav-btn" maxWidth="Infinity"/>
+
+                <Separator styleClass="sidebar-sep"/>
+                <Label text="ANÁLISIS" styleClass="sidebar-section-label"/>
+                <Button fx:id="btnNavOcupacion" text="🏨  Ocupación"     onAction="#navOcupacion"
+                        styleClass="inf-nav-btn" maxWidth="Infinity"/>
+                <Button fx:id="btnNavIngresos"  text="💰  Ingresos"      onAction="#navIngresos"
+                        styleClass="inf-nav-btn" maxWidth="Infinity"/>
+                <Button fx:id="btnNavADR"       text="📈  ADR / RevPAR"  onAction="#navADR"
+                        styleClass="inf-nav-btn" maxWidth="Infinity"/>
+                <Button fx:id="btnNavHuespedes" text="👥  Huéspedes"     onAction="#navHuespedes"
+                        styleClass="inf-nav-btn" maxWidth="Infinity"/>
+
+                <Separator styleClass="sidebar-sep"/>
+                <Label text="EXPORTACIÓN" styleClass="sidebar-section-label"/>
+                <Button fx:id="btnNavExportar"  text="📤  Exportar CSV"  onAction="#navExportar"
+                        styleClass="inf-nav-btn" maxWidth="Infinity"/>
+            </VBox>
+
+            <!-- ── Content StackPane ──────────────────────────────────────── -->
+            <StackPane HBox.hgrow="ALWAYS">
+
+                <!-- ═══ PANEL 1: RESUMEN ═══════════════════════════════════════ -->
+                <VBox fx:id="pnlResumen" spacing="16" styleClass="inf-content">
+                    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+                    <VBox styleClass="inf-panel-header" spacing="2">
+                        <Label text="📊  Resumen del Período" styleClass="inf-panel-title"/>
+                        <Label text="Visión general de ocupación e ingresos en el rango seleccionado"
+                               styleClass="inf-panel-subtitle"/>
+                    </VBox>
+
+                    <!-- Filtro fechas -->
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Label text="Desde:" styleClass="inf-field-label"/>
+                        <DatePicker fx:id="dpResDesde" prefWidth="150"/>
+                        <Label text="Hasta:" styleClass="inf-field-label"/>
+                        <DatePicker fx:id="dpResHasta" prefWidth="150"/>
+                        <Button text="🔍 Actualizar" styleClass="inf-btn-primary" onAction="#cargarResumen"/>
+                    </HBox>
+
+                    <!-- KPI cards -->
+                    <HBox spacing="12">
+                        <VBox styleClass="inf-kpi-card" alignment="CENTER" HBox.hgrow="ALWAYS">
+                            <Label text="OCUPACIÓN" styleClass="inf-kpi-label"/>
+                            <Label fx:id="lblResOcupacion" text="-" styleClass="inf-kpi-value inf-kpi-blue"/>
+                        </VBox>
+                        <VBox styleClass="inf-kpi-card" alignment="CENTER" HBox.hgrow="ALWAYS">
+                            <Label text="FACTURADO" styleClass="inf-kpi-label"/>
+                            <Label fx:id="lblResFacturado" text="-" styleClass="inf-kpi-value"/>
+                        </VBox>
+                        <VBox styleClass="inf-kpi-card" alignment="CENTER" HBox.hgrow="ALWAYS">
+                            <Label text="COBRADO" styleClass="inf-kpi-label"/>
+                            <Label fx:id="lblResCobrado" text="-" styleClass="inf-kpi-value inf-kpi-green"/>
+                        </VBox>
+                        <VBox styleClass="inf-kpi-card" alignment="CENTER" HBox.hgrow="ALWAYS">
+                            <Label text="NOCHES VENDIDAS" styleClass="inf-kpi-label"/>
+                            <Label fx:id="lblResNoches" text="-" styleClass="inf-kpi-value"/>
+                        </VBox>
+                    </HBox>
+
+                    <!-- Tabla resumen reservas -->
+                    <Label text="Reservas del período" styleClass="inf-section-label"/>
+                    <TableView fx:id="tblResumen" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colResNum"     text="Número"    prefWidth="130"/>
+                            <TableColumn fx:id="colResHuesped" text="Huésped"   prefWidth="180"/>
+                            <TableColumn fx:id="colResHab"     text="Hab."      prefWidth="70"/>
+                            <TableColumn fx:id="colResEntrada" text="Entrada"   prefWidth="100"/>
+                            <TableColumn fx:id="colResSalida"  text="Salida"    prefWidth="100"/>
+                            <TableColumn fx:id="colResNoches"  text="Noches"    prefWidth="70"/>
+                            <TableColumn fx:id="colResTotal"   text="Total"     prefWidth="100"/>
+                        </columns>
+                        <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
+                    </TableView>
+                </VBox>
+
+                <!-- ═══ PANEL 2: OCUPACIÓN ══════════════════════════════════════ -->
+                <VBox fx:id="pnlOcupacion" spacing="16" styleClass="inf-content"
+                      visible="false" managed="false">
+                    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+                    <VBox styleClass="inf-panel-header" spacing="2">
+                        <Label text="🏨  Ocupación" styleClass="inf-panel-title"/>
+                        <Label text="Porcentaje de ocupación y noches vendidas en el período"
+                               styleClass="inf-panel-subtitle"/>
+                    </VBox>
+
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Label text="Desde:" styleClass="inf-field-label"/>
+                        <DatePicker fx:id="dpOcuDesde" prefWidth="150"/>
+                        <Label text="Hasta:" styleClass="inf-field-label"/>
+                        <DatePicker fx:id="dpOcuHasta" prefWidth="150"/>
+                        <Button text="🔍 Calcular" styleClass="inf-btn-primary" onAction="#cargarOcupacion"/>
+                    </HBox>
+
+                    <HBox spacing="12">
+                        <VBox styleClass="inf-kpi-card inf-kpi-card-blue" alignment="CENTER" HBox.hgrow="ALWAYS">
+                            <Label text="% OCUPACIÓN" styleClass="inf-kpi-label"/>
+                            <Label fx:id="lblOcuPct" text="-" styleClass="inf-kpi-value inf-kpi-blue"/>
+                        </VBox>
+                        <VBox styleClass="inf-kpi-card" alignment="CENTER" HBox.hgrow="ALWAYS">
+                            <Label text="NOCHES VENDIDAS" styleClass="inf-kpi-label"/>
+                            <Label fx:id="lblOcuNoches" text="-" styleClass="inf-kpi-value"/>
+                        </VBox>
+                        <VBox styleClass="inf-kpi-card" alignment="CENTER" HBox.hgrow="ALWAYS">
+                            <Label text="HABITACIONES" styleClass="inf-kpi-label"/>
+                            <Label fx:id="lblOcuHabs" text="-" styleClass="inf-kpi-value"/>
+                        </VBox>
+                        <VBox styleClass="inf-kpi-card inf-kpi-card-green" alignment="CENTER" HBox.hgrow="ALWAYS">
+                            <Label text="ADR (€/noche)" styleClass="inf-kpi-label"/>
+                            <Label fx:id="lblOcuADR" text="-" styleClass="inf-kpi-value inf-kpi-green"/>
+                        </VBox>
+                    </HBox>
+
+                    <Label text="Detalle de reservas" styleClass="inf-section-label"/>
+                    <TableView fx:id="tblOcupacion" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colOcuHab"     text="Hab."      prefWidth="70"/>
+                            <TableColumn fx:id="colOcuTipo"    text="Tipo"      prefWidth="140"/>
+                            <TableColumn fx:id="colOcuEntrada" text="Entrada"   prefWidth="100"/>
+                            <TableColumn fx:id="colOcuSalida"  text="Salida"    prefWidth="100"/>
+                            <TableColumn fx:id="colOcuNoches"  text="Noches"    prefWidth="80"/>
+                            <TableColumn fx:id="colOcuTotal"   text="Total"     prefWidth="100"/>
+                        </columns>
+                        <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
+                    </TableView>
+                </VBox>
+
+                <!-- ═══ PANEL 3: INGRESOS ═══════════════════════════════════════ -->
+                <VBox fx:id="pnlIngresos" spacing="16" styleClass="inf-content"
+                      visible="false" managed="false">
+                    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+                    <VBox styleClass="inf-panel-header" spacing="2">
+                        <Label text="💰  Ingresos" styleClass="inf-panel-title"/>
+                        <Label text="Facturación y cobros del hotel en el período seleccionado"
+                               styleClass="inf-panel-subtitle"/>
+                    </VBox>
+
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Label text="Desde:" styleClass="inf-field-label"/>
+                        <DatePicker fx:id="dpIngDesde" prefWidth="150"/>
+                        <Label text="Hasta:" styleClass="inf-field-label"/>
+                        <DatePicker fx:id="dpIngHasta" prefWidth="150"/>
+                        <Label text="Estado:" styleClass="inf-field-label"/>
+                        <ComboBox fx:id="cmbIngEstado" prefWidth="130"/>
+                        <Button text="🔍 Filtrar" styleClass="inf-btn-primary" onAction="#cargarIngresos"/>
+                    </HBox>
+
+                    <HBox spacing="12">
+                        <VBox styleClass="inf-kpi-card" alignment="CENTER" HBox.hgrow="ALWAYS">
+                            <Label text="FACTURADO" styleClass="inf-kpi-label"/>
+                            <Label fx:id="lblIngFacturado" text="-" styleClass="inf-kpi-value"/>
+                        </VBox>
+                        <VBox styleClass="inf-kpi-card inf-kpi-card-green" alignment="CENTER" HBox.hgrow="ALWAYS">
+                            <Label text="COBRADO" styleClass="inf-kpi-label"/>
+                            <Label fx:id="lblIngCobrado" text="-" styleClass="inf-kpi-value inf-kpi-green"/>
+                        </VBox>
+                        <VBox styleClass="inf-kpi-card inf-kpi-card-warn" alignment="CENTER" HBox.hgrow="ALWAYS">
+                            <Label text="PENDIENTE" styleClass="inf-kpi-label"/>
+                            <Label fx:id="lblIngPendiente" text="-" styleClass="inf-kpi-value inf-kpi-warn"/>
+                        </VBox>
+                        <VBox styleClass="inf-kpi-card" alignment="CENTER" HBox.hgrow="ALWAYS">
+                            <Label text="FACTURAS" styleClass="inf-kpi-label"/>
+                            <Label fx:id="lblIngCount" text="-" styleClass="inf-kpi-value"/>
+                        </VBox>
+                    </HBox>
+
+                    <Label text="Listado de facturas" styleClass="inf-section-label"/>
+                    <TableView fx:id="tblIngresos" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colIngNum"     text="Número"    prefWidth="130"/>
+                            <TableColumn fx:id="colIngFecha"   text="Fecha"     prefWidth="100"/>
+                            <TableColumn fx:id="colIngHuesped" text="Huésped"   prefWidth="180"/>
+                            <TableColumn fx:id="colIngTotal"   text="Total"     prefWidth="100"/>
+                            <TableColumn fx:id="colIngCobrado" text="Cobrado"   prefWidth="100"/>
+                            <TableColumn fx:id="colIngEstado"  text="Estado"    prefWidth="110"/>
+                        </columns>
+                        <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
+                    </TableView>
+                </VBox>
+
+                <!-- ═══ PANEL 4: ADR / RevPAR ═══════════════════════════════════ -->
+                <VBox fx:id="pnlADR" spacing="16" styleClass="inf-content"
+                      visible="false" managed="false">
+                    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+                    <VBox styleClass="inf-panel-header" spacing="2">
+                        <Label text="📈  ADR / RevPAR" styleClass="inf-panel-title"/>
+                        <Label text="Precio medio por habitación (ADR) y rendimiento por habitación disponible (RevPAR)"
+                               styleClass="inf-panel-subtitle"/>
+                    </VBox>
+
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Label text="Desde:" styleClass="inf-field-label"/>
+                        <DatePicker fx:id="dpADRDesde" prefWidth="150"/>
+                        <Label text="Hasta:" styleClass="inf-field-label"/>
+                        <DatePicker fx:id="dpADRHasta" prefWidth="150"/>
+                        <Button text="🔍 Calcular" styleClass="inf-btn-primary" onAction="#cargarADR"/>
+                    </HBox>
+
+                    <HBox spacing="12">
+                        <VBox styleClass="inf-kpi-card inf-kpi-card-blue" alignment="CENTER" HBox.hgrow="ALWAYS">
+                            <Label text="ADR (€ / noche vendida)" styleClass="inf-kpi-label"/>
+                            <Label fx:id="lblADR" text="-" styleClass="inf-kpi-value inf-kpi-blue"/>
+                        </VBox>
+                        <VBox styleClass="inf-kpi-card inf-kpi-card-green" alignment="CENTER" HBox.hgrow="ALWAYS">
+                            <Label text="RevPAR (€ / hab. disponible)" styleClass="inf-kpi-label"/>
+                            <Label fx:id="lblRevPAR" text="-" styleClass="inf-kpi-value inf-kpi-green"/>
+                        </VBox>
+                        <VBox styleClass="inf-kpi-card" alignment="CENTER" HBox.hgrow="ALWAYS">
+                            <Label text="NOCHES VENDIDAS" styleClass="inf-kpi-label"/>
+                            <Label fx:id="lblADRNoches" text="-" styleClass="inf-kpi-value"/>
+                        </VBox>
+                        <VBox styleClass="inf-kpi-card" alignment="CENTER" HBox.hgrow="ALWAYS">
+                            <Label text="REVENUE TOTAL" styleClass="inf-kpi-label"/>
+                            <Label fx:id="lblADRTotal" text="-" styleClass="inf-kpi-value"/>
+                        </VBox>
+                    </HBox>
+
+                    <!-- Definición -->
+                    <HBox spacing="20" styleClass="inf-formula-bar">
+                        <Label text="ADR = Revenue Total / Noches Vendidas" styleClass="inf-formula"/>
+                        <Label text="|" styleClass="inf-formula-sep"/>
+                        <Label text="RevPAR = Revenue Total / Noches Disponibles" styleClass="inf-formula"/>
+                    </HBox>
+
+                    <Label text="Desglose por reserva" styleClass="inf-section-label"/>
+                    <TableView fx:id="tblADR" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colADRHab"      text="Hab."       prefWidth="70"/>
+                            <TableColumn fx:id="colADRTipo"     text="Tipo"       prefWidth="140"/>
+                            <TableColumn fx:id="colADREntrada"  text="Entrada"    prefWidth="100"/>
+                            <TableColumn fx:id="colADRSalida"   text="Salida"     prefWidth="100"/>
+                            <TableColumn fx:id="colADRNoches"   text="Noches"     prefWidth="70"/>
+                            <TableColumn fx:id="colADRTotal"    text="Total"      prefWidth="100"/>
+                            <TableColumn fx:id="colADRPorNoche" text="€ / Noche"  prefWidth="100"/>
+                        </columns>
+                        <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
+                    </TableView>
+                </VBox>
+
+                <!-- ═══ PANEL 5: HUÉSPEDES ══════════════════════════════════════ -->
+                <VBox fx:id="pnlHuespedes" spacing="16" styleClass="inf-content"
+                      visible="false" managed="false">
+                    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+                    <VBox styleClass="inf-panel-header" spacing="2">
+                        <Label text="👥  Estadísticas de Huéspedes" styleClass="inf-panel-title"/>
+                        <Label text="Actividad de huéspedes en el período: reservas, noches y gasto"
+                               styleClass="inf-panel-subtitle"/>
+                    </VBox>
+
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Label text="Desde:" styleClass="inf-field-label"/>
+                        <DatePicker fx:id="dpHueDesde" prefWidth="150"/>
+                        <Label text="Hasta:" styleClass="inf-field-label"/>
+                        <DatePicker fx:id="dpHueHasta" prefWidth="150"/>
+                        <Button text="🔍 Analizar" styleClass="inf-btn-primary" onAction="#cargarHuespedes"/>
+                    </HBox>
+
+                    <HBox spacing="12">
+                        <VBox styleClass="inf-kpi-card" alignment="CENTER" HBox.hgrow="ALWAYS">
+                            <Label text="HUÉSPEDES" styleClass="inf-kpi-label"/>
+                            <Label fx:id="lblHueTotales" text="-" styleClass="inf-kpi-value"/>
+                        </VBox>
+                        <VBox styleClass="inf-kpi-card" alignment="CENTER" HBox.hgrow="ALWAYS">
+                            <Label text="RESERVAS" styleClass="inf-kpi-label"/>
+                            <Label fx:id="lblHueReservas" text="-" styleClass="inf-kpi-value"/>
+                        </VBox>
+                        <VBox styleClass="inf-kpi-card" alignment="CENTER" HBox.hgrow="ALWAYS">
+                            <Label text="TOTAL NOCHES" styleClass="inf-kpi-label"/>
+                            <Label fx:id="lblHueNoches" text="-" styleClass="inf-kpi-value"/>
+                        </VBox>
+                        <VBox styleClass="inf-kpi-card inf-kpi-card-green" alignment="CENTER" HBox.hgrow="ALWAYS">
+                            <Label text="GASTO MEDIO / HUÉSPED" styleClass="inf-kpi-label"/>
+                            <Label fx:id="lblHueGastoMedio" text="-" styleClass="inf-kpi-value inf-kpi-green"/>
+                        </VBox>
+                    </HBox>
+
+                    <Label text="Ranking de huéspedes por gasto" styleClass="inf-section-label"/>
+                    <TableView fx:id="tblHuespedes" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colHueNombre"   text="Huésped"   prefWidth="180"/>
+                            <TableColumn fx:id="colHueEmail"    text="Email"     prefWidth="180"/>
+                            <TableColumn fx:id="colHuePais"     text="País"      prefWidth="100"/>
+                            <TableColumn fx:id="colHueReservas" text="Reservas"  prefWidth="80"/>
+                            <TableColumn fx:id="colHueNoches"   text="Noches"    prefWidth="80"/>
+                            <TableColumn fx:id="colHueTotal"    text="Gasto"     prefWidth="100"/>
+                        </columns>
+                        <columnResizePolicy><TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/></columnResizePolicy>
+                    </TableView>
+                </VBox>
+
+                <!-- ═══ PANEL 6: EXPORTACIÓN ════════════════════════════════════ -->
+                <VBox fx:id="pnlExportar" spacing="20" styleClass="inf-content"
+                      visible="false" managed="false">
+                    <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+                    <VBox styleClass="inf-panel-header" spacing="2">
+                        <Label text="📤  Exportar a CSV" styleClass="inf-panel-title"/>
+                        <Label text="Genera un fichero CSV compatible con Excel y LibreOffice"
+                               styleClass="inf-panel-subtitle"/>
+                    </VBox>
+
+                    <!-- Export form -->
+                    <VBox styleClass="inf-export-card" spacing="16">
+                        <padding><Insets top="20" right="20" bottom="20" left="20"/></padding>
+
+                        <Label text="Rango de fechas" styleClass="inf-section-label"/>
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="Desde:" styleClass="inf-field-label" minWidth="60"/>
+                            <DatePicker fx:id="dpExpDesde" prefWidth="160"/>
+                            <Label text="Hasta:" styleClass="inf-field-label"/>
+                            <DatePicker fx:id="dpExpHasta" prefWidth="160"/>
+                        </HBox>
+
+                        <Label text="Tipo de datos" styleClass="inf-section-label"/>
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="Exportar:" styleClass="inf-field-label" minWidth="60"/>
+                            <ComboBox fx:id="cmbExpTipo" prefWidth="200"/>
+                        </HBox>
+
+                        <HBox spacing="10">
+                            <Button text="📤  Exportar CSV" styleClass="inf-btn-export"
+                                    onAction="#exportarCSV" prefHeight="40" prefWidth="200"/>
+                        </HBox>
+
+                        <Label fx:id="lblExpStatus" text="" styleClass="inf-export-status" wrapText="true"/>
+                    </VBox>
+
+                    <!-- Info box -->
+                    <VBox styleClass="inf-info-card" spacing="8">
+                        <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
+                        <Label text="Información sobre el formato" styleClass="inf-section-label"/>
+                        <Label text="• Separador de columnas: punto y coma (;)" styleClass="inf-info-text" wrapText="true"/>
+                        <Label text="• Codificación: UTF-8 con BOM (compatible con Excel)" styleClass="inf-info-text" wrapText="true"/>
+                        <Label text="• Facturas: número, fecha, huésped, total, cobrado, pendiente, estado, método" styleClass="inf-info-text" wrapText="true"/>
+                        <Label text="• Reservas: número, huésped, habitación, entrada, salida, noches, total, estado" styleClass="inf-info-text" wrapText="true"/>
+                        <Label text="• Pagos: fecha, factura, huésped, importe, método, referencia" styleClass="inf-info-text" wrapText="true"/>
+                    </VBox>
+
+                </VBox>
+
+            </StackPane>
+        </HBox>
+    </center>
+
+</BorderPane>
