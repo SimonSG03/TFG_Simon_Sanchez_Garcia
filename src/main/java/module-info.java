@@ -3,6 +3,7 @@ module es.simonsg.pmsuite {
     requires javafx.fxml;
     requires java.sql;
     requires com.zaxxer.hikari;
+    requires jakarta.mail;
 
 
     opens es.simonsg.pmsuite to javafx.fxml;

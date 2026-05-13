@@ -1,0 +1,337 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane stylesheets="@styles/comunicacion.css"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="es.simonsg.pmsuite.controller.ComunicacionController">
+
+    <!-- ===== SIDEBAR ===== -->
+    <left>
+        <VBox styleClass="com-sidebar" spacing="4" prefWidth="215">
+            <padding><Insets top="20" right="10" bottom="20" left="10"/></padding>
+
+            <Label text="COMUNICACIÓN" styleClass="com-sidebar-title"/>
+
+            <Button fx:id="btnNavNuevo" text="✉  Nuevo Mensaje"
+                    styleClass="com-nav-btn" maxWidth="Infinity"
+                    onAction="#irNuevo"/>
+            <Button fx:id="btnNavConfirmaciones" text="✔  Confirmaciones"
+                    styleClass="com-nav-btn" maxWidth="Infinity"
+                    onAction="#irConfirmaciones"/>
+            <Button fx:id="btnNavInternos" text="💬  Mensajes Internos"
+                    styleClass="com-nav-btn" maxWidth="Infinity"
+                    onAction="#irInternos"/>
+            <Button fx:id="btnNavHistorial" text="📋  Historial"
+                    styleClass="com-nav-btn" maxWidth="Infinity"
+                    onAction="#irHistorial"/>
+            <Button fx:id="btnNavPlantillas" text="📄  Plantillas"
+                    styleClass="com-nav-btn" maxWidth="Infinity"
+                    onAction="#irPlantillas"/>
+            <Button fx:id="btnNavConfig" text="⚙  Config SMTP"
+                    styleClass="com-nav-btn" maxWidth="Infinity"
+                    onAction="#irConfig"/>
+
+            <Region VBox.vgrow="ALWAYS"/>
+
+            <Button text="← Inicio" styleClass="com-back-btn" maxWidth="Infinity"
+                    onAction="#volverInicio"/>
+        </VBox>
+    </left>
+
+    <!-- ===== CONTENT AREA ===== -->
+    <center>
+        <StackPane styleClass="com-content-area">
+
+            <!-- ══════════════════════════════════════════════
+                 PANEL 1 – NUEVO MENSAJE
+            ══════════════════════════════════════════════ -->
+            <VBox fx:id="pnlNuevo" spacing="16" styleClass="com-panel">
+                <padding><Insets top="24" right="28" bottom="24" left="28"/></padding>
+
+                <Label text="Nuevo Mensaje" styleClass="com-panel-title"/>
+
+                <GridPane hgap="14" vgap="12">
+                    <columnConstraints>
+                        <ColumnConstraints prefWidth="150" minWidth="120"/>
+                        <ColumnConstraints hgrow="ALWAYS"/>
+                    </columnConstraints>
+
+                    <Label text="Destinatario:" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="com-field-label"/>
+                    <ComboBox fx:id="cmbDestinatario" maxWidth="Infinity"
+                              GridPane.rowIndex="0" GridPane.columnIndex="1"/>
+
+                    <Label text="Reserva (opcional):" GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="com-field-label"/>
+                    <ComboBox fx:id="cmbReserva" maxWidth="Infinity"
+                              GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+                    <Label text="Canal:" GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="com-field-label"/>
+                    <ComboBox fx:id="cmbCanal" maxWidth="Infinity"
+                              GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+                    <Label text="Plantilla:" GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="com-field-label"/>
+                    <ComboBox fx:id="cmbPlantilla" maxWidth="Infinity"
+                              GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+                    <Label text="Asunto:" GridPane.rowIndex="4" GridPane.columnIndex="0" styleClass="com-field-label"/>
+                    <TextField fx:id="txtAsunto" maxWidth="Infinity"
+                               GridPane.rowIndex="4" GridPane.columnIndex="1"/>
+                </GridPane>
+
+                <!-- Adjunto (visible solo cuando hay un PDF adjunto) -->
+                <HBox fx:id="hboxAdjunto" spacing="10" alignment="CENTER_LEFT"
+                      styleClass="com-adjunto-bar" visible="false" managed="false">
+                    <Label text="📎" style="-fx-font-size:14px;"/>
+                    <Label fx:id="lblAdjunto" styleClass="com-adjunto-label" HBox.hgrow="ALWAYS"/>
+                    <Button text="✕ Quitar" styleClass="com-btn-quitar" onAction="#quitarAdjunto"/>
+                </HBox>
+
+                <Label text="Cuerpo del mensaje:" styleClass="com-field-label"/>
+                <TextArea fx:id="txtCuerpo" prefHeight="180" wrapText="true" VBox.vgrow="ALWAYS"/>
+
+                <!-- Variables disponibles -->
+                <TitledPane text="Variables disponibles para plantillas" expanded="false" styleClass="com-vars-pane">
+                    <Label wrapText="true" styleClass="com-vars-text"
+                           text="{{guest_name}} — Nombre del huésped&#10;{{guest_email}} — Email del huésped&#10;{{reservation_number}} — Número de reserva&#10;{{check_in}} — Fecha de entrada&#10;{{check_out}} — Fecha de salida&#10;{{room_number}} — Número de habitación&#10;{{total_price}} — Precio total de la reserva&#10;{{invoice_number}} — Número de factura&#10;{{total_amount}} — Importe total de la factura&#10;{{issue_date}} — Fecha de emisión de la factura&#10;{{task}} — Tarea (housekeeping)&#10;{{priority}} — Prioridad (housekeeping)&#10;{{notes}} — Notas adicionales"/>
+                </TitledPane>
+
+                <HBox spacing="12" alignment="CENTER_LEFT">
+                    <Button text="Enviar" styleClass="com-btn-primary" onAction="#enviarMensaje"/>
+                    <Label fx:id="lblNuevoStatus" styleClass="com-status-label"/>
+                </HBox>
+            </VBox>
+
+            <!-- ══════════════════════════════════════════════
+                 PANEL 2 – CONFIRMACIONES DE RESERVA
+            ══════════════════════════════════════════════ -->
+            <VBox fx:id="pnlConfirmaciones" spacing="16" styleClass="com-panel"
+                  visible="false" managed="false">
+                <padding><Insets top="24" right="28" bottom="24" left="28"/></padding>
+
+                <Label text="Confirmaciones de Reserva" styleClass="com-panel-title"/>
+
+                <Label text="Seleccione una reserva activa y envíe la confirmación por email al huésped."
+                       styleClass="com-hint" wrapText="true"/>
+
+                <TableView fx:id="tblConfirmaciones" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colConfNum"      text="Nº Reserva"  prefWidth="120"/>
+                        <TableColumn fx:id="colConfHuesped"  text="Huésped"     prefWidth="180"/>
+                        <TableColumn fx:id="colConfEmail"    text="Email"       prefWidth="200"/>
+                        <TableColumn fx:id="colConfEntrada"  text="Entrada"     prefWidth="100"/>
+                        <TableColumn fx:id="colConfEstado"   text="Estado"      prefWidth="100"/>
+                    </columns>
+                    <placeholder><Label text="No hay reservas activas"/></placeholder>
+                </TableView>
+
+                <HBox spacing="12" alignment="CENTER_LEFT">
+                    <Button text="Enviar Confirmación" styleClass="com-btn-primary"
+                            onAction="#enviarConfirmacionSeleccionada"/>
+                    <Label fx:id="lblConfStatus" styleClass="com-status-label"/>
+                </HBox>
+            </VBox>
+
+            <!-- ══════════════════════════════════════════════
+                 PANEL 3 – MENSAJES INTERNOS
+            ══════════════════════════════════════════════ -->
+            <VBox fx:id="pnlInternos" spacing="16" styleClass="com-panel"
+                  visible="false" managed="false">
+                <padding><Insets top="24" right="28" bottom="24" left="28"/></padding>
+
+                <Label text="Mensajes Internos" styleClass="com-panel-title"/>
+
+                <!-- Formulario envío interno -->
+                <VBox styleClass="com-form-card" spacing="10">
+                    <padding><Insets top="14" right="14" bottom="14" left="14"/></padding>
+                    <Label text="Nuevo mensaje interno" styleClass="com-section-label"/>
+                    <TextField fx:id="txtInternoAsunto" promptText="Asunto"/>
+                    <TextArea  fx:id="txtInternoMensaje" promptText="Escriba el mensaje..." prefHeight="100" wrapText="true"/>
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <Button text="Enviar" styleClass="com-btn-primary" onAction="#enviarInterno"/>
+                        <Label fx:id="lblInternoStatus" styleClass="com-status-label"/>
+                    </HBox>
+                </VBox>
+
+                <!-- Historial de internos -->
+                <Label text="Mensajes registrados:" styleClass="com-section-label"/>
+                <TableView fx:id="tblInternos" VBox.vgrow="ALWAYS">
+                    <columns>
+                        <TableColumn fx:id="colIntFecha"  text="Fecha"   prefWidth="130"/>
+                        <TableColumn fx:id="colIntAsunto" text="Asunto"  prefWidth="200"/>
+                        <TableColumn fx:id="colIntCuerpo" text="Extracto" prefWidth="300"/>
+                    </columns>
+                    <placeholder><Label text="Sin mensajes internos"/></placeholder>
+                </TableView>
+            </VBox>
+
+            <!-- ══════════════════════════════════════════════
+                 PANEL 4 – HISTORIAL
+            ══════════════════════════════════════════════ -->
+            <VBox fx:id="pnlHistorial" spacing="14" styleClass="com-panel"
+                  visible="false" managed="false">
+                <padding><Insets top="24" right="28" bottom="24" left="28"/></padding>
+
+                <Label text="Historial de Comunicaciones" styleClass="com-panel-title"/>
+
+                <HBox spacing="12" alignment="CENTER_LEFT">
+                    <Label text="Filtrar:" styleClass="com-field-label"/>
+                    <ComboBox fx:id="cmbHistFiltro" prefWidth="160"/>
+                </HBox>
+
+                <SplitPane orientation="VERTICAL" VBox.vgrow="ALWAYS" dividerPositions="0.65">
+                    <TableView fx:id="tblHistorial">
+                        <columns>
+                            <TableColumn fx:id="colHistFecha"     text="Fecha"     prefWidth="130"/>
+                            <TableColumn fx:id="colHistCanal"     text="Canal"     prefWidth="90"/>
+                            <TableColumn fx:id="colHistDireccion" text="Dirección" prefWidth="90"/>
+                            <TableColumn fx:id="colHistHuesped"   text="Huésped"   prefWidth="180"/>
+                            <TableColumn fx:id="colHistAsunto"    text="Asunto"    prefWidth="250"/>
+                        </columns>
+                        <placeholder><Label text="Sin comunicaciones registradas"/></placeholder>
+                    </TableView>
+                    <VBox spacing="6">
+                        <padding><Insets top="8" right="0" bottom="0" left="0"/></padding>
+                        <Label text="Detalle:" styleClass="com-section-label"/>
+                        <TextArea fx:id="txtHistDetalle" editable="false" wrapText="true" VBox.vgrow="ALWAYS"/>
+                    </VBox>
+                </SplitPane>
+            </VBox>
+
+            <!-- ══════════════════════════════════════════════
+                 PANEL 5 – PLANTILLAS
+            ══════════════════════════════════════════════ -->
+            <VBox fx:id="pnlPlantillas" spacing="14" styleClass="com-panel"
+                  visible="false" managed="false">
+                <padding><Insets top="24" right="28" bottom="24" left="28"/></padding>
+
+                <HBox alignment="CENTER_LEFT" spacing="16">
+                    <Label text="Plantillas de Correo" styleClass="com-panel-title" HBox.hgrow="ALWAYS"/>
+                    <Button text="+ Nueva Plantilla" styleClass="com-btn-secondary" onAction="#nuevaPlantilla"/>
+                </HBox>
+
+                <SplitPane dividerPositions="0.45" VBox.vgrow="ALWAYS">
+                    <!-- Lista plantillas -->
+                    <TableView fx:id="tblPlantillas">
+                        <columns>
+                            <TableColumn fx:id="colPltNombre" text="Nombre" prefWidth="160"/>
+                            <TableColumn fx:id="colPltTipo"   text="Tipo"   prefWidth="130"/>
+                            <TableColumn fx:id="colPltAsunto" text="Asunto" prefWidth="200"/>
+                            <TableColumn fx:id="colPltActiva" text="Activa" prefWidth="60"/>
+                        </columns>
+                        <placeholder><Label text="Sin plantillas"/></placeholder>
+                    </TableView>
+
+                    <!-- Formulario edición -->
+                    <VBox spacing="10" styleClass="com-form-card">
+                        <padding><Insets top="14" right="14" bottom="14" left="14"/></padding>
+                        <Label text="Editar / Nueva plantilla" styleClass="com-section-label"/>
+
+                        <GridPane hgap="10" vgap="10">
+                            <columnConstraints>
+                                <ColumnConstraints prefWidth="100" minWidth="80"/>
+                                <ColumnConstraints hgrow="ALWAYS"/>
+                            </columnConstraints>
+                            <Label text="Nombre:" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="com-field-label"/>
+                            <TextField fx:id="txtPltNombre" GridPane.rowIndex="0" GridPane.columnIndex="1" maxWidth="Infinity"/>
+
+                            <Label text="Tipo:" GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="com-field-label"/>
+                            <ComboBox fx:id="cmbPltTipo" GridPane.rowIndex="1" GridPane.columnIndex="1" maxWidth="Infinity"/>
+
+                            <Label text="Asunto:" GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="com-field-label"/>
+                            <TextField fx:id="txtPltAsunto" GridPane.rowIndex="2" GridPane.columnIndex="1" maxWidth="Infinity"/>
+                        </GridPane>
+
+                        <Label text="Cuerpo (use {{variable}} para campos dinámicos):" styleClass="com-field-label"/>
+                        <TextArea fx:id="txtPltCuerpo" prefHeight="150" wrapText="true" VBox.vgrow="ALWAYS"/>
+
+                        <!-- Variables reference -->
+                        <TitledPane text="Variables disponibles" expanded="false" styleClass="com-vars-pane">
+                            <Label wrapText="true" styleClass="com-vars-text"
+                                   text="{{guest_name}}  {{guest_email}}  {{reservation_number}}  {{check_in}}  {{check_out}}  {{room_number}}  {{total_price}}  {{invoice_number}}  {{total_amount}}  {{issue_date}}  {{task}}  {{priority}}  {{notes}}"/>
+                        </TitledPane>
+
+                        <CheckBox fx:id="chkPltActiva" text="Plantilla activa" selected="true"/>
+
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Button text="Guardar" styleClass="com-btn-primary" onAction="#guardarPlantilla"/>
+                            <Button text="Eliminar" styleClass="com-btn-danger" onAction="#eliminarPlantilla"/>
+                            <Label fx:id="lblPltStatus" styleClass="com-status-label"/>
+                        </HBox>
+                    </VBox>
+                </SplitPane>
+            </VBox>
+
+            <!-- ══════════════════════════════════════════════
+                 PANEL 6 – CONFIG SMTP
+            ══════════════════════════════════════════════ -->
+            <VBox fx:id="pnlConfig" spacing="16" styleClass="com-panel"
+                  visible="false" managed="false">
+                <padding><Insets top="24" right="28" bottom="24" left="28"/></padding>
+
+                <Label text="Configuración SMTP" styleClass="com-panel-title"/>
+
+                <VBox styleClass="com-form-card" spacing="12" maxWidth="560">
+                    <padding><Insets top="18" right="18" bottom="18" left="18"/></padding>
+
+                    <GridPane hgap="14" vgap="12">
+                        <columnConstraints>
+                            <ColumnConstraints prefWidth="140" minWidth="120"/>
+                            <ColumnConstraints hgrow="ALWAYS"/>
+                        </columnConstraints>
+
+                        <Label text="Servidor SMTP:" GridPane.rowIndex="0" GridPane.columnIndex="0" styleClass="com-field-label"/>
+                        <TextField fx:id="txtSmtpHost" promptText="smtp.gmail.com"
+                                   GridPane.rowIndex="0" GridPane.columnIndex="1" maxWidth="Infinity"/>
+
+                        <Label text="Puerto:" GridPane.rowIndex="1" GridPane.columnIndex="0" styleClass="com-field-label"/>
+                        <TextField fx:id="txtSmtpPort" promptText="587"
+                                   GridPane.rowIndex="1" GridPane.columnIndex="1" maxWidth="Infinity"/>
+
+                        <Label text="Usuario:" GridPane.rowIndex="2" GridPane.columnIndex="0" styleClass="com-field-label"/>
+                        <TextField fx:id="txtSmtpUser" promptText="usuario@dominio.com"
+                                   GridPane.rowIndex="2" GridPane.columnIndex="1" maxWidth="Infinity"/>
+
+                        <Label text="Contraseña:" GridPane.rowIndex="3" GridPane.columnIndex="0" styleClass="com-field-label"/>
+                        <PasswordField fx:id="txtSmtpPassword"
+                                       GridPane.rowIndex="3" GridPane.columnIndex="1" maxWidth="Infinity"/>
+
+                        <Label text="Email remitente:" GridPane.rowIndex="4" GridPane.columnIndex="0" styleClass="com-field-label"/>
+                        <TextField fx:id="txtSmtpFrom" promptText="hotel@dominio.com"
+                                   GridPane.rowIndex="4" GridPane.columnIndex="1" maxWidth="Infinity"/>
+
+                        <Label text="Nombre remitente:" GridPane.rowIndex="5" GridPane.columnIndex="0" styleClass="com-field-label"/>
+                        <TextField fx:id="txtSmtpFromName" promptText="Hotel"
+                                   GridPane.rowIndex="5" GridPane.columnIndex="1" maxWidth="Infinity"/>
+
+                        <Label text="STARTTLS:" GridPane.rowIndex="6" GridPane.columnIndex="0" styleClass="com-field-label"/>
+                        <CheckBox fx:id="chkSmtpTls" text="Activar STARTTLS (recomendado)"
+                                  GridPane.rowIndex="6" GridPane.columnIndex="1" selected="true"/>
+                    </GridPane>
+
+                    <Button text="Guardar configuración" styleClass="com-btn-primary"
+                            onAction="#guardarConfigSmtp"/>
+                </VBox>
+
+                <!-- Test de envío -->
+                <VBox styleClass="com-form-card" spacing="10" maxWidth="560">
+                    <padding><Insets top="14" right="14" bottom="14" left="14"/></padding>
+                    <Label text="Prueba de envío" styleClass="com-section-label"/>
+                    <HBox spacing="10" alignment="CENTER_LEFT">
+                        <TextField fx:id="txtSmtpTestTo" promptText="email-de-prueba@dominio.com"
+                                   prefWidth="280"/>
+                        <Button text="Enviar email de prueba" styleClass="com-btn-secondary"
+                                onAction="#enviarEmailPrueba"/>
+                    </HBox>
+                </VBox>
+
+                <Label fx:id="lblSmtpStatus" styleClass="com-status-label"/>
+            </VBox>
+
+        </StackPane>
+    </center>
+
+</BorderPane>
