@@ -1,0 +1,190 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane stylesheets="@styles/mantenimiento.css"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="es.simonsg.pmsuite.controller.MantenimientoController">
+
+    <!-- ===== BREADCRUMB ===== -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="8" styleClass="breadcrumb-bar">
+            <padding><Insets bottom="10" left="20" right="20" top="10"/></padding>
+            <Button onAction="#volverInicio" styleClass="back-button" text="← Inicio"/>
+            <Label styleClass="breadcrumb-sep" text="/"/>
+            <Label styleClass="breadcrumb-active" text="Mantenimiento"/>
+        </HBox>
+    </top>
+
+    <!-- ===== LAYOUT: sidebar + contenido ===== -->
+    <center>
+        <HBox>
+
+            <!-- ── SIDEBAR ── -->
+            <VBox styleClass="mant-sidebar" spacing="2">
+                <padding><Insets top="20" bottom="20"/></padding>
+
+                <Label styleClass="sidebar-section-label" text="GESTIÓN TÉCNICA"/>
+                <Button fx:id="btnNavIncidencias" maxWidth="Infinity" onAction="#navIncidencias"
+                        styleClass="mant-nav-btn" text="🔧  Incidencias"/>
+                <Button fx:id="btnNavEstado"      maxWidth="Infinity" onAction="#navEstado"
+                        styleClass="mant-nav-btn" text="🏨  Estado Habitaciones"/>
+
+                <Separator style="-fx-padding: 6 16 6 16;"/>
+                <Label styleClass="sidebar-section-label" text="REGISTROS"/>
+                <Button fx:id="btnNavHistorial"   maxWidth="Infinity" onAction="#navHistorial"
+                        styleClass="mant-nav-btn" text="📋  Historial"/>
+            </VBox>
+
+            <!-- ── CONTENIDO ── -->
+            <StackPane HBox.hgrow="ALWAYS" styleClass="mant-content-area">
+
+                <!-- ======================================================
+                     PANEL 1 – INCIDENCIAS
+                     ====================================================== -->
+                <VBox fx:id="pnlIncidencias" spacing="16" styleClass="mant-panel">
+                    <padding><Insets bottom="24" left="24" right="24" top="24"/></padding>
+
+                    <HBox alignment="CENTER_LEFT" spacing="12" styleClass="panel-header">
+                        <VBox>
+                            <Label styleClass="panel-title" text="Incidencias activas"/>
+                            <Label styleClass="panel-subtitle" text="Gestiona las tareas de mantenimiento pendientes"/>
+                        </VBox>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Label text="Filtrar:"/>
+                        <ComboBox fx:id="cmbFiltroEstado" prefWidth="140" onAction="#cargarIncidencias"/>
+                        <Button onAction="#nuevaIncidencia" styleClass="btn-primary" text="+ Nueva incidencia"/>
+                    </HBox>
+
+                    <HBox spacing="16" VBox.vgrow="ALWAYS">
+
+                        <!-- Tabla -->
+                        <TableView fx:id="tblIncidencias" prefWidth="560" VBox.vgrow="ALWAYS" HBox.hgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="colIncHab"       text="Habitación"  prefWidth="100"/>
+                                <TableColumn fx:id="colIncTitulo"    text="Título"      prefWidth="210"/>
+                                <TableColumn fx:id="colIncPrioridad" text="Prioridad"   prefWidth="90"/>
+                                <TableColumn fx:id="colIncEstado"    text="Estado"      prefWidth="100"/>
+                                <TableColumn fx:id="colIncFecha"     text="Reportada"   prefWidth="130"/>
+                            </columns>
+                            <placeholder><Label text="No hay incidencias activas"/></placeholder>
+                        </TableView>
+
+                        <!-- Formulario -->
+                        <VBox spacing="12" prefWidth="340">
+
+                            <VBox styleClass="form-section" spacing="10">
+                                <Label styleClass="form-section-title" text="Detalle / Nueva incidencia"/>
+
+                                <GridPane hgap="10" vgap="8">
+                                    <columnConstraints>
+                                        <ColumnConstraints minWidth="90" maxWidth="90"/>
+                                        <ColumnConstraints hgrow="ALWAYS"/>
+                                    </columnConstraints>
+
+                                    <Label text="Habitación:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                                    <ComboBox fx:id="cmbHabitacion" maxWidth="Infinity"
+                                              GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                                    <Label text="Prioridad:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                                    <ComboBox fx:id="cmbPrioridad" maxWidth="Infinity"
+                                              GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                                    <Label text="Estado:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                                    <ComboBox fx:id="cmbEstadoInc" maxWidth="Infinity"
+                                              GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                                    <Label text="Título:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                                    <TextField fx:id="txtTitulo"
+                                               GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+                                    <Label text="Descripción:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                                    <TextArea fx:id="txtDescripcion" prefHeight="70" wrapText="true"
+                                              GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+                                    <Label text="Notas:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+                                    <TextField fx:id="txtNotasInc"
+                                               GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+                                </GridPane>
+
+                                <HBox spacing="8">
+                                    <Button onAction="#guardarIncidencia"   styleClass="btn-primary"   text="Guardar"/>
+                                    <Button onAction="#completarIncidencia" styleClass="btn-secondary" text="✓ Completar"/>
+                                    <Button onAction="#cancelarIncidencia"  styleClass="btn-danger"    text="Anular"/>
+                                    <Button onAction="#limpiarFormularioInc" styleClass="btn-secondary" text="✕"/>
+                                </HBox>
+                            </VBox>
+
+                        </VBox>
+                    </HBox>
+                </VBox>
+
+                <!-- ======================================================
+                     PANEL 2 – ESTADO HABITACIONES
+                     ====================================================== -->
+                <VBox fx:id="pnlEstadoHabitaciones" spacing="16" styleClass="mant-panel"
+                      visible="false" managed="false">
+                    <padding><Insets bottom="24" left="24" right="24" top="24"/></padding>
+
+                    <VBox styleClass="panel-header">
+                        <Label styleClass="panel-title" text="Estado de habitaciones"/>
+                        <Label styleClass="panel-subtitle" text="Consulta y modifica el estado operativo de cada habitación"/>
+                    </VBox>
+
+                    <TableView fx:id="tblEstadoHab" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colEstHabNum"    text="Nº Hab."  prefWidth="100"/>
+                            <TableColumn fx:id="colEstHabTipo"   text="Tipo"     prefWidth="200"/>
+                            <TableColumn fx:id="colEstHabPlanta" text="Planta"   prefWidth="100"/>
+                            <TableColumn fx:id="colEstHabEstado" text="Estado"   prefWidth="160"/>
+                        </columns>
+                        <placeholder><Label text="Sin habitaciones registradas"/></placeholder>
+                    </TableView>
+
+                    <VBox styleClass="form-section" spacing="10">
+                        <Label styleClass="form-section-title" text="Cambiar estado de la habitación seleccionada"/>
+                        <HBox spacing="12" alignment="CENTER_LEFT">
+                            <Label text="Nuevo estado:"/>
+                            <ComboBox fx:id="cmbNuevoEstado" prefWidth="200"/>
+                            <Button onAction="#aplicarEstado" styleClass="btn-primary" text="Aplicar cambio"/>
+                        </HBox>
+                    </VBox>
+                </VBox>
+
+                <!-- ======================================================
+                     PANEL 3 – HISTORIAL
+                     ====================================================== -->
+                <VBox fx:id="pnlHistorial" spacing="16" styleClass="mant-panel"
+                      visible="false" managed="false">
+                    <padding><Insets bottom="24" left="24" right="24" top="24"/></padding>
+
+                    <HBox alignment="CENTER_LEFT" spacing="12" styleClass="panel-header">
+                        <VBox>
+                            <Label styleClass="panel-title" text="Historial de averías"/>
+                            <Label styleClass="panel-subtitle" text="Incidencias completadas y canceladas"/>
+                        </VBox>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Button onAction="#cargarHistorial" styleClass="btn-secondary" text="↻ Actualizar"/>
+                    </HBox>
+
+                    <TableView fx:id="tblHistorial" VBox.vgrow="ALWAYS">
+                        <columns>
+                            <TableColumn fx:id="colHistHab"         text="Habitación"  prefWidth="100"/>
+                            <TableColumn fx:id="colHistTitulo"      text="Título"      prefWidth="230"/>
+                            <TableColumn fx:id="colHistPrioridad"   text="Prioridad"   prefWidth="90"/>
+                            <TableColumn fx:id="colHistEstado"      text="Estado"      prefWidth="100"/>
+                            <TableColumn fx:id="colHistFechaInicio" text="Reportada"   prefWidth="130"/>
+                            <TableColumn fx:id="colHistFechaFin"    text="Completada"  prefWidth="130"/>
+                        </columns>
+                        <placeholder><Label text="Sin registros en el historial"/></placeholder>
+                    </TableView>
+                </VBox>
+
+            </StackPane>
+        </HBox>
+    </center>
+
+</BorderPane>
