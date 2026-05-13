@@ -1,0 +1,406 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<StackPane fx:id="rootStack" maxHeight="Infinity" maxWidth="Infinity"
+           stylesheets="@styles/restauracion.css"
+           xmlns="http://javafx.com/javafx/17"
+           xmlns:fx="http://javafx.com/fxml/1"
+           fx:controller="es.simonsg.pmsuite.controller.RestauracionController">
+
+    <!-- =====================================================================
+         VISTA TMS
+         ===================================================================== -->
+    <BorderPane fx:id="vistaTMS" styleClass="tms-root">
+
+        <!-- TOP BAR -->
+        <top>
+            <HBox styleClass="tms-topbar" alignment="CENTER_LEFT" spacing="12">
+                <padding><Insets top="10" right="16" bottom="10" left="16"/></padding>
+                <Button text="← Inicio" styleClass="tms-back-btn" onAction="#volverInicio"/>
+                <Label text="🍽️  Restauración" styleClass="tms-titulo"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Label text="Mesa: Sin mesa" fx:id="lblMesaActual" styleClass="tms-mesa-label"/>
+                <Label text="Trabajador:"/>
+                <ComboBox fx:id="cmbCamarero" prefWidth="160" styleClass="tms-combo"/>
+                <Button text="🔒  Cierre de Turno" styleClass="tms-cierre-btn" onAction="#cierreTurno"/>
+                <Button text="⚙️  Vista Admin" styleClass="tms-admin-btn" onAction="#mostrarVistaAdmin"/>
+            </HBox>
+        </top>
+
+        <!-- CENTRO: ticket izquierda + mesas+productos derecha -->
+        <center>
+            <HBox spacing="0">
+
+                <!-- ── PANEL TICKET (izquierda) ────────────────────────────── -->
+                <VBox styleClass="tms-ticket-panel" prefWidth="280" minWidth="260">
+                    <padding><Insets top="0" right="0" bottom="0" left="0"/></padding>
+
+                    <!-- Cabecera ticket -->
+                    <HBox styleClass="tms-ticket-header" alignment="CENTER">
+                        <padding><Insets top="10" right="12" bottom="10" left="12"/></padding>
+                        <Label fx:id="lblTicketMesa" text="🧾  Ticket" styleClass="tms-ticket-title" HBox.hgrow="ALWAYS"/>
+                    </HBox>
+
+                    <!-- Tabla de líneas -->
+                    <TableView fx:id="tblTicket" VBox.vgrow="ALWAYS" styleClass="tms-ticket-table">
+                        <columns>
+                            <TableColumn fx:id="colTkCant"   text="Ud" prefWidth="36"/>
+                            <TableColumn fx:id="colTkDesc"   text="Artículo" prefWidth="120"/>
+                            <TableColumn fx:id="colTkPrecio" text="P.U." prefWidth="58"/>
+                            <TableColumn fx:id="colTkTotal"  text="Total" prefWidth="60"/>
+                        </columns>
+                        <columnResizePolicy>
+                            <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                        </columnResizePolicy>
+                    </TableView>
+
+                    <!-- Total -->
+                    <HBox styleClass="tms-ticket-total-bar" alignment="CENTER_RIGHT">
+                        <padding><Insets top="8" right="12" bottom="8" left="12"/></padding>
+                        <Label fx:id="lblTicketTotal" text="TOTAL:  0,00 €" styleClass="tms-total-label"/>
+                    </HBox>
+
+                    <!-- Botones gestión línea -->
+                    <HBox spacing="6" alignment="CENTER">
+                        <padding><Insets top="6" right="10" bottom="2" left="10"/></padding>
+                        <Button fx:id="btnEliminarLinea" text="🗑 Eliminar" styleClass="tms-btn-warn"
+                                onAction="#eliminarLineaTicket" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                        <Button fx:id="btnLimpiarTicket" text="✖ Limpiar" styleClass="tms-btn-danger"
+                                onAction="#limpiarTicket" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                    </HBox>
+                    <HBox spacing="6" alignment="CENTER">
+                        <padding><Insets top="2" right="10" bottom="4" left="10"/></padding>
+                        <Button text="🖨️ Preimprimir" styleClass="tms-btn-preimprimir"
+                                onAction="#preimprimirTicket" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
+                    </HBox>
+
+                    <!-- Separador -->
+                    <Separator/>
+
+                    <!-- Botones cobro -->
+                    <VBox spacing="6" alignment="CENTER">
+                        <padding><Insets top="8" right="10" bottom="10" left="10"/></padding>
+                        <Button fx:id="btnCobrar" text="💳  COBRAR" styleClass="tms-btn-cobrar"
+                                onAction="#cobrar" maxWidth="Infinity" prefHeight="46"/>
+                        <Button fx:id="btnCargoHab" text="🏨  Cargo Habitación" styleClass="tms-btn-cargo"
+                                onAction="#cargoHabitacion" maxWidth="Infinity" prefHeight="40"/>
+                    </VBox>
+                </VBox>
+
+                <!-- ── PANEL DERECHO (mesas + productos) ───────────────────── -->
+                <VBox HBox.hgrow="ALWAYS" spacing="0">
+
+                    <!-- Mesas section -->
+                    <VBox styleClass="tms-mesas-section" prefHeight="200" minHeight="180">
+                        <padding><Insets top="0" right="0" bottom="0" left="0"/></padding>
+
+                        <!-- Cabecera mesas -->
+                        <HBox styleClass="tms-section-header" alignment="CENTER_LEFT" spacing="10">
+                            <padding><Insets top="8" right="12" bottom="8" left="12"/></padding>
+                            <Label text="🪑  MESAS" styleClass="tms-section-title"/>
+                            <Region HBox.hgrow="ALWAYS"/>
+                            <HBox fx:id="zonaTabBar" spacing="4" alignment="CENTER"/>
+                            <Button text="🔄" styleClass="tms-refresh-btn" onAction="#actualizarMesas"/>
+                        </HBox>
+
+                        <!-- Grid de mesas -->
+                        <ScrollPane fitToWidth="true" VBox.vgrow="ALWAYS" styleClass="tms-scroll">
+                            <FlowPane fx:id="panelMesas" hgap="8" vgap="8" styleClass="tms-mesas-pane">
+                                <padding><Insets top="10" right="12" bottom="10" left="12"/></padding>
+                            </FlowPane>
+                        </ScrollPane>
+                    </VBox>
+
+                    <Separator/>
+
+                    <!-- Productos section -->
+                    <VBox VBox.vgrow="ALWAYS" styleClass="tms-productos-section">
+                        <padding><Insets top="0" right="0" bottom="0" left="0"/></padding>
+
+                        <!-- Cabecera categorías -->
+                        <HBox styleClass="tms-section-header" alignment="CENTER_LEFT" spacing="10">
+                            <padding><Insets top="8" right="12" bottom="8" left="12"/></padding>
+                            <Label text="🍽️  CATEGORÍAS" styleClass="tms-section-title"/>
+                            <Region HBox.hgrow="ALWAYS"/>
+                            <Label fx:id="lblFamiliaActual" text="" styleClass="tms-familia-label"/>
+                        </HBox>
+
+                        <!-- Familias + productos en HBox -->
+                        <HBox VBox.vgrow="ALWAYS" spacing="0">
+
+                            <!-- Familias -->
+                            <ScrollPane fitToWidth="true" fitToHeight="true" prefWidth="260" minWidth="240" styleClass="tms-scroll">
+                                <FlowPane fx:id="panelFamilias" hgap="8" vgap="8">
+                                    <padding><Insets top="8" right="8" bottom="8" left="8"/></padding>
+                                </FlowPane>
+                            </ScrollPane>
+
+                            <Separator orientation="VERTICAL"/>
+
+                            <!-- Productos -->
+                            <ScrollPane fitToWidth="true" fitToHeight="true" HBox.hgrow="ALWAYS" styleClass="tms-scroll">
+                                <FlowPane fx:id="panelProductos" hgap="8" vgap="8">
+                                    <padding><Insets top="8" right="8" bottom="8" left="8"/></padding>
+                                </FlowPane>
+                            </ScrollPane>
+                        </HBox>
+                    </VBox>
+
+                </VBox>
+            </HBox>
+        </center>
+    </BorderPane>
+
+    <!-- =====================================================================
+         VISTA ADMINISTRADOR
+         ===================================================================== -->
+    <BorderPane fx:id="vistaAdmin" visible="false" managed="false">
+
+        <!-- BREADCRUMB -->
+        <top>
+            <HBox styleClass="breadcrumb-bar" alignment="CENTER_LEFT" spacing="10">
+                <padding><Insets top="10" right="20" bottom="10" left="20"/></padding>
+                <Button text="← Inicio" styleClass="back-button" onAction="#volverInicio"/>
+                <Label text="›" styleClass="breadcrumb-sep"/>
+                <Label text="Restauración" styleClass="breadcrumb-active"/>
+                <Region HBox.hgrow="ALWAYS"/>
+                <Button text="🖥️  Vista TMS" styleClass="admin-tms-btn" onAction="#mostrarVistaTMS"/>
+            </HBox>
+        </top>
+
+        <center>
+            <HBox spacing="0">
+
+                <!-- SIDEBAR ADMIN -->
+                <VBox styleClass="rest-sidebar">
+                    <padding><Insets top="16" right="0" bottom="16" left="0"/></padding>
+
+                    <Label text="CARTA" styleClass="sidebar-section-label"/>
+                    <Button fx:id="btnNavCat"   text="🏷️  Categorías"    styleClass="rest-nav-btn" onAction="#navCategorias"  maxWidth="Infinity"/>
+                    <Button fx:id="btnNavProd"  text="🍽️  Productos"     styleClass="rest-nav-btn" onAction="#navProductos"   maxWidth="Infinity"/>
+
+                    <Separator styleClass="sidebar-sep"/>
+                    <Label text="SALA" styleClass="sidebar-section-label"/>
+                    <Button fx:id="btnNavMesas" text="🪑  Mesas"           styleClass="rest-nav-btn" onAction="#navMesas"      maxWidth="Infinity"/>
+
+                    <Separator styleClass="sidebar-sep"/>
+                    <Label text="OPERACIONES" styleClass="sidebar-section-label"/>
+                    <Button fx:id="btnNavPedidos"   text="📋  Pedidos Activos"  styleClass="rest-nav-btn" onAction="#navPedidos"    maxWidth="Infinity"/>
+                    <Button fx:id="btnNavHistorial" text="📅  Historial"         styleClass="rest-nav-btn" onAction="#navHistorial"  maxWidth="Infinity"/>
+                </VBox>
+
+                <!-- CONTENIDO ADMIN -->
+                <StackPane HBox.hgrow="ALWAYS" styleClass="rest-content">
+                    <padding><Insets top="24" right="24" bottom="24" left="24"/></padding>
+
+                    <!-- ─── PANEL CATEGORÍAS ───────────────────────────────────── -->
+                    <VBox fx:id="pnlCategorias" spacing="16">
+                        <!-- Header -->
+                        <VBox styleClass="rest-panel-header" spacing="2">
+                            <Label text="🏷️  Categorías de Carta" styleClass="rest-panel-title"/>
+                            <Label text="Gestión de familias de productos del restaurante" styleClass="rest-panel-subtitle"/>
+                        </VBox>
+
+                        <HBox spacing="16" VBox.vgrow="ALWAYS">
+                            <!-- Tabla -->
+                            <VBox spacing="8" HBox.hgrow="ALWAYS">
+                                <HBox spacing="8" alignment="CENTER_LEFT">
+                                    <Label text="Categorías" styleClass="rest-section-title" HBox.hgrow="ALWAYS"/>
+                                    <Button text="+ Nueva" styleClass="rest-btn-primary" onAction="#nuevaCategoria"/>
+                                </HBox>
+                                <TableView fx:id="tblCat" VBox.vgrow="ALWAYS" prefHeight="320">
+                                    <columns>
+                                        <TableColumn fx:id="colCatNombre" text="Nombre"  prefWidth="200"/>
+                                        <TableColumn fx:id="colCatActiva" text="Activa"  prefWidth="70"/>
+                                    </columns>
+                                    <columnResizePolicy>
+                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                                    </columnResizePolicy>
+                                </TableView>
+                            </VBox>
+
+                            <!-- Formulario -->
+                            <VBox styleClass="rest-form-panel" prefWidth="280" spacing="10">
+                                <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
+                                <Label text="Datos de la categoría" styleClass="rest-section-title"/>
+                                <Label text="Nombre *" styleClass="rest-field-label"/>
+                                <TextField fx:id="txtCatNombre" promptText="Ej: Bebidas"/>
+                                <Label text="Descripción" styleClass="rest-field-label"/>
+                                <TextField fx:id="txtCatDesc" promptText="Descripción opcional"/>
+                                <Label text="Color (hex)" styleClass="rest-field-label"/>
+                                <TextField fx:id="txtCatColor" promptText="#607D8B"/>
+                                <CheckBox fx:id="chkCatActiva" text="Activa" selected="true"/>
+                                <HBox spacing="8">
+                                    <Button text="💾 Guardar" styleClass="rest-btn-primary" onAction="#guardarCategoria" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                                    <Button text="🗑 Eliminar" styleClass="rest-btn-danger" onAction="#eliminarCategoria" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                                </HBox>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+
+                    <!-- ─── PANEL PRODUCTOS ────────────────────────────────────── -->
+                    <VBox fx:id="pnlProductosAdmin" spacing="16" visible="false" managed="false">
+                        <VBox styleClass="rest-panel-header" spacing="2">
+                            <Label text="🍽️  Productos de Carta" styleClass="rest-panel-title"/>
+                            <Label text="Artículos disponibles en el restaurante" styleClass="rest-panel-subtitle"/>
+                        </VBox>
+
+                        <HBox spacing="16" VBox.vgrow="ALWAYS">
+                            <VBox spacing="8" HBox.hgrow="ALWAYS">
+                                <HBox spacing="8" alignment="CENTER_LEFT">
+                                    <Label text="Productos" styleClass="rest-section-title" HBox.hgrow="ALWAYS"/>
+                                    <Button text="+ Nuevo" styleClass="rest-btn-primary" onAction="#nuevoProducto"/>
+                                </HBox>
+                                <TableView fx:id="tblProd" VBox.vgrow="ALWAYS" prefHeight="320">
+                                    <columns>
+                                        <TableColumn fx:id="colProdNombre" text="Nombre"    prefWidth="180"/>
+                                        <TableColumn fx:id="colProdCat"    text="Categoría" prefWidth="120"/>
+                                        <TableColumn fx:id="colProdPrecio" text="Precio"    prefWidth="80"/>
+                                        <TableColumn fx:id="colProdDisp"   text="Disp."     prefWidth="50"/>
+                                    </columns>
+                                    <columnResizePolicy>
+                                        <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                                    </columnResizePolicy>
+                                </TableView>
+                            </VBox>
+
+                            <VBox styleClass="rest-form-panel" prefWidth="300" spacing="10">
+                                <padding><Insets top="16" right="16" bottom="16" left="16"/></padding>
+                                <Label text="Datos del producto" styleClass="rest-section-title"/>
+                                <Label text="Nombre *" styleClass="rest-field-label"/>
+                                <TextField fx:id="txtProdNombre" promptText="Ej: Café con leche"/>
+                                <Label text="Categoría" styleClass="rest-field-label"/>
+                                <ComboBox fx:id="cmbProdCat" maxWidth="Infinity"/>
+                                <Label text="Precio *" styleClass="rest-field-label"/>
+                                <TextField fx:id="txtProdPrecio" promptText="0.00"/>
+                                <Label text="Descripción" styleClass="rest-field-label"/>
+                                <TextField fx:id="txtProdDesc" promptText="Descripción opcional"/>
+                                <Label text="Alérgenos" styleClass="rest-field-label"/>
+                                <TextField fx:id="txtProdAlerg" promptText="Ej: Lácteos, Gluten"/>
+                                <CheckBox fx:id="chkProdDisp" text="Disponible" selected="true"/>
+                                <HBox spacing="8">
+                                    <Button text="💾 Guardar" styleClass="rest-btn-primary" onAction="#guardarProducto" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                                    <Button text="🗑 Eliminar" styleClass="rest-btn-danger" onAction="#eliminarProducto" HBox.hgrow="ALWAYS" maxWidth="Infinity"/>
+                                </HBox>
+                            </VBox>
+                        </HBox>
+                    </VBox>
+
+                    <!-- ─── PANEL MESAS (mapa drag-and-drop) ────────────────── -->
+                    <VBox fx:id="pnlMesasAdmin" spacing="12" visible="false" managed="false">
+                        <VBox styleClass="rest-panel-header" spacing="2">
+                            <Label text="🪑  Gestión de Mesas" styleClass="rest-panel-title"/>
+                            <Label text="Arrastra las mesas para recolocarlas. Añade o elimina mesas por zona." styleClass="rest-panel-subtitle"/>
+                        </VBox>
+
+                        <!-- Selector de zona -->
+                        <HBox fx:id="mapaZonaTabs" spacing="6" alignment="CENTER_LEFT"/>
+
+                        <!-- Mapa visual -->
+                        <ScrollPane fitToWidth="false" prefHeight="320" styleClass="mapa-scroll">
+                            <Pane fx:id="panelMapaMesas" prefWidth="620" prefHeight="300" styleClass="mapa-mesas-pane"/>
+                        </ScrollPane>
+
+                        <!-- Controles -->
+                        <HBox spacing="8" alignment="CENTER_LEFT">
+                            <Label text="Mesa seleccionada:" styleClass="rest-field-label"/>
+                            <Label fx:id="lblMesaSelec" text="Ninguna seleccionada" style="-fx-text-fill:#27AE60; -fx-font-weight:bold;"/>
+                            <Region HBox.hgrow="ALWAYS"/>
+                            <Button text="🗑 Eliminar" styleClass="rest-btn-danger" onAction="#eliminarMesaMapa"/>
+                        </HBox>
+
+                        <Separator/>
+
+                        <!-- Formulario nueva mesa -->
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="Añadir mesa:" styleClass="rest-field-label"/>
+                            <TextField fx:id="txtNuevaMesaNombre" promptText="Nombre (ej: MESA 11)" prefWidth="160"/>
+                            <Label text="Capacidad:" styleClass="rest-field-label"/>
+                            <TextField fx:id="txtNuevaMesaCap" promptText="4" prefWidth="60"/>
+                            <Button text="➕ Añadir" styleClass="rest-btn-primary" onAction="#agregarMesaMapa"/>
+                        </HBox>
+                    </VBox>
+
+                    <!-- ─── PANEL PEDIDOS ACTIVOS ─────────────────────────────── -->
+                    <VBox fx:id="pnlPedidos" spacing="16" visible="false" managed="false">
+                        <VBox styleClass="rest-panel-header" spacing="2">
+                            <Label text="📋  Pedidos Activos" styleClass="rest-panel-title"/>
+                            <Label text="Pedidos pendientes y en preparación" styleClass="rest-panel-subtitle"/>
+                        </VBox>
+
+                        <HBox spacing="8" alignment="CENTER_LEFT">
+                            <Button text="🔄 Actualizar" styleClass="rest-btn-secondary" onAction="#cargarPedidos"/>
+                            <Button text="✅ Marcar Entregado" styleClass="rest-btn-primary" onAction="#marcarEntregado"/>
+                            <Button text="❌ Cancelar Pedido" styleClass="rest-btn-danger" onAction="#cancelarPedido"/>
+                        </HBox>
+
+                        <TableView fx:id="tblPedidos" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="colPedMesa"   text="Mesa"    prefWidth="150"/>
+                                <TableColumn fx:id="colPedEstado" text="Estado"  prefWidth="150"/>
+                                <TableColumn fx:id="colPedHora"   text="Hora"    prefWidth="80"/>
+                                <TableColumn fx:id="colPedTotal"  text="Total"   prefWidth="100"/>
+                            </columns>
+                            <columnResizePolicy>
+                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                            </columnResizePolicy>
+                        </TableView>
+                    </VBox>
+
+                    <!-- ─── PANEL HISTORIAL ───────────────────────────────────── -->
+                    <VBox fx:id="pnlHistorial" spacing="16" visible="false" managed="false">
+                        <VBox styleClass="rest-panel-header" spacing="2">
+                            <Label text="📅  Historial de Pedidos" styleClass="rest-panel-title"/>
+                            <Label text="Pedidos entregados y cancelados por fecha" styleClass="rest-panel-subtitle"/>
+                        </VBox>
+
+                        <!-- Arqueo del turno -->
+                        <HBox spacing="12" styleClass="arqueo-bar">
+                            <VBox styleClass="arqueo-kpi-card" alignment="CENTER" HBox.hgrow="ALWAYS">
+                                <Label text="PEDIDOS" styleClass="arqueo-kpi-label"/>
+                                <Label fx:id="lblArqueoTotalPedidos" text="0" styleClass="arqueo-kpi-value"/>
+                            </VBox>
+                            <VBox styleClass="arqueo-kpi-card" alignment="CENTER" HBox.hgrow="ALWAYS">
+                                <Label text="TOTAL" styleClass="arqueo-kpi-label"/>
+                                <Label fx:id="lblArqueoTotal" text="0,00 €" styleClass="arqueo-kpi-value"/>
+                            </VBox>
+                            <VBox styleClass="arqueo-kpi-card arqueo-kpi-efectivo" alignment="CENTER" HBox.hgrow="ALWAYS">
+                                <Label text="EFECTIVO" styleClass="arqueo-kpi-label"/>
+                                <Label fx:id="lblArqueoEfectivo" text="0,00 €" styleClass="arqueo-kpi-value"/>
+                            </VBox>
+                            <VBox styleClass="arqueo-kpi-card arqueo-kpi-tarjeta" alignment="CENTER" HBox.hgrow="ALWAYS">
+                                <Label text="TARJETA" styleClass="arqueo-kpi-label"/>
+                                <Label fx:id="lblArqueoTarjeta" text="0,00 €" styleClass="arqueo-kpi-value"/>
+                            </VBox>
+                        </HBox>
+
+                        <HBox spacing="10" alignment="CENTER_LEFT">
+                            <Label text="Fecha:" styleClass="rest-field-label"/>
+                            <DatePicker fx:id="dpHistFecha" prefWidth="150"/>
+                            <Button text="🔍 Buscar" styleClass="rest-btn-primary" onAction="#cargarHistorial"/>
+                        </HBox>
+
+                        <TableView fx:id="tblHistorial" VBox.vgrow="ALWAYS">
+                            <columns>
+                                <TableColumn fx:id="colHistTurno"  text="Turno"   prefWidth="100"/>
+                                <TableColumn fx:id="colHistMesa"   text="Mesa"    prefWidth="120"/>
+                                <TableColumn fx:id="colHistEstado" text="Estado"  prefWidth="110"/>
+                                <TableColumn fx:id="colHistHora"   text="Hora"    prefWidth="80"/>
+                                <TableColumn fx:id="colHistTotal"  text="Total"   prefWidth="100"/>
+                            </columns>
+                            <columnResizePolicy>
+                                <TableView fx:constant="CONSTRAINED_RESIZE_POLICY"/>
+                            </columnResizePolicy>
+                        </TableView>
+                    </VBox>
+
+                </StackPane>
+            </HBox>
+        </center>
+    </BorderPane>
+
+</StackPane>
