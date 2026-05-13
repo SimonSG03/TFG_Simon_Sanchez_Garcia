@@ -128,7 +128,7 @@
 
                     <HBox spacing="12">
                         <VBox styleClass="inf-kpi-card inf-kpi-card-blue" alignment="CENTER" HBox.hgrow="ALWAYS">
-                            <Label text="% OCUPACIÓN" styleClass="inf-kpi-label"/>
+                            <Label text="\% OCUPACION" styleClass="inf-kpi-label"/>
                             <Label fx:id="lblOcuPct" text="-" styleClass="inf-kpi-value inf-kpi-blue"/>
                         </VBox>
                         <VBox styleClass="inf-kpi-card" alignment="CENTER" HBox.hgrow="ALWAYS">

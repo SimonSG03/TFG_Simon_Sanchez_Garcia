@@ -21,13 +21,13 @@
             <HBox styleClass="tms-topbar" alignment="CENTER_LEFT" spacing="12">
                 <padding><Insets top="10" right="16" bottom="10" left="16"/></padding>
                 <Button text="← Inicio" styleClass="tms-back-btn" onAction="#volverInicio"/>
-                <Label text="🍽️  Restauración" styleClass="tms-titulo"/>
+                <Label text="🍽 Restauración" styleClass="tms-titulo"/>
                 <Region HBox.hgrow="ALWAYS"/>
                 <Label text="Mesa: Sin mesa" fx:id="lblMesaActual" styleClass="tms-mesa-label"/>
                 <Label text="Trabajador:"/>
                 <ComboBox fx:id="cmbCamarero" prefWidth="160" styleClass="tms-combo"/>
-                <Button text="🔒  Cierre de Turno" styleClass="tms-cierre-btn" onAction="#cierreTurno"/>
-                <Button text="⚙️  Vista Admin" styleClass="tms-admin-btn" onAction="#mostrarVistaAdmin"/>
+                <Button text="🔒 Cierre de Turno" styleClass="tms-cierre-btn" onAction="#cierreTurno"/>
+                <Button text="⚙  Vista Admin" styleClass="tms-admin-btn" onAction="#mostrarVistaAdmin"/>
             </HBox>
         </top>
 
@@ -42,7 +42,7 @@
                     <!-- Cabecera ticket -->
                     <HBox styleClass="tms-ticket-header" alignment="CENTER">
                         <padding><Insets top="10" right="12" bottom="10" left="12"/></padding>
-                        <Label fx:id="lblTicketMesa" text="🧾  Ticket" styleClass="tms-ticket-title" HBox.hgrow="ALWAYS"/>
+                        <Label fx:id="lblTicketMesa" text="📄 Ticket" styleClass="tms-ticket-title" HBox.hgrow="ALWAYS"/>
                     </HBox>
 
                     <!-- Tabla de líneas -->
@@ -74,7 +74,7 @@
                     </HBox>
                     <HBox spacing="6" alignment="CENTER">
                         <padding><Insets top="2" right="10" bottom="4" left="10"/></padding>
-                        <Button text="🖨️ Preimprimir" styleClass="tms-btn-preimprimir"
+                        <Button text="🖨 Preimprimir" styleClass="tms-btn-preimprimir"
                                 onAction="#preimprimirTicket" maxWidth="Infinity" HBox.hgrow="ALWAYS"/>
                     </HBox>
 
@@ -101,7 +101,7 @@
                         <!-- Cabecera mesas -->
                         <HBox styleClass="tms-section-header" alignment="CENTER_LEFT" spacing="10">
                             <padding><Insets top="8" right="12" bottom="8" left="12"/></padding>
-                            <Label text="🪑  MESAS" styleClass="tms-section-title"/>
+                            <Label text="MESAS" styleClass="tms-section-title"/>
                             <Region HBox.hgrow="ALWAYS"/>
                             <HBox fx:id="zonaTabBar" spacing="4" alignment="CENTER"/>
                             <Button text="🔄" styleClass="tms-refresh-btn" onAction="#actualizarMesas"/>
@@ -124,7 +124,7 @@
                         <!-- Cabecera categorías -->
                         <HBox styleClass="tms-section-header" alignment="CENTER_LEFT" spacing="10">
                             <padding><Insets top="8" right="12" bottom="8" left="12"/></padding>
-                            <Label text="🍽️  CATEGORÍAS" styleClass="tms-section-title"/>
+                            <Label text="🍽 CATEGORÍAS" styleClass="tms-section-title"/>
                             <Region HBox.hgrow="ALWAYS"/>
                             <Label fx:id="lblFamiliaActual" text="" styleClass="tms-familia-label"/>
                         </HBox>
@@ -168,7 +168,7 @@
                 <Label text="›" styleClass="breadcrumb-sep"/>
                 <Label text="Restauración" styleClass="breadcrumb-active"/>
                 <Region HBox.hgrow="ALWAYS"/>
-                <Button text="🖥️  Vista TMS" styleClass="admin-tms-btn" onAction="#mostrarVistaTMS"/>
+                <Button text="🖥 Vista TMS" styleClass="admin-tms-btn" onAction="#mostrarVistaTMS"/>
             </HBox>
         </top>
 
@@ -180,12 +180,12 @@
                     <padding><Insets top="16" right="0" bottom="16" left="0"/></padding>
 
                     <Label text="CARTA" styleClass="sidebar-section-label"/>
-                    <Button fx:id="btnNavCat"   text="🏷️  Categorías"    styleClass="rest-nav-btn" onAction="#navCategorias"  maxWidth="Infinity"/>
-                    <Button fx:id="btnNavProd"  text="🍽️  Productos"     styleClass="rest-nav-btn" onAction="#navProductos"   maxWidth="Infinity"/>
+                    <Button fx:id="btnNavCat"   text="🏷  Categorías"    styleClass="rest-nav-btn" onAction="#navCategorias"  maxWidth="Infinity"/>
+                    <Button fx:id="btnNavProd"  text="🍽  Productos"     styleClass="rest-nav-btn" onAction="#navProductos"   maxWidth="Infinity"/>
 
                     <Separator styleClass="sidebar-sep"/>
                     <Label text="SALA" styleClass="sidebar-section-label"/>
-                    <Button fx:id="btnNavMesas" text="🪑  Mesas"           styleClass="rest-nav-btn" onAction="#navMesas"      maxWidth="Infinity"/>
+                    <Button fx:id="btnNavMesas" text=" Mesas"           styleClass="rest-nav-btn" onAction="#navMesas"      maxWidth="Infinity"/>
 
                     <Separator styleClass="sidebar-sep"/>
                     <Label text="OPERACIONES" styleClass="sidebar-section-label"/>
@@ -201,7 +201,7 @@
                     <VBox fx:id="pnlCategorias" spacing="16">
                         <!-- Header -->
                         <VBox styleClass="rest-panel-header" spacing="2">
-                            <Label text="🏷️  Categorías de Carta" styleClass="rest-panel-title"/>
+                            <Label text="🏷  Categorías de Carta" styleClass="rest-panel-title"/>
                             <Label text="Gestión de familias de productos del restaurante" styleClass="rest-panel-subtitle"/>
                         </VBox>
 
@@ -245,7 +245,7 @@
                     <!-- ─── PANEL PRODUCTOS ────────────────────────────────────── -->
                     <VBox fx:id="pnlProductosAdmin" spacing="16" visible="false" managed="false">
                         <VBox styleClass="rest-panel-header" spacing="2">
-                            <Label text="🍽️  Productos de Carta" styleClass="rest-panel-title"/>
+                            <Label text="🍽  Productos de Carta" styleClass="rest-panel-title"/>
                             <Label text="Artículos disponibles en el restaurante" styleClass="rest-panel-subtitle"/>
                         </VBox>
 
@@ -293,7 +293,7 @@
                     <!-- ─── PANEL MESAS (mapa drag-and-drop) ────────────────── -->
                     <VBox fx:id="pnlMesasAdmin" spacing="12" visible="false" managed="false">
                         <VBox styleClass="rest-panel-header" spacing="2">
-                            <Label text="🪑  Gestión de Mesas" styleClass="rest-panel-title"/>
+                            <Label text="Gestión de Mesas" styleClass="rest-panel-title"/>
                             <Label text="Arrastra las mesas para recolocarlas. Añade o elimina mesas por zona." styleClass="rest-panel-subtitle"/>
                         </VBox>
 

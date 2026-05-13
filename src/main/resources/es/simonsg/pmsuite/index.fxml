@@ -42,11 +42,16 @@
 
             <!-- ICONOS IZQUIERDA -->
             <HBox alignment="CENTER_LEFT" spacing="14">
-               <ImageView fitHeight="18" fitWidth="18">
-                  <image>
-                     <Image url="@../../../images/ico_buttons/menu.png" />
-                  </image>
-               </ImageView>
+               <Button fx:id="menuIconBtn" onAction="#mostrarMenuSoporte"
+                       style="-fx-background-color: transparent; -fx-padding: 2; -fx-cursor: hand; -fx-border-color: transparent;">
+                  <graphic>
+                     <ImageView fitHeight="18" fitWidth="18">
+                        <image>
+                           <Image url="@../../../images/ico_buttons/menu.png" />
+                        </image>
+                     </ImageView>
+                  </graphic>
+               </Button>
 
                <ImageView fitHeight="16" fitWidth="16">
                   <image>
@@ -59,14 +64,14 @@
             <Region HBox.hgrow="ALWAYS" />
 
             <!-- BUSCADOR (CENTRADO REAL) -->
-            <HBox alignment="CENTER" maxWidth="420" spacing="8">
+            <HBox fx:id="searchHBox" alignment="CENTER" maxWidth="420" spacing="8">
                <ImageView fitHeight="18" fitWidth="18">
                   <image>
                      <Image url="@../../../images/ico_buttons/lupa.png" />
                   </image>
                </ImageView>
 
-               <TextField prefWidth="350" promptText="NIF, nombre, núm. hab, núm. reserva, grupo..." styleClass="search-field" />
+               <TextField fx:id="searchField" prefWidth="350" promptText="NIF, nombre, núm. hab, núm. reserva, grupo..." styleClass="search-field" />
             </HBox>
 
             <!-- EMPUJADOR DERECHA -->
@@ -76,18 +81,28 @@
             <MenuButton style="-fx-background-color: transparent;" styleClass="top-menu-button" text="nacho@ofi.es" />
 
             <!-- ICONOS DERECHA -->
-            <HBox alignment="CENTER_LEFT" spacing="16">
-               <ImageView fitHeight="17" fitWidth="17">
-                  <image>
-                     <Image url="@../../../images/ico_buttons/informacion.png" />
-                  </image>
-               </ImageView>
+            <HBox alignment="CENTER_LEFT" spacing="8">
+               <Button fx:id="infoIconBtn"
+                       style="-fx-background-color: transparent; -fx-padding: 6; -fx-cursor: hand; -fx-border-color: transparent;">
+                  <graphic>
+                     <ImageView fitHeight="17" fitWidth="17">
+                        <image>
+                           <Image url="@../../../images/ico_buttons/informacion.png" />
+                        </image>
+                     </ImageView>
+                  </graphic>
+               </Button>
 
-               <ImageView fitHeight="20" fitWidth="20">
-                  <image>
-                     <Image url="@../../../images/ico_buttons/onoff.png" />
-                  </image>
-               </ImageView>
+               <Button fx:id="onoffBtn" onAction="#cerrarApp"
+                       style="-fx-background-color: transparent; -fx-padding: 6; -fx-cursor: hand; -fx-border-color: transparent;">
+                  <graphic>
+                     <ImageView fitHeight="20" fitWidth="20">
+                        <image>
+                           <Image url="@../../../images/ico_buttons/onoff.png" />
+                        </image>
+                     </ImageView>
+                  </graphic>
+               </Button>
             </HBox>
 
          </HBox>
@@ -122,7 +137,7 @@
                   </graphic>
                </Button>
 
-               <Button prefHeight="102" prefWidth="122" styleClass="main-tile">
+               <Button prefHeight="102" prefWidth="122" styleClass="main-tile" onAction="#abrirPlanning">
                   <graphic>
                      <VBox alignment="CENTER">
                         <ImageView fitHeight="63" fitWidth="62">
@@ -135,7 +150,7 @@
                   </graphic>
                </Button>
 
-               <Button prefHeight="102" prefWidth="122" styleClass="main-tile">
+               <Button prefHeight="102" prefWidth="122" styleClass="main-tile" onAction="#abrirRecepcion">
                   <graphic>
                      <VBox alignment="CENTER">
                         <ImageView fitHeight="63" fitWidth="62">
@@ -148,7 +163,7 @@
                   </graphic>
                </Button>
 
-               <Button prefHeight="102" prefWidth="122" styleClass="main-tile">
+               <Button prefHeight="102" prefWidth="122" styleClass="main-tile" onAction="#abrirPrecios">
                   <graphic>
                      <VBox alignment="CENTER">
                         <ImageView fitHeight="63" fitWidth="62">
@@ -164,7 +179,7 @@
 
             <!-- ===== FILA 2 ===== -->
             <HBox alignment="CENTER" spacing="18" styleClass="module-button">
-               <Button prefHeight="102" prefWidth="122" styleClass="main-tile">
+               <Button prefHeight="102" prefWidth="122" styleClass="main-tile" onAction="#abrirMantenimiento">
                   <graphic>
                      <VBox alignment="CENTER">
                         <ImageView fitHeight="60" fitWidth="60">
@@ -177,7 +192,7 @@
                   </graphic>
                </Button>
 
-               <Button prefHeight="102" prefWidth="122" styleClass="main-tile">
+               <Button prefHeight="102" prefWidth="122" styleClass="main-tile" onAction="#abrirAdministracion">
                   <graphic>
                      <VBox alignment="CENTER">
                         <ImageView fitHeight="61" fitWidth="57">
@@ -190,7 +205,7 @@
                   </graphic>
                </Button>
 
-               <Button prefHeight="102" prefWidth="122" styleClass="main-tile">
+               <Button prefHeight="102" prefWidth="122" styleClass="main-tile" onAction="#abrirRestauracion">
                   <graphic>
                      <VBox alignment="CENTER">
                         <ImageView fitHeight="61" fitWidth="56">
@@ -203,7 +218,7 @@
                   </graphic>
                </Button>
 
-               <Button prefHeight="102" prefWidth="122" styleClass="main-tile">
+               <Button prefHeight="102" prefWidth="122" styleClass="main-tile" onAction="#abrirInformes">
                   <graphic>
                      <VBox alignment="CENTER">
                         <ImageView fitHeight="59" fitWidth="55">
@@ -219,7 +234,7 @@
 
             <!-- ===== FILA 3 ===== -->
             <HBox alignment="CENTER" spacing="18">
-               <Button prefHeight="102" prefWidth="261" styleClass="main-tile">
+               <Button prefHeight="102" prefWidth="261" styleClass="main-tile" onAction="#abrirComunicacion">
                   <graphic>
                      <VBox alignment="CENTER">
                         <ImageView fitHeight="56" fitWidth="64">
@@ -232,7 +247,7 @@
                   </graphic>
                </Button>
 
-               <Button prefHeight="102" prefWidth="261" styleClass="main-tile">
+               <Button prefHeight="102" prefWidth="261" styleClass="main-tile" onAction="#abrirMaestros">
                   <graphic>
                      <VBox alignment="CENTER">
                         <ImageView fitHeight="58" fitWidth="60">

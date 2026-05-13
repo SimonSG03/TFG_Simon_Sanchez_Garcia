@@ -1,0 +1,282 @@
+/* ================================================================
+   PMSuite · Administración CSS
+   Paleta: azul #2C3E8F | verde #27AE60 | rojo #E74C3C
+   ================================================================ */
+
+.root {
+    -fx-font-family: "Segoe UI", "Helvetica Neue", Arial, sans-serif;
+    -fx-font-size: 13px;
+    -fx-background-color: #F0F2F5;
+}
+
+/* ──── Breadcrumb bar ──────────────────────────────────────────── */
+.breadcrumb-bar {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E5E7EB;
+    -fx-border-width: 0 0 1 0;
+}
+
+.back-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #2A9D8F;
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+    -fx-border-color: #2A9D8F;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 4 12 4 12;
+}
+.back-button:hover  { -fx-background-color: #E8F5F3; }
+.breadcrumb-sep     { -fx-text-fill: #D1D5DB; -fx-font-size: 14px; }
+.breadcrumb-active  { -fx-text-fill: #1A2E2B; -fx-font-weight: bold; -fx-font-size: 13px; }
+
+/* ──── Sidebar ─────────────────────────────────────────────────── */
+.admin-sidebar {
+    -fx-background-color: #1A2535;
+    -fx-min-width: 210px;
+    -fx-pref-width: 210px;
+}
+
+.admin-sidebar-section-label {
+    -fx-text-fill: #8899AA;
+    -fx-font-size: 10px;
+    -fx-font-weight: bold;
+    -fx-padding: 0 16 4 16;
+}
+
+.admin-nav-btn {
+    -fx-background-color: transparent;
+    -fx-text-fill: #B0BEC5;
+    -fx-font-size: 13px;
+    -fx-alignment: CENTER_LEFT;
+    -fx-padding: 10 20 10 20;
+    -fx-cursor: hand;
+    -fx-border-color: transparent;
+    -fx-border-width: 0 0 0 3;
+}
+.admin-nav-btn:hover {
+    -fx-background-color: #243447;
+    -fx-text-fill: #FFFFFF;
+}
+.admin-nav-btn-active {
+    -fx-background-color: #0D1B3E !important;
+    -fx-text-fill: #7B9CF4 !important;
+    -fx-border-color: #2C3E8F !important;
+    -fx-border-width: 0 0 0 3 !important;
+    -fx-font-weight: bold;
+}
+
+/* ──── Área de contenido ───────────────────────────────────────── */
+.admin-content-area { -fx-background-color: #F0F2F5; }
+.admin-panel        { -fx-background-color: #F0F2F5; }
+
+/* ──── Cabecera de panel ───────────────────────────────────────── */
+.admin-panel-header {
+    -fx-padding: 0 0 12 0;
+    -fx-border-color: transparent transparent #E0E6ED transparent;
+    -fx-border-width: 0 0 1 0;
+}
+.admin-panel-title {
+    -fx-font-size: 20px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1A2535;
+}
+.admin-panel-subtitle {
+    -fx-font-size: 12px;
+    -fx-text-fill: #7F8C9A;
+}
+
+/* ──── Secciones de formulario ─────────────────────────────────── */
+.admin-form-section {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 8;
+    -fx-padding: 14 18 14 18;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 6, 0, 0, 2);
+}
+.admin-form-section .label {
+    -fx-text-fill: #333333;
+}
+.admin-form-section-title {
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #2C3E8F;
+    -fx-padding: 0 0 4 0;
+}
+
+/* ──── KPI Cards (Caja del Día) ────────────────────────────────── */
+.kpi-card {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 10;
+    -fx-padding: 16 20 16 20;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.07), 8, 0, 0, 2);
+    -fx-min-width: 140;
+    -fx-pref-width: 160;
+}
+.kpi-label {
+    -fx-font-size: 11px;
+    -fx-text-fill: #7F8C9A;
+    -fx-font-weight: bold;
+}
+.kpi-value {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #1A2535;
+}
+.kpi-card-total {
+    -fx-background-color: #2C3E8F;
+    -fx-background-radius: 10;
+    -fx-padding: 16 20 16 20;
+    -fx-effect: dropshadow(gaussian, rgba(44,62,143,0.25), 8, 0, 0, 2);
+}
+.kpi-card-total .kpi-label {
+    -fx-text-fill: rgba(255,255,255,0.75);
+}
+.kpi-card-total .kpi-value {
+    -fx-text-fill: #FFFFFF;
+}
+
+/* ──── Botones ─────────────────────────────────────────────────── */
+.admin-btn-primary {
+    -fx-background-color: #2C3E8F;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8 18 8 18;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+}
+.admin-btn-primary:hover { -fx-background-color: #1A2560; }
+
+.admin-btn-secondary {
+    -fx-background-color: #FFFFFF;
+    -fx-text-fill: #2C3E8F;
+    -fx-border-color: #2C3E8F;
+    -fx-border-width: 1;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 8 16 8 16;
+    -fx-cursor: hand;
+}
+.admin-btn-secondary:hover { -fx-background-color: #EBF0FF; }
+
+.admin-btn-success {
+    -fx-background-color: #27AE60;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8 18 8 18;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+}
+.admin-btn-success:hover { -fx-background-color: #1E8449; }
+
+.admin-btn-danger {
+    -fx-background-color: #E74C3C;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-padding: 8 18 8 18;
+    -fx-background-radius: 6;
+    -fx-cursor: hand;
+}
+.admin-btn-danger:hover { -fx-background-color: #C0392B; }
+
+/* ──── TableView ───────────────────────────────────────────────── */
+.admin-table {
+    -fx-background-color: #FFFFFF;
+    -fx-background-radius: 8;
+    -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.06), 6, 0, 0, 2);
+    -fx-border-color: #E0E6ED;
+    -fx-border-radius: 8;
+    -fx-border-width: 1;
+}
+.admin-table .column-header-background { -fx-background-color: #F7F9FC; }
+.admin-table .column-header,
+.admin-table .filler {
+    -fx-background-color: #F7F9FC;
+    -fx-border-color: transparent transparent #DDE3EC transparent;
+    -fx-border-width: 0 0 1 0;
+}
+.admin-table .column-header .label {
+    -fx-font-weight: bold;
+    -fx-text-fill: #4A5568;
+    -fx-font-size: 12px;
+}
+.admin-table .table-row-cell           { -fx-background-color: white; -fx-border-color: transparent transparent #F0F2F5 transparent; }
+.admin-table .table-row-cell:odd       { -fx-background-color: #FAFBFC; }
+.admin-table .table-row-cell:selected  { -fx-background-color: #EBF0FF; }
+.admin-table .table-row-cell:selected .text { -fx-fill: #1A2535; }
+.admin-table .table-row-cell:hover     { -fx-background-color: #F0F4FF; }
+
+/* ──── Inputs ──────────────────────────────────────────────────── */
+.admin-form-section .text-field,
+.admin-form-section .text-area,
+.admin-form-section .date-picker .text-field {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #DDE3EC;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-border-width: 1;
+    -fx-padding: 7 10 7 10;
+}
+.admin-form-section .text-field:focused,
+.admin-form-section .text-area:focused {
+    -fx-border-color: #2C3E8F;
+    -fx-effect: dropshadow(gaussian, rgba(44,62,143,0.2), 4, 0, 0, 0);
+}
+.admin-form-section .combo-box {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #DDE3EC;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-border-width: 1;
+}
+.admin-form-section .combo-box:focused { -fx-border-color: #2C3E8F; }
+
+/* ──── Botones chip de acceso rápido (nueva factura) ───────────── */
+.admin-btn-chip {
+    -fx-background-color: #EEF2FF;
+    -fx-text-fill: #2C3E8F;
+    -fx-border-color: #C5CAE9;
+    -fx-border-width: 1;
+    -fx-border-radius: 20;
+    -fx-background-radius: 20;
+    -fx-padding: 4 10 4 10;
+    -fx-cursor: hand;
+    -fx-font-size: 12px;
+}
+.admin-btn-chip:hover {
+    -fx-background-color: #D3D9F5;
+    -fx-border-color: #2C3E8F;
+}
+
+.admin-chip-group-label {
+    -fx-text-fill: #888888;
+    -fx-font-size: 11px;
+}
+
+/* ──── Resumen de factura en panel Pagos ───────────────────────── */
+.pago-resumen-card {
+    -fx-background-color: #EBF5FB;
+    -fx-background-radius: 6;
+    -fx-border-color: #AED6F1;
+    -fx-border-radius: 6;
+    -fx-border-width: 1;
+    -fx-padding: 8 12 8 12;
+}
+.pago-resumen-label {
+    -fx-text-fill: #555555;
+    -fx-font-size: 12px;
+    -fx-min-width: 72px;
+}
+.pago-resumen-valor {
+    -fx-text-fill: #1A2535;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+}
+.pago-resumen-pendiente {
+    -fx-text-fill: #C0392B;
+    -fx-font-size: 13px;
+    -fx-font-weight: bold;
+}
+
+/* ──── Scroll ──────────────────────────────────────────────────── */
+.scroll-pane            { -fx-background-color: transparent; -fx-background: transparent; }
+.scroll-pane .viewport  { -fx-background-color: transparent; }

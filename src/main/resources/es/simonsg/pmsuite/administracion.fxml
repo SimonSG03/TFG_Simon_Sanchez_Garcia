@@ -1,0 +1,610 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<BorderPane stylesheets="@styles/administracion.css"
+            xmlns="http://javafx.com/javafx/17"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="es.simonsg.pmsuite.controller.AdministracionController">
+
+    <!-- ===== BREADCRUMB ===== -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="8" styleClass="breadcrumb-bar">
+            <padding><Insets bottom="10" left="20" right="20" top="10"/></padding>
+            <Button onAction="#volverInicio" styleClass="back-button" text="← Inicio"/>
+            <Label styleClass="breadcrumb-sep" text="/"/>
+            <Label styleClass="breadcrumb-active" text="Administración"/>
+        </HBox>
+    </top>
+
+    <!-- ===== LAYOUT: sidebar + contenido ===== -->
+    <center>
+        <HBox>
+
+            <!-- ── SIDEBAR ── -->
+            <VBox styleClass="admin-sidebar" spacing="2">
+                <padding><Insets top="20" bottom="20"/></padding>
+
+                <Label styleClass="admin-sidebar-section-label" text="GESTIÓN FINANCIERA"/>
+                <Button fx:id="btnNavFacturas"  maxWidth="Infinity" onAction="#navFacturas"
+                        styleClass="admin-nav-btn" text="🎟  Tickets"/>
+                <Button fx:id="btnNavPagos"     maxWidth="Infinity" onAction="#navPagos"
+                        styleClass="admin-nav-btn" text="💳  Pagos"/>
+                <Button fx:id="btnNavCaja"      maxWidth="Infinity" onAction="#navCaja"
+                        styleClass="admin-nav-btn" text="🏦  Caja del Día"/>
+
+                <Separator style="-fx-padding: 6 16 6 16;"/>
+                <Label styleClass="admin-sidebar-section-label" text="ANÁLISIS"/>
+                <Button fx:id="btnNavIngresos"  maxWidth="Infinity" onAction="#navIngresos"
+                        styleClass="admin-nav-btn" text="📊  Control Ingresos"/>
+                <Button fx:id="btnNavExport"    maxWidth="Infinity" onAction="#navExport"
+                        styleClass="admin-nav-btn" text="📤  Exportación"/>
+            </VBox>
+
+            <!-- ── CONTENIDO ── -->
+            <StackPane HBox.hgrow="ALWAYS" styleClass="admin-content-area">
+
+                <!-- ======================================================
+                     PANEL 1 – FACTURAS
+                     ====================================================== -->
+                <VBox fx:id="pnlFacturas" spacing="16" styleClass="admin-panel">
+                    <padding><Insets bottom="24" left="24" right="24" top="24"/></padding>
+
+                    <HBox alignment="CENTER_LEFT" spacing="12" styleClass="admin-panel-header">
+                        <VBox>
+                            <Label styleClass="admin-panel-title" text="Tickets / Facturas"/>
+                            <Label styleClass="admin-panel-subtitle" text="Consulta, gestión y creación de facturas"/>
+                        </VBox>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Button onAction="#abrirNuevaFactura" styleClass="admin-btn-primary" text="➕ Generar ticket"/>
+                        <Button onAction="#cargarFacturas" styleClass="admin-btn-secondary" text="🔄 Actualizar"/>
+                        <Label text="Estado:"/>
+                        <ComboBox fx:id="cmbFiltroFactura" prefWidth="150" onAction="#filtrarFacturasPorEstado"/>
+                        <Label text="Desde:"/>
+                        <DatePicker fx:id="dpFacturaDesde" prefWidth="140"/>
+                        <Label text="Hasta:"/>
+                        <DatePicker fx:id="dpFacturaHasta" prefWidth="140"/>
+                        <Button onAction="#cargarFacturas" styleClass="admin-btn-secondary" text="🔍 Filtrar"/>
+                    </HBox>
+
+                    <!-- ── Huéspedes en casa: tickets con saldo abierto ── -->
+                    <VBox styleClass="admin-form-section" spacing="8">
+                        <HBox alignment="CENTER_LEFT" spacing="10">
+                            <Label styleClass="admin-form-section-title" text="🏨  HUÉSPEDES EN CASA"/>
+                            <Label style="-fx-text-fill: #6B7280; -fx-font-size: 11px;"
+                                   text="Tickets abiertos — pulsa «Cobrar» para ir al panel de pago"/>
+                            <Region HBox.hgrow="ALWAYS"/>
+                            <Button onAction="#cargarTicketsActivos" styleClass="admin-btn-secondary"
+                                    text="↻ Actualizar"/>
+                        </HBox>
+                        <TableView fx:id="tblTicketsActivos" prefHeight="165" styleClass="admin-table">
+                            <columns>
+                                <TableColumn fx:id="colActHab"       text="Hab."      prefWidth="60"/>
+                                <TableColumn fx:id="colActHuesped"   text="Huésped"   prefWidth="175"/>
+                                <TableColumn fx:id="colActCheckIn"   text="Entrada"   prefWidth="95"/>
+                                <TableColumn fx:id="colActCheckOut"  text="Salida"    prefWidth="95"/>
+                                <TableColumn fx:id="colActTotal"     text="Total"     prefWidth="88"/>
+                                <TableColumn fx:id="colActPend"      text="Pendiente" prefWidth="88"/>
+                                <TableColumn fx:id="colActEstado"    text="Estado"    prefWidth="100"/>
+                                <TableColumn fx:id="colActAcciones"  text=""          prefWidth="90"/>
+                            </columns>
+                            <placeholder>
+                                <Label text="No hay huéspedes con tickets abiertos en este momento"/>
+                            </placeholder>
+                        </TableView>
+                    </VBox>
+
+                    <Separator style="-fx-opacity: 0.45;"/>
+                    <Label styleClass="admin-form-section-title" text="HISTORIAL DE FACTURAS"/>
+
+                    <!-- Tabla facturas (ocupa todo el ancho; clic abre el editor) -->
+                    <TableView fx:id="tblFacturas" VBox.vgrow="ALWAYS"
+                               styleClass="admin-table">
+                        <columns>
+                            <TableColumn fx:id="colFacNum"       text="Nº Factura"  prefWidth="130"/>
+                            <TableColumn fx:id="colFacFecha"     text="Fecha"       prefWidth="100"/>
+                            <TableColumn fx:id="colFacHuesped"   text="Huésped"     prefWidth="200"/>
+                            <TableColumn fx:id="colFacTotal"     text="Total"       prefWidth="90"/>
+                            <TableColumn fx:id="colFacPagado"    text="Pagado"      prefWidth="90"/>
+                            <TableColumn fx:id="colFacPendiente" text="Pendiente"   prefWidth="90"/>
+                            <TableColumn fx:id="colFacEstado"    text="Estado"      prefWidth="110"/>
+                            <TableColumn fx:id="colFacAcciones"  text=""            prefWidth="130"/>
+                        </columns>
+                        <placeholder><Label text="No hay facturas"/></placeholder>
+                    </TableView>
+                </VBox>
+
+                <!-- ======================================================
+                     PANEL 2 – PAGOS
+                     ====================================================== -->
+                <VBox fx:id="pnlPagos" spacing="14" styleClass="admin-panel"
+                      visible="false" managed="false">
+                    <padding><Insets bottom="24" left="24" right="24" top="24"/></padding>
+
+                    <HBox alignment="CENTER_LEFT" spacing="12" styleClass="admin-panel-header">
+                        <VBox>
+                            <Label styleClass="admin-panel-title" text="Pagos"/>
+                            <Label styleClass="admin-panel-subtitle"
+                                   text="Facturas pendientes de cobro y registro de pagos"/>
+                        </VBox>
+                    </HBox>
+
+                    <HBox spacing="16" VBox.vgrow="ALWAYS">
+
+                        <!-- ── Columna izquierda: pendientes + historial ── -->
+                        <VBox spacing="12" HBox.hgrow="ALWAYS">
+
+                            <!-- Tabla facturas pendientes -->
+                            <VBox styleClass="admin-form-section" spacing="8">
+                                <HBox alignment="CENTER_LEFT" spacing="10">
+                                    <Label styleClass="admin-form-section-title"
+                                           text="Facturas pendientes de cobro"/>
+                                    <Region HBox.hgrow="ALWAYS"/>
+                                    <Button onAction="#cargarFacturasPendientesParaCobro"
+                                            styleClass="admin-btn-secondary" text="↻ Actualizar"/>
+                                </HBox>
+                                <TableView fx:id="tblFacturasPendientes" prefHeight="200"
+                                           styleClass="admin-table">
+                                    <columns>
+                                        <TableColumn fx:id="colPendNum"     text="Nº Factura" prefWidth="120"/>
+                                        <TableColumn fx:id="colPendFecha"   text="Fecha"      prefWidth="90"/>
+                                        <TableColumn fx:id="colPendHuesped" text="Huésped"    prefWidth="180"/>
+                                        <TableColumn fx:id="colPendTotal"   text="Total"      prefWidth="85"/>
+                                        <TableColumn fx:id="colPendPagado"  text="Pagado"     prefWidth="85"/>
+                                        <TableColumn fx:id="colPendPend"    text="Pendiente"  prefWidth="85"/>
+                                        <TableColumn fx:id="colPendEstado"  text="Estado"     prefWidth="105"/>
+                                    </columns>
+                                    <placeholder><Label text="No hay facturas pendientes de cobro"/></placeholder>
+                                </TableView>
+                            </VBox>
+
+                            <!-- Historial de cobros -->
+                            <VBox styleClass="admin-form-section" spacing="8" VBox.vgrow="ALWAYS">
+                                <HBox alignment="CENTER_LEFT" spacing="10">
+                                    <Label styleClass="admin-form-section-title" text="Historial de cobros"/>
+                                    <Region HBox.hgrow="ALWAYS"/>
+                                    <Label text="Desde:"/>
+                                    <DatePicker fx:id="dpPagoDesde" prefWidth="130"/>
+                                    <Label text="Hasta:"/>
+                                    <DatePicker fx:id="dpPagoHasta" prefWidth="130"/>
+                                    <Button onAction="#cargarPagos" styleClass="admin-btn-secondary"
+                                            text="🔍 Filtrar"/>
+                                </HBox>
+                                <TableView fx:id="tblPagos" VBox.vgrow="ALWAYS" styleClass="admin-table">
+                                    <columns>
+                                        <TableColumn fx:id="colPagFecha"    text="Fecha/Hora"  prefWidth="140"/>
+                                        <TableColumn fx:id="colPagFactura"  text="Factura"     prefWidth="120"/>
+                                        <TableColumn fx:id="colPagHuesped"  text="Huésped"     prefWidth="180"/>
+                                        <TableColumn fx:id="colPagMetodo"   text="Método"      prefWidth="120"/>
+                                        <TableColumn fx:id="colPagImporte"  text="Importe"     prefWidth="100"/>
+                                    </columns>
+                                    <placeholder><Label text="No hay cobros en el período seleccionado"/></placeholder>
+                                </TableView>
+                            </VBox>
+
+                        </VBox>
+
+                        <!-- ── Formulario cobro (derecha) ── -->
+                        <VBox spacing="10" prefWidth="310">
+                            <VBox styleClass="admin-form-section" spacing="10">
+                                <Label styleClass="admin-form-section-title" text="Registrar cobro"/>
+                                <Label styleClass="pago-resumen-label"
+                                       text="Haz clic en una fila de la tabla para seleccionar la factura"
+                                       wrapText="true" style="-fx-text-fill: #7F8C8D; -fx-font-size: 11px;"/>
+
+                                <!-- Buscador de facturas pendientes -->
+                                <TextField fx:id="txtBuscarFactura"
+                                           promptText="🔍  Buscar huésped o nº factura..."
+                                           onKeyReleased="#buscarFacturaPago"/>
+
+                                <GridPane hgap="10" vgap="8">
+                                    <columnConstraints>
+                                        <ColumnConstraints minWidth="80" maxWidth="80"/>
+                                        <ColumnConstraints hgrow="ALWAYS"/>
+                                    </columnConstraints>
+
+                                    <Label text="Factura:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                                    <ComboBox fx:id="cmbFacturaPago" maxWidth="Infinity"
+                                              GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                                    <Label text="Importe:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                                    <TextField fx:id="txtImportePago" promptText="0,00"
+                                               GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                                    <Label text="Método:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                                    <ComboBox fx:id="cmbMetodoPago" maxWidth="Infinity"
+                                              GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                                    <Label text="Referencia:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                                    <TextField fx:id="txtReferenciaPago"
+                                               GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                                </GridPane>
+
+                                <!-- Resumen importes de la factura seleccionada -->
+                                <VBox fx:id="vboxResumenPago" styleClass="pago-resumen-card" spacing="4"
+                                      visible="false" managed="false">
+                                    <HBox spacing="6" alignment="CENTER_LEFT">
+                                        <Label styleClass="pago-resumen-label" text="Total:"/>
+                                        <Label fx:id="lblPagoTotal" styleClass="pago-resumen-valor"/>
+                                    </HBox>
+                                    <HBox spacing="6" alignment="CENTER_LEFT">
+                                        <Label styleClass="pago-resumen-label" text="Pagado:"/>
+                                        <Label fx:id="lblPagoPagado" styleClass="pago-resumen-valor"/>
+                                    </HBox>
+                                    <HBox spacing="6" alignment="CENTER_LEFT">
+                                        <Label styleClass="pago-resumen-label" text="Pendiente:"/>
+                                        <Label fx:id="lblPagoPendiente" styleClass="pago-resumen-pendiente"/>
+                                    </HBox>
+                                </VBox>
+
+                                <Button onAction="#registrarPago" styleClass="admin-btn-success"
+                                        text="✓ Registrar cobro" maxWidth="Infinity"/>
+                            </VBox>
+                        </VBox>
+
+                    </HBox>
+                </VBox>
+
+                <!-- ======================================================
+                     PANEL 3 – CAJA DEL DÍA / ARQUEO
+                     ====================================================== -->
+                <VBox fx:id="pnlCaja" spacing="16" styleClass="admin-panel"
+                      visible="false" managed="false">
+                    <padding><Insets bottom="24" left="24" right="24" top="24"/></padding>
+
+                    <HBox alignment="CENTER_LEFT" spacing="12" styleClass="admin-panel-header">
+                        <VBox>
+                            <Label styleClass="admin-panel-title" text="Caja del Día"/>
+                            <Label styleClass="admin-panel-subtitle" text="Resumen de cobros de hoy"/>
+                        </VBox>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Button onAction="#cargarCaja"    styleClass="admin-btn-secondary" text="↻ Actualizar"/>
+                        <Button onAction="#arqueoCaja"    styleClass="admin-btn-primary"   text="🏦 Arqueo de caja"/>
+                    </HBox>
+
+                    <!-- KPI row -->
+                    <HBox spacing="12" alignment="CENTER_LEFT">
+                        <VBox styleClass="kpi-card" spacing="4">
+                            <Label styleClass="kpi-label" text="EFECTIVO"/>
+                            <Label fx:id="kpiEfectivo" styleClass="kpi-value" text="0,00 €"/>
+                        </VBox>
+                        <VBox styleClass="kpi-card" spacing="4">
+                            <Label styleClass="kpi-label" text="TARJETA CRÉDITO"/>
+                            <Label fx:id="kpiTarjetaCredito" styleClass="kpi-value" text="0,00 €"/>
+                        </VBox>
+                        <VBox styleClass="kpi-card" spacing="4">
+                            <Label styleClass="kpi-label" text="TARJETA DÉBITO"/>
+                            <Label fx:id="kpiTarjetaDebito" styleClass="kpi-value" text="0,00 €"/>
+                        </VBox>
+                        <VBox styleClass="kpi-card" spacing="4">
+                            <Label styleClass="kpi-label" text="TRANSFERENCIA"/>
+                            <Label fx:id="kpiTransferencia" styleClass="kpi-value" text="0,00 €"/>
+                        </VBox>
+                        <VBox styleClass="kpi-card-total" spacing="4">
+                            <Label styleClass="kpi-label" text="TOTAL DEL DÍA"/>
+                            <Label fx:id="kpiTotalDia" styleClass="kpi-value" text="0,00 €"/>
+                        </VBox>
+                    </HBox>
+
+                    <!-- Tabla desglose -->
+                    <TableView fx:id="tblCaja" VBox.vgrow="ALWAYS" styleClass="admin-table">
+                        <columns>
+                            <TableColumn fx:id="colCajaHora"     text="Hora"      prefWidth="100"/>
+                            <TableColumn fx:id="colCajaFactura"  text="Factura"   prefWidth="130"/>
+                            <TableColumn fx:id="colCajaHuesped"  text="Huésped"   prefWidth="200"/>
+                            <TableColumn fx:id="colCajaMetodo"   text="Método"    prefWidth="140"/>
+                            <TableColumn fx:id="colCajaImporte"  text="Importe"   prefWidth="110"/>
+                        </columns>
+                        <placeholder><Label text="Sin cobros registrados hoy"/></placeholder>
+                    </TableView>
+                </VBox>
+
+                <!-- ======================================================
+                     PANEL 4 – CONTROL DE INGRESOS
+                     ====================================================== -->
+                <VBox fx:id="pnlIngresos" spacing="16" styleClass="admin-panel"
+                      visible="false" managed="false">
+                    <padding><Insets bottom="24" left="24" right="24" top="24"/></padding>
+
+                    <HBox alignment="CENTER_LEFT" spacing="12" styleClass="admin-panel-header">
+                        <VBox>
+                            <Label styleClass="admin-panel-title" text="Control de Ingresos"/>
+                            <Label styleClass="admin-panel-subtitle" text="Resumen financiero por período"/>
+                        </VBox>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <Label text="Desde:"/>
+                        <DatePicker fx:id="dpIngDesde" prefWidth="140"/>
+                        <Label text="Hasta:"/>
+                        <DatePicker fx:id="dpIngHasta" prefWidth="140"/>
+                        <Button onAction="#cargarIngresos" styleClass="admin-btn-secondary" text="🔍 Calcular"/>
+                    </HBox>
+
+                    <!-- KPI row -->
+                    <HBox spacing="12" alignment="CENTER_LEFT">
+                        <VBox styleClass="kpi-card" spacing="4">
+                            <Label styleClass="kpi-label" text="TOTAL FACTURADO"/>
+                            <Label fx:id="kpiTotalFacturado" styleClass="kpi-value" text="0,00 €"/>
+                        </VBox>
+                        <VBox styleClass="kpi-card" spacing="4">
+                            <Label styleClass="kpi-label" text="TOTAL COBRADO"/>
+                            <Label fx:id="kpiTotalCobrado" styleClass="kpi-value" text="0,00 €"/>
+                        </VBox>
+                        <VBox styleClass="kpi-card-total" spacing="4">
+                            <Label styleClass="kpi-label" text="PENDIENTE DE COBRO"/>
+                            <Label fx:id="kpiTotalPendiente" styleClass="kpi-value" text="0,00 €"/>
+                        </VBox>
+                    </HBox>
+
+                    <!-- Tabla ingresos -->
+                    <TableView fx:id="tblIngresos" VBox.vgrow="ALWAYS" styleClass="admin-table">
+                        <columns>
+                            <TableColumn fx:id="colIngNum"       text="Nº Factura" prefWidth="120"/>
+                            <TableColumn fx:id="colIngFecha"     text="Fecha"      prefWidth="100"/>
+                            <TableColumn fx:id="colIngHuesped"   text="Huésped"    prefWidth="200"/>
+                            <TableColumn fx:id="colIngTotal"     text="Total"      prefWidth="100"/>
+                            <TableColumn fx:id="colIngCobrado"   text="Cobrado"    prefWidth="100"/>
+                            <TableColumn fx:id="colIngEstado"    text="Estado"     prefWidth="110"/>
+                        </columns>
+                        <placeholder><Label text="Seleccione un rango de fechas y pulse Calcular"/></placeholder>
+                    </TableView>
+                </VBox>
+
+                <!-- ======================================================
+                     PANEL 5 – EXPORTACIÓN
+                     ====================================================== -->
+                <VBox fx:id="pnlExport" spacing="16" styleClass="admin-panel"
+                      visible="false" managed="false">
+                    <padding><Insets bottom="24" left="24" right="24" top="24"/></padding>
+
+                    <VBox styleClass="admin-panel-header" spacing="4">
+                        <Label styleClass="admin-panel-title" text="Exportación"/>
+                        <Label styleClass="admin-panel-subtitle"
+                               text="Genera ficheros CSV compatibles con Excel / LibreOffice"/>
+                    </VBox>
+
+                    <VBox styleClass="admin-form-section" spacing="14" maxWidth="500">
+
+                        <Label styleClass="admin-form-section-title" text="Configuración de exportación"/>
+
+                        <GridPane hgap="14" vgap="10">
+                            <columnConstraints>
+                                <ColumnConstraints minWidth="110" maxWidth="110"/>
+                                <ColumnConstraints hgrow="ALWAYS"/>
+                            </columnConstraints>
+
+                            <Label text="Desde:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                            <DatePicker fx:id="dpExpDesde" maxWidth="Infinity"
+                                        GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                            <Label text="Hasta:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                            <DatePicker fx:id="dpExpHasta" maxWidth="Infinity"
+                                        GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                            <Label text="Tipo de datos:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                            <ComboBox fx:id="cmbTipoExport" maxWidth="Infinity"
+                                      GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                            <Label text="Separador CSV:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                            <ComboBox fx:id="cmbSeparador" maxWidth="Infinity"
+                                      GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+                        </GridPane>
+
+                        <HBox spacing="10">
+                            <Button onAction="#exportarCSV" styleClass="admin-btn-primary"
+                                    text="📥 Exportar CSV"/>
+                        </HBox>
+
+                        <Label fx:id="lblExportEstado" text="" style="-fx-text-fill: #27AE60; -fx-font-size: 12px;"/>
+
+                    </VBox>
+                </VBox>
+
+                <!-- ======================================================
+                     PANEL 6 – NUEVA FACTURA / TICKET
+                     ====================================================== -->
+                <VBox fx:id="pnlNuevaFactura" spacing="16" styleClass="admin-panel"
+                      visible="false" managed="false">
+                    <padding><Insets bottom="24" left="24" right="24" top="24"/></padding>
+
+                    <HBox alignment="CENTER_LEFT" spacing="12" styleClass="admin-panel-header">
+                        <Button onAction="#volverATickets" styleClass="back-button" text="← Volver"/>
+                        <VBox>
+                            <Label styleClass="admin-panel-title" text="Nueva Factura"/>
+                            <Label styleClass="admin-panel-subtitle" text="Crea un ticket manualmente con los servicios solicitados por el cliente"/>
+                        </VBox>
+                    </HBox>
+
+                    <HBox spacing="16" VBox.vgrow="ALWAYS">
+
+                        <!-- ── Formulario izquierda ── -->
+                        <VBox spacing="12" prefWidth="370">
+
+                            <!-- Reserva (vinculación opcional) -->
+                            <VBox styleClass="admin-form-section" spacing="10">
+                                <Label styleClass="admin-form-section-title" text="Vincular reserva"/>
+                                <TextField fx:id="txtNFBuscarReserva"
+                                           promptText="🔍  Nº reserva, nombre o NIF..."
+                                           onKeyReleased="#buscarReservaNF"/>
+                                <ComboBox fx:id="cmbNFReserva" maxWidth="Infinity"
+                                          promptText="(opcional) Selecciona una reserva"/>
+                                <!-- Info de la reserva seleccionada -->
+                                <VBox fx:id="vboxNFReservaInfo" styleClass="pago-resumen-card" spacing="3"
+                                      visible="false" managed="false">
+                                    <Label fx:id="lblNFReservaNum"  styleClass="pago-resumen-label"/>
+                                    <Label fx:id="lblNFReservaFechas" styleClass="pago-resumen-valor"/>
+                                    <Label fx:id="lblNFReservaHab"  styleClass="pago-resumen-valor"/>
+                                </VBox>
+                            </VBox>
+
+                            <!-- Cliente -->
+                            <VBox styleClass="admin-form-section" spacing="10">
+                                <Label styleClass="admin-form-section-title" text="Cliente"/>
+                                <TextField fx:id="txtNFBuscarCliente"
+                                           promptText="🔍  Buscar por nombre, NIF o email..."
+                                           onKeyReleased="#buscarClienteNF"/>
+                                <ComboBox fx:id="cmbNFCliente" maxWidth="Infinity"
+                                          promptText="Selecciona un cliente"/>
+                            </VBox>
+
+                            <!-- Datos de facturación alternativos -->
+                            <VBox styleClass="admin-form-section" spacing="10">
+                                <Label styleClass="admin-form-section-title" text="Datos de facturación"/>
+                                <CheckBox fx:id="chkNFBillingOverride"
+                                          text="Facturar a empresa / tercero"
+                                          onAction="#toggleBillingFields"/>
+                                <!-- Campos visibles solo cuando el CheckBox está activo -->
+                                <VBox fx:id="vboxNFBillingFields" spacing="8"
+                                      visible="false" managed="false">
+                                    <GridPane hgap="10" vgap="8">
+                                        <columnConstraints>
+                                            <ColumnConstraints minWidth="90" maxWidth="90"/>
+                                            <ColumnConstraints hgrow="ALWAYS"/>
+                                        </columnConstraints>
+                                        <Label text="Empresa/Nombre:" GridPane.columnIndex="0" GridPane.rowIndex="0"
+                                               wrapText="true"/>
+                                        <TextField fx:id="txtNFBillingName"
+                                                   promptText="Razón social o nombre fiscal"
+                                                   GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                                        <Label text="NIF/CIF:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                                        <TextField fx:id="txtNFBillingNif" promptText="A12345678"
+                                                   GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                                        <Label text="Dirección:" GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                                        <TextField fx:id="txtNFBillingAddress"
+                                                   promptText="Calle, número, piso..."
+                                                   GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+
+                                        <Label text="Ciudad:" GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+                                        <TextField fx:id="txtNFBillingCity" promptText="Ciudad"
+                                                   GridPane.columnIndex="1" GridPane.rowIndex="3"/>
+
+                                        <Label text="C.P.:" GridPane.columnIndex="0" GridPane.rowIndex="4"/>
+                                        <TextField fx:id="txtNFBillingCp" promptText="28001"
+                                                   GridPane.columnIndex="1" GridPane.rowIndex="4"/>
+
+                                        <Label text="País:" GridPane.columnIndex="0" GridPane.rowIndex="5"/>
+                                        <TextField fx:id="txtNFBillingCountry" promptText="España"
+                                                   GridPane.columnIndex="1" GridPane.rowIndex="5"/>
+                                    </GridPane>
+                                </VBox>
+                            </VBox>
+
+                            <!-- Forma de pago y notas -->
+                            <VBox styleClass="admin-form-section" spacing="8">
+                                <Label styleClass="admin-form-section-title" text="Facturación"/>
+                                <GridPane hgap="10" vgap="8">
+                                    <columnConstraints>
+                                        <ColumnConstraints minWidth="90" maxWidth="90"/>
+                                        <ColumnConstraints hgrow="ALWAYS"/>
+                                    </columnConstraints>
+                                    <Label text="Forma pago:" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                                    <ComboBox fx:id="cmbNFMetodoPago" maxWidth="Infinity"
+                                              GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+                                    <Label text="Notas:" GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                                    <TextField fx:id="txtNFNotas" promptText="Observaciones (opcional)"
+                                               GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+                                </GridPane>
+                            </VBox>
+
+                            <!-- Añadir servicio -->
+                            <VBox styleClass="admin-form-section" spacing="10">
+                                <Label styleClass="admin-form-section-title" text="Añadir servicio"/>
+
+                                <Label text="Acceso rápido:" styleClass="admin-chip-group-label"/>
+                                <HBox spacing="6" alignment="CENTER_LEFT">
+                                    <Button styleClass="admin-btn-chip" text="🛏️ Habitación"  onAction="#chipHabitacion"/>
+                                    <Button styleClass="admin-btn-chip" text="🍽️ Restaurante" onAction="#chipRestaurante"/>
+                                    <Button styleClass="admin-btn-chip" text="🍷 Minibar"     onAction="#chipMinibar"/>
+                                </HBox>
+                                <HBox spacing="6" alignment="CENTER_LEFT">
+                                    <Button styleClass="admin-btn-chip" text="🧴 Spa"         onAction="#chipSpa"/>
+                                    <Button styleClass="admin-btn-chip" text="🚗 Parking"     onAction="#chipParking"/>
+                                    <Button styleClass="admin-btn-chip" text="📦 Otro"        onAction="#chipOtro"/>
+                                </HBox>
+
+                                <GridPane hgap="10" vgap="8">
+                                    <columnConstraints>
+                                        <ColumnConstraints minWidth="90" maxWidth="90"/>
+                                        <ColumnConstraints hgrow="ALWAYS"/>
+                                    </columnConstraints>
+
+                                    <Label text="Descripción:"  GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+                                    <TextField fx:id="txtNFDesc" promptText="Descripción del servicio"
+                                               GridPane.columnIndex="1" GridPane.rowIndex="0"/>
+
+                                    <Label text="Cantidad:"  GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+                                    <TextField fx:id="txtNFCantidad" promptText="1"
+                                               GridPane.columnIndex="1" GridPane.rowIndex="1"/>
+
+                                    <Label text="Precio/ud.:"  GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+                                    <TextField fx:id="txtNFPrecio" promptText="0,00"
+                                               GridPane.columnIndex="1" GridPane.rowIndex="2"/>
+                                </GridPane>
+
+                                <Button onAction="#agregarLineaNF" styleClass="admin-btn-secondary"
+                                        text="+ Añadir al ticket" maxWidth="Infinity"/>
+                            </VBox>
+                        </VBox>
+
+                        <!-- ── Resumen derecha ── -->
+                        <VBox spacing="12" HBox.hgrow="ALWAYS" VBox.vgrow="ALWAYS">
+
+                            <VBox styleClass="admin-form-section" spacing="8" VBox.vgrow="ALWAYS">
+                                <Label styleClass="admin-form-section-title" text="Líneas del ticket"/>
+                                <TableView fx:id="tblNFLineas" VBox.vgrow="ALWAYS" styleClass="admin-table">
+                                    <columns>
+                                        <TableColumn fx:id="colNFDesc"   text="Descripción" prefWidth="220"/>
+                                        <TableColumn fx:id="colNFCant"   text="Cant."       prefWidth="55"/>
+                                        <TableColumn fx:id="colNFPrecio" text="P.Unit."     prefWidth="80"/>
+                                        <TableColumn fx:id="colNFTotal"  text="Total"       prefWidth="80"/>
+                                        <TableColumn fx:id="colNFElim"   text=""            prefWidth="36"/>
+                                    </columns>
+                                    <placeholder><Label text="Añade servicios desde el formulario de la izquierda"/></placeholder>
+                                </TableView>
+                            </VBox>
+
+                            <!-- Totales -->
+                            <VBox styleClass="pago-resumen-card" spacing="6">
+                                <HBox spacing="6" alignment="CENTER_RIGHT">
+                                    <Region HBox.hgrow="ALWAYS"/>
+                                    <Label styleClass="pago-resumen-label" text="Subtotal:"/>
+                                    <Label fx:id="lblNFSubtotal" styleClass="pago-resumen-valor"
+                                           text="0,00 €" minWidth="90"/>
+                                </HBox>
+                                <HBox spacing="6" alignment="CENTER_RIGHT">
+                                    <Region HBox.hgrow="ALWAYS"/>
+                                    <Label styleClass="pago-resumen-label" text="IVA (10%):"/>
+                                    <Label fx:id="lblNFIva" styleClass="pago-resumen-valor"
+                                           text="0,00 €" minWidth="90"/>
+                                </HBox>
+                                <HBox spacing="6" alignment="CENTER_RIGHT">
+                                    <Region HBox.hgrow="ALWAYS"/>
+                                    <Label styleClass="pago-resumen-label" text="TOTAL:"/>
+                                    <Label fx:id="lblNFTotal" styleClass="pago-resumen-pendiente"
+                                           text="0,00 €" minWidth="90"/>
+                                </HBox>
+                            </VBox>
+
+                            <HBox spacing="8">
+                                <Button fx:id="btnNFCancelar" onAction="#cancelarFacturaDesdeEditor"
+                                        styleClass="admin-btn-danger" text="✗ Anular"
+                                        visible="false" managed="false"/>
+                                <Region HBox.hgrow="ALWAYS"/>
+                                <Button onAction="#limpiarNuevaFactura" styleClass="admin-btn-secondary"
+                                        text="✕ Limpiar"/>
+                                <Button fx:id="btnNFGuardar" onAction="#crearFactura"
+                                        styleClass="admin-btn-primary" text="✓ Crear ticket"/>
+                            </HBox>
+                        </VBox>
+
+                    </HBox>
+                </VBox>
+
+            </StackPane>
+        </HBox>
+    </center>
+
+</BorderPane>

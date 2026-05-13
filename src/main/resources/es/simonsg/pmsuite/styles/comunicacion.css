@@ -9,6 +9,26 @@
     -fx-font-family: "System";
 }
 
+/* ── Breadcrumb ─────────────────────────────────────────────── */
+.breadcrumb-bar {
+    -fx-background-color: #FFFFFF;
+    -fx-border-color: #E5E7EB;
+    -fx-border-width: 0 0 1 0;
+}
+.back-button {
+    -fx-background-color: transparent;
+    -fx-text-fill: #2A9D8F;
+    -fx-font-size: 13px;
+    -fx-cursor: hand;
+    -fx-border-color: #2A9D8F;
+    -fx-border-radius: 6;
+    -fx-background-radius: 6;
+    -fx-padding: 4 12 4 12;
+}
+.back-button:hover  { -fx-background-color: #E8F5F3; }
+.breadcrumb-sep     { -fx-text-fill: #D1D5DB; -fx-font-size: 14px; }
+.breadcrumb-active  { -fx-text-fill: #1A2E2B; -fx-font-weight: bold; -fx-font-size: 13px; }
+
 /* ── Sidebar ───────────────────────────────────────────────── */
 .com-sidebar {
     -fx-background-color: #1A3A4A;
@@ -49,21 +69,6 @@
     -fx-background-color: #D35400;
 }
 
-.com-back-btn {
-    -fx-background-color: #254D61;
-    -fx-text-fill: #C8DCE8;
-    -fx-font-size: 12px;
-    -fx-alignment: CENTER_LEFT;
-    -fx-padding: 8 12 8 14;
-    -fx-background-radius: 6;
-    -fx-cursor: hand;
-    -fx-border-color: transparent;
-}
-
-.com-back-btn:hover {
-    -fx-background-color: #1A3A4A;
-    -fx-text-fill: #FFFFFF;
-}
 
 /* ── Content Area ──────────────────────────────────────────── */
 .com-content-area {

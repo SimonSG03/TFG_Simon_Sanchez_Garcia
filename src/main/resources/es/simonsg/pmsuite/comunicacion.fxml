@@ -10,6 +10,16 @@
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="es.simonsg.pmsuite.controller.ComunicacionController">
 
+    <!-- ===== BREADCRUMB ===== -->
+    <top>
+        <HBox alignment="CENTER_LEFT" spacing="8" styleClass="breadcrumb-bar">
+            <padding><Insets bottom="10" left="24" right="24" top="10"/></padding>
+            <Button onAction="#volverInicio" styleClass="back-button" text="← Inicio"/>
+            <Label styleClass="breadcrumb-sep" text="/"/>
+            <Label styleClass="breadcrumb-active" text="Comunicación"/>
+        </HBox>
+    </top>
+
     <!-- ===== SIDEBAR ===== -->
     <left>
         <VBox styleClass="com-sidebar" spacing="4" prefWidth="215">
@@ -37,9 +47,6 @@
                     onAction="#irConfig"/>
 
             <Region VBox.vgrow="ALWAYS"/>
-
-            <Button text="← Inicio" styleClass="com-back-btn" maxWidth="Infinity"
-                    onAction="#volverInicio"/>
         </VBox>
     </left>
 

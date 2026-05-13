@@ -1,13 +1,17 @@
 package es.simonsg.pmsuite.util;
 
 import com.lowagie.text.*;
+import com.lowagie.text.Element;
+import com.lowagie.text.Font;
+import com.lowagie.text.Image;
+import com.lowagie.text.Rectangle;
 import com.lowagie.text.pdf.*;
 import com.lowagie.text.pdf.draw.LineSeparator;
 import es.simonsg.pmsuite.model.Hotel;
 import es.simonsg.pmsuite.model.Factura;
 import es.simonsg.pmsuite.model.LineaFactura;
 
-import java.awt.Color;
+import java.awt.*;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;

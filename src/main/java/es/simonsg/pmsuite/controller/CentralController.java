@@ -135,7 +135,7 @@ public class CentralController {
         }
     }
 
-    // KPIs
+    // ── KPIs ─────────────────────────────────────────────────────────────────
 
     private void cargarKPIs(List<Habitacion> rooms) {
         int total    = rooms.size();
@@ -154,7 +154,7 @@ public class CentralController {
         kpiIngresosPendiente.setText("Pendiente: " + formatEurBD(pendiente));
     }
 
-    // Estado habitaciones
+    // ── Estado habitaciones ───────────────────────────────────────────────────
 
     private void cargarEstadoHabitaciones(List<Habitacion> rooms) {
         long ocupadas   = rooms.stream().filter(r -> r.getEstado() == Habitacion.Estado.OCUPADA).count();
@@ -181,7 +181,7 @@ public class CentralController {
         }
     }
 
-    // Gráfico
+    // ── Gráfico ───────────────────────────────────────────────────────────────
 
     private void cargarGrafico(List<Habitacion> rooms) {
         long ocupadas = rooms.stream().filter(r -> r.getEstado() == Habitacion.Estado.OCUPADA).count();
@@ -202,7 +202,7 @@ public class CentralController {
         });
     }
 
-    // Llegadas
+    // ── Llegadas ──────────────────────────────────────────────────────────────
 
     private void cargarLlegadas() throws Exception {
         List<Reserva> llegadas = ReservaDAO.getLlegadasHoy();
@@ -230,7 +230,7 @@ public class CentralController {
         }
     }
 
-    // Salidas
+    // ── Salidas ───────────────────────────────────────────────────────────────
 
     private void cargarSalidas() throws Exception {
         List<Reserva> salidas = ReservaDAO.getSalidasHoy();
@@ -258,7 +258,7 @@ public class CentralController {
         }
     }
 
-    // Fuera de servicio
+    // ── Fuera de servicio ─────────────────────────────────────────────────────
 
     private void cargarFueraServicio(List<Habitacion> rooms) throws Exception {
         List<SolicitudMantenimiento> mantenimiento = MantenimientoDAO.obtenerActivas();
@@ -301,7 +301,7 @@ public class CentralController {
         fueraServicioTotal.setText("Total: " + fueraCount + " fuera de servicio, " + bloqCount + " bloqueadas");
     }
 
-    // Alertas
+    // ── Alertas ───────────────────────────────────────────────────────────────
 
     private void cargarAlertas() throws Exception {
         List<SolicitudMantenimiento> activas = MantenimientoDAO.obtenerActivas();
@@ -335,7 +335,7 @@ public class CentralController {
         }
     }
 
-    // Overbooking
+    // ── Overbooking ───────────────────────────────────────────────────────────
 
     private void cargarOverbooking() throws Exception {
         String countSql = """
@@ -418,7 +418,7 @@ public class CentralController {
         }
     }
 
-    // Helpers de UI
+    // ── Helpers de UI ─────────────────────────────────────────────────────────
 
     private HBox crearItemLlegada(Reserva r) {
         String roomNum = r.getHabitacion() != null ? r.getHabitacion().getNumero() : "?";
@@ -561,7 +561,7 @@ public class CentralController {
         return item;
     }
 
-    // Acciones interactivas
+    // ── Acciones interactivas ─────────────────────────────────────────────────
 
     private void realizarCheckin(Reserva r) {
         String nombre  = r.getHuesped() != null
@@ -607,7 +607,8 @@ public class CentralController {
         });
     }
 
-    // Queries financieras
+    // ── Queries financieras ───────────────────────────────────────────────────
+
     private double getADR() {
         try (Connection conn = GestorBD.getInstance().getConnection();
              PreparedStatement ps = conn.prepareStatement("""
