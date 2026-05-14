@@ -29,6 +29,7 @@ EXCEPTION WHEN duplicate_object THEN NULL;
 END $$;
 
 DO $$ BEGIN
+
 CREATE TYPE invoice_status AS ENUM (
         'PENDING', 'PAID', 'PARTIALLY_PAID', 'CANCELLED'
     );
@@ -870,7 +871,7 @@ INSERT INTO invoices (invoice_number, reservation_id, guest_id, issue_date, subt
 SELECT 'FAC-0001',
        (SELECT id FROM reservations WHERE reservation_number='DM-001'),
        (SELECT guest_id FROM reservations WHERE reservation_number='DM-001'),
-       CURRENT_DATE - 5, 527.27, 10.00, 52.73, 580.00, 200.00, 'PARTIAL'
+       CURRENT_DATE - 5, 527.27, 10.00, 52.73, 580.00, 200.00, 'PARTIALLY_PAID'
     WHERE NOT EXISTS (SELECT 1 FROM invoices WHERE invoice_number='FAC-0001');
 
 INSERT INTO invoice_lines (invoice_id, description, quantity, unit_price, total_price)
@@ -910,7 +911,7 @@ INSERT INTO invoices (invoice_number, reservation_id, guest_id, issue_date, subt
 SELECT 'FAC-0005',
        (SELECT id FROM reservations WHERE reservation_number='DM-005'),
        (SELECT guest_id FROM reservations WHERE reservation_number='DM-005'),
-       CURRENT_DATE - 2, 1272.73, 10.00, 127.27, 1400.00, 500.00, 'PARTIAL'
+       CURRENT_DATE - 2, 1272.73, 10.00, 127.27, 1400.00, 500.00, 'PARTIALLY_PAID'
     WHERE NOT EXISTS (SELECT 1 FROM invoices WHERE invoice_number='FAC-0005');
 
 INSERT INTO invoice_lines (invoice_id, description, quantity, unit_price, total_price)
@@ -950,7 +951,7 @@ INSERT INTO invoices (invoice_number, reservation_id, guest_id, issue_date, subt
 SELECT 'FAC-0009',
        (SELECT id FROM reservations WHERE reservation_number='DM-009'),
        (SELECT guest_id FROM reservations WHERE reservation_number='DM-009'),
-       CURRENT_DATE - 10, 5490.91, 10.00, 549.09, 6040.00, 3000.00, 'PARTIAL'
+       CURRENT_DATE - 10, 5490.91, 10.00, 549.09, 6040.00, 3000.00, 'PARTIALLY_PAID'
     WHERE NOT EXISTS (SELECT 1 FROM invoices WHERE invoice_number='FAC-0009');
 
 INSERT INTO invoice_lines (invoice_id, description, quantity, unit_price, total_price)

@@ -59,9 +59,9 @@
     -fx-text-fill: #FFFFFF;
 }
 .nav-btn-active {
-    -fx-background-color: #2B1F0A !important;
-    -fx-text-fill: #F0A500 !important;
-    -fx-border-color: #E67E22 !important;
+    -fx-background-color: #1E3A4A !important;
+    -fx-text-fill: #2FBDAE !important;
+    -fx-border-color: #2A9D8F !important;
     -fx-border-width: 0 0 0 3 !important;
     -fx-font-weight: bold;
 }

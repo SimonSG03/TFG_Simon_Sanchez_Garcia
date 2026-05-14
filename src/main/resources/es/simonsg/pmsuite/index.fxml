@@ -78,7 +78,7 @@
             <Region HBox.hgrow="ALWAYS" />
 
             <!-- USUARIO -->
-            <MenuButton style="-fx-background-color: transparent;" styleClass="top-menu-button" text="nacho@ofi.es" />
+            <MenuButton fx:id="usuarioMenuBtn" style="-fx-background-color: transparent;" styleClass="top-menu-button" text="Usuario" />
 
             <!-- ICONOS DERECHA -->
             <HBox alignment="CENTER_LEFT" spacing="8">
@@ -218,7 +218,8 @@
                   </graphic>
                </Button>
 
-               <Button prefHeight="102" prefWidth="122" styleClass="main-tile" onAction="#abrirInformes">
+               <Button prefHeight="102" prefWidth="122" styleClass="main-tile"
+                       onAction="#abrirInformes">
                   <graphic>
                      <VBox alignment="CENTER">
                         <ImageView fitHeight="59" fitWidth="55">

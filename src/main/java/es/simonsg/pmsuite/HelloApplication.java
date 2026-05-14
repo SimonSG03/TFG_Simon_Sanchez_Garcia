@@ -6,6 +6,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.scene.image.Image;
 
 import java.io.IOException;
 import java.util.logging.Level;
@@ -31,6 +32,11 @@ public class HelloApplication extends Application {
         Scene scene = new Scene(fxmlLoader.load());
         stage.setTitle("PMSuite");
         stage.setScene(scene);
+
+        // ICONO
+        Image icon = new Image(getClass().getResourceAsStream("/images/logo_pmsuite.png"));
+        stage.getIcons().add(icon);
+
         stage.setMaximized(true);
         stage.show();
     }

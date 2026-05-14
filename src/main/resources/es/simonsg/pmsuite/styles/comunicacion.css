@@ -31,44 +31,42 @@
 
 /* ── Sidebar ───────────────────────────────────────────────── */
 .com-sidebar {
-    -fx-background-color: #1A3A4A;
-    -fx-min-width: 215px;
-    -fx-max-width: 215px;
+    -fx-background-color: #1A2535;
+    -fx-min-width: 210px;
+    -fx-pref-width: 210px;
+    -fx-max-width: 210px;
 }
 
 .com-sidebar-title {
-    -fx-text-fill: #7FBED1;
-    -fx-font-size: 11px;
+    -fx-text-fill: #8899AA;
+    -fx-font-size: 10px;
     -fx-font-weight: bold;
-    -fx-padding: 0 0 8 4;
+    -fx-padding: 0 16 4 16;
 }
 
 .com-nav-btn {
     -fx-background-color: transparent;
-    -fx-text-fill: #C8DCE8;
+    -fx-text-fill: #B0BEC5;
     -fx-font-size: 13px;
     -fx-alignment: CENTER_LEFT;
-    -fx-padding: 10 12 10 14;
-    -fx-background-radius: 6;
+    -fx-padding: 10 20 10 20;
     -fx-cursor: hand;
     -fx-border-color: transparent;
+    -fx-border-width: 0 0 0 3;
 }
 
 .com-nav-btn:hover {
-    -fx-background-color: #254D61;
+    -fx-background-color: #243447;
     -fx-text-fill: #FFFFFF;
 }
 
 .com-nav-btn-active {
-    -fx-background-color: #E67E22;
-    -fx-text-fill: #FFFFFF;
+    -fx-background-color: #1E3A4A !important;
+    -fx-text-fill: #2FBDAE !important;
+    -fx-border-color: #2A9D8F !important;
+    -fx-border-width: 0 0 0 3 !important;
     -fx-font-weight: bold;
 }
-
-.com-nav-btn-active:hover {
-    -fx-background-color: #D35400;
-}
-
 
 /* ── Content Area ──────────────────────────────────────────── */
 .com-content-area {
@@ -83,7 +81,7 @@
 .com-panel-title {
     -fx-font-size: 20px;
     -fx-font-weight: bold;
-    -fx-text-fill: #1A3A4A;
+    -fx-text-fill: #2FAE9E;
     -fx-padding: 0 0 6 0;
 }
 
@@ -114,7 +112,7 @@
 
 /* ── Buttons ───────────────────────────────────────────────── */
 .com-btn-primary {
-    -fx-background-color: #E67E22;
+    -fx-background-color: #2A9D8F;
     -fx-text-fill: white;
     -fx-font-weight: bold;
     -fx-padding: 8 20 8 20;
@@ -124,7 +122,7 @@
 }
 
 .com-btn-primary:hover {
-    -fx-background-color: #D35400;
+    -fx-background-color: #21867A;
 }
 
 .com-btn-secondary {
@@ -182,8 +180,12 @@
     -fx-text-fill: #1A3A4A;
 }
 
-.table-view .table-row-cell:hover:!selected {
+.table-view .table-row-cell:hover {
     -fx-background-color: #F0F8FF;
+}
+
+.table-view .table-row-cell:selected {
+    -fx-background-color: #0096FF;
 }
 
 /* ── Inputs ────────────────────────────────────────────────── */

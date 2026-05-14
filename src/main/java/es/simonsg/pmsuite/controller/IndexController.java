@@ -2,9 +2,11 @@ package es.simonsg.pmsuite.controller;
 
 import es.simonsg.pmsuite.dao.HotelDAO;
 import es.simonsg.pmsuite.dao.ReservaDAO;
+import es.simonsg.pmsuite.dao.UsuarioDAO;
 import es.simonsg.pmsuite.model.Hotel;
 import es.simonsg.pmsuite.model.Factura;
 import es.simonsg.pmsuite.model.Reserva;
+import es.simonsg.pmsuite.model.Usuario;
 import javafx.animation.KeyFrame;
 import javafx.animation.PauseTransition;
 import javafx.animation.Timeline;
@@ -21,8 +23,10 @@ import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Label;
+import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Separator;
+import javafx.scene.control.SeparatorMenuItem;
 import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.ImageView;
@@ -54,8 +58,10 @@ public class IndexController {
     @FXML private Button     infoIconBtn;
     @FXML private Button     menuIconBtn;
     @FXML private Button     onoffBtn;
+    @FXML private MenuButton usuarioMenuBtn;
 
     private ContextMenu soporteMenu;
+    private Usuario     usuarioActual;
 
     private Node vistaInicio;
 
@@ -95,6 +101,58 @@ public class IndexController {
 
         // Global search popup
         setupSearch();
+
+        // User switcher in top bar
+        cargarUsuarios();
+    }
+
+    // ── User switcher ─────────────────────────────────────────────────────────
+
+    private void cargarUsuarios() {
+        try {
+            List<Usuario> usuarios = UsuarioDAO.obtenerTodos();
+            usuarioMenuBtn.getItems().clear();
+
+            for (Usuario u : usuarios) {
+                String label = u.getNombreCompleto() != null && !u.getNombreCompleto().isBlank()
+                        ? u.getNombreCompleto() : u.getEmail();
+                String sublabel = u.getRol() != null ? u.getRol().toSpanish() : "";
+
+                Label nombre = new Label(label);
+                nombre.setStyle("-fx-font-weight: bold; -fx-font-size: 12px;");
+                Label rol = new Label(sublabel);
+                rol.setStyle("-fx-font-size: 10px; -fx-text-fill: #9CA3AF;");
+                VBox content = new VBox(1, nombre, rol);
+
+                MenuItem item = new MenuItem();
+                item.setGraphic(content);
+                item.setOnAction(e -> seleccionarUsuario(u));
+                usuarioMenuBtn.getItems().add(item);
+            }
+
+            if (!usuarios.isEmpty()) {
+                usuarioMenuBtn.getItems().add(new SeparatorMenuItem());
+                MenuItem cerrarSesion = new MenuItem("Cerrar sesión");
+                cerrarSesion.setStyle("-fx-text-fill: #DC2626;");
+                cerrarSesion.setOnAction(e -> cerrarApp());
+                usuarioMenuBtn.getItems().add(cerrarSesion);
+
+                seleccionarUsuario(usuarios.get(0));
+            }
+        } catch (Exception e) {
+            usuarioMenuBtn.setText("Sin conexión");
+        }
+    }
+
+    private void seleccionarUsuario(Usuario u) {
+        usuarioActual = u;
+        String display = u.getNombreCompleto() != null && !u.getNombreCompleto().isBlank()
+                ? u.getNombreCompleto() : u.getEmail();
+        usuarioMenuBtn.setText(display);
+    }
+
+    public Usuario getUsuarioActual() {
+        return usuarioActual;
     }
 
     // ── Top-bar actions ───────────────────────────────────────────────────────

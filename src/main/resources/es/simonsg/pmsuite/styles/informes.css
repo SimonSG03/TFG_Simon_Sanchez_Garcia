@@ -34,20 +34,20 @@
 
 /* ──── Sidebar ─────────────────────────────────────────────────── */
 .inf-sidebar {
-    -fx-background-color: #1C2A4A;
-    -fx-min-width: 215px;
-    -fx-pref-width: 215px;
+    -fx-background-color: #1A2535;
+    -fx-min-width: 210px;
+    -fx-pref-width: 210px;
 }
 
 .sidebar-section-label {
-    -fx-text-fill: #6B7FA8;
+    -fx-text-fill: #8899AA;
     -fx-font-size: 10px;
     -fx-font-weight: bold;
-    -fx-padding: 8 16 2 16;
+    -fx-padding: 0 16 4 16;
 }
 
 .sidebar-sep {
-    -fx-background-color: #263556;
+    -fx-background-color: #2A3A50;
     -fx-pref-height: 1;
     -fx-min-height: 1;
     -fx-max-height: 1;
@@ -56,7 +56,7 @@
 
 .inf-nav-btn {
     -fx-background-color: transparent;
-    -fx-text-fill: #A8B8D8;
+    -fx-text-fill: #B0BEC5;
     -fx-font-size: 13px;
     -fx-alignment: CENTER_LEFT;
     -fx-padding: 10 20 10 20;
@@ -65,13 +65,13 @@
     -fx-border-width: 0 0 0 3;
 }
 .inf-nav-btn:hover {
-    -fx-background-color: #243556;
+    -fx-background-color: #243447;
     -fx-text-fill: white;
 }
 .nav-btn-active {
-    -fx-background-color: #0A1A38 !important;
-    -fx-text-fill: #60A5FA !important;
-    -fx-border-color: #3B82F6 !important;
+    -fx-background-color: #1E3A4A !important;
+    -fx-text-fill: #2FBDAE !important;
+    -fx-border-color: #2A9D8F !important;
     -fx-border-width: 0 0 0 3 !important;
     -fx-font-weight: bold;
 }
